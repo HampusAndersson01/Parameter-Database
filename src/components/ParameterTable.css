@@ -64,32 +64,32 @@ tr.Active-Row .Table-Arrow {
   width: 20vw;
   border: 1px var(--Grey300) solid;
 }
-.Image{
+.Image {
   height: 100%;
   width: 100%;
   object-fit: contain;
   display: block;
 }
-.Image.Active{
+.Image.Active {
   display: block;
 }
 .Image-ButtonLeft {
-  position: absolute;
-  top: 50%;
   left: 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  z-index: 1;
 }
 .Image-ButtonRight {
+  right: 0;
+}
+.Image-Button {
   position: absolute;
   top: 50%;
-  right: 0;
+  transform: translate(0, -50%);
   background-color: transparent;
   border: none;
   outline: none;
   cursor: pointer;
   z-index: 1;
+  display: block;
+}
+.Disabled-Button {
+  display: none;
 }

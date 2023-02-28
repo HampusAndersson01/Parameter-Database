@@ -4,13 +4,6 @@ body {
 }
 * {
   box-sizing: border-box;
-  font-family: volvo-novum, sans-serif;
-}
-@font-face {
-  font-family: "Volvo Novum";
-  src: url("../node_modules/@volvo/vcdk/dist/assets/fonts/volvo-novum/latin/Light.woff2");
-  font-display: swap;
-  font-weight: 200;
 }
 
 :root {

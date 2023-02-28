@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import "./SearchField.css";
-import { createComponent } from "@lit-labs/react";
-import { SystemIcon as SystemIconWebComponent } from "@volvo/vcdk";
-
-// React component wrapper
-const VolvoIcon = createComponent(
-  React,
-  "volvo-system-icon",
-  SystemIconWebComponent,
-  {
-    onClick: "click",
-  }
-);
+import SearchIcon from "@mui/icons-material/Search";
 
 function SearchField(props: {
   data: string[];
@@ -27,7 +16,6 @@ function SearchField(props: {
   };
 
   const handleCategorySelect = (value: string) => {
-    //FIXME Not selecting anything on click
     console.log("Selected: " + value);
     setSearchValue(value);
     setIsDropdownOpen(false);
@@ -52,6 +40,13 @@ function SearchField(props: {
     console.log("Clicked");
     //TODO Add search functionality
   };
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter") {
+      //TODO Add search functionality
+      console.log("Enter pressed");
+    }
+  };
+
   function getFilteredData() {
     if (searchValue === "") {
       return props.data;
@@ -71,11 +66,7 @@ function SearchField(props: {
         >
           {props.placeholder}
         </legend>
-        <VolvoIcon
-          className="Search-Icon"
-          icon="search"
-          onclick={handleClick}
-        ></VolvoIcon>
+        <SearchIcon className="Search-Icon" onClick={handleClick}></SearchIcon>
         <input
           className="SearchField-Input"
           onChange={handleInputChange}
@@ -83,6 +74,7 @@ function SearchField(props: {
           value={searchValue}
           onFocus={handleFocus}
           onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
         ></input>
         <div className="Dropdown-Container-Div">
           {isDropdownOpen && (

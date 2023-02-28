@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./ParameterTable.css";
-import { createComponent } from "@lit-labs/react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 type TableRowProps = {
   id: number;
@@ -23,16 +22,14 @@ type TableRowProps = {
 };
 interface ImageState {
   [key: number]: number;
-  
 }
-
 
 function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
 
   const HandleClickParameter = (event: any, id: number) => {
-    console.log(currentImage)
+    console.log(currentImage);
     const isExpanded = expandedRows.includes(id);
     if (isExpanded) {
       setExpandedRows(expandedRows.filter((rowId) => rowId !== id));
@@ -49,17 +46,13 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const HandlePrevButton = (event: any, id: number) => {
     // decrease this id currentImage
     if (currentImage[id] != 0) {
-      if (currentImage[id] - 1 == 0) {
-        event.target.classList.toggle("Disabled-Button")
-      }
       setCurrentImage((prevState) => ({
         ...prevState,
         [id]: prevState[id] - 1,
-    }));
-    
-    
+      }));
     }
   };
+
   const HandleNextButton = (event: any, id: number, length: number) => {
     // increase this id currentImage
     if (currentImage[id] != length - 1) {
@@ -133,18 +126,33 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td colSpan={12}>
                   <div className="Expandable-Area">
                     <div className="Images-Container">
+                      {row.images.length > 0 && (<>
                       
-                        
-                        { 
-
-                            <img className="Image" src={row.images[currentImage[row.id]]}></img>
-                        
-                        }
-                      
-                      
-                      <button className="Image-ButtonLeft" onClick={(event) => HandlePrevButton(event, row.id)}><ArrowBackIcon></ArrowBackIcon></button>
-                      <button className="Image-ButtonRight" onClick={(event) => HandleNextButton(event, row.id, row.images.length)}><ArrowForwardIcon></ArrowForwardIcon></button>
-                    
+                          {
+                            <img
+                              className="Image"
+                              src={row.images[currentImage[row.id]]}
+                            ></img>
+                          }
+                          <legend>
+                            {currentImage[row.id] + 1}/{row.images.length}
+                          </legend>
+                          <button
+                            className="Image-Button Image-ButtonLeft"
+                            onClick={(event) => HandlePrevButton(event, row.id)}
+                          >
+                            <ArrowBackIcon></ArrowBackIcon>
+                          </button>
+                          <button
+                            className="Image-Button Image-ButtonRight"
+                            onClick={(event) =>
+                              HandleNextButton(event, row.id, row.images.length)
+                            }
+                          >
+                            <ArrowForwardIcon></ArrowForwardIcon>
+                          </button>
+                        </>)
+                      }
                     </div>
                   </div>
                 </td>

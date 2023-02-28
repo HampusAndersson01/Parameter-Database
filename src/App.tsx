@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import SearchField from "./components/SearchField";
 import ParameterTable from "./components/ParameterTable";
@@ -66,13 +66,49 @@ const rows = [
   },
 ];
 
+type dataModel = {
+  id: number;
+  name: string;
+  description: string;
+  datatype: string;
+  decimals: number;
+  min: number;
+  max: number;
+  creation_date: null;
+  modified_date: string;
+  comment: null;
+  unit_name: string;
+  unit_description: string;
+  rigfamily_name: string;
+  rigfamily_description: string;
+  image_name: string;
+  image_description: null;
+  image_links: string;
+  sensor_names: null;
+  sensor_supplier: null;
+  sensor_datasheet: null;
+  sensor_link_to_calibration: null;
+  sensor_type: null;
+}[];
+
 function App() {
+  const [data, setData] = useState<dataModel>([]);
+
+  useEffect(() => {
+      fetch("http://10.222.15.227:3000/parameters")
+        .then((response) => response.json())
+        .then((data) => setData(data))
+        .catch((error) => console.log(error))
+        .finally(() => console.log("done"));
+
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
         <SearchField
           id="ParameterSearch"
-          data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}
+          data={Array.from(new Set(data.map((row) => row.name)))}
           placeholder="Parameter"
         />
         <SearchField
