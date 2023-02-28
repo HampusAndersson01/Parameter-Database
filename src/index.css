@@ -1,13 +1,44 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+  font-family: volvo-novum, sans-serif;
+}
+@font-face {
+  font-family: "Volvo Novum";
+  src: url("../node_modules/@volvo/vcdk/dist/assets/fonts/volvo-novum/latin/Light.woff2");
+  font-display: swap;
+  font-weight: 200;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  --Dark_Blue: #202a44;
+  --White: #ffffff;
+  --Black: #141414;
+
+  --Grey100: #f7f7f7;
+  --Grey200: #e1dfdd;
+  --Grey300: #d0d0d0;
+  --Grey400: #a7a8a9;
+  --Grey500: #888b8d;
+  --Grey600: #53565a;
+  --Grey700: #323232;
+
+  --Highlight-Default: #004fbc;
+  --Highlight-Hover: #2b8ede;
+  --Highlight-Active: #104e9b;
+
+  --Success-Default: #1a6c31;
+
+  --Warning-Default: #ffa000;
+
+  --Error-Default: #bf2012;
+
+  --Context-Default: #346559;
+
+  --Header-Default: 150px;
+  --Header-750: 240px;
+  --Header-320: 320px;
 }

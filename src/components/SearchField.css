@@ -1,0 +1,105 @@
+.SearchField-Label {
+  color: var(--Grey600);
+  transition: top 0.1s ease-in-out, left 0.1s ease-in-out,
+    transform 0.1s ease-in-out, opacity 0.1s ease-in-out, z-index 0.1s ease-out,
+    color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+  background-color: none;
+  position: absolute;
+  opacity: 0;
+  top: 50%;
+  left: 0.5rem;
+  z-index: -1;
+  transform: translate(0, -50%);
+}
+.show-label {
+  opacity: 1;
+  top: -0.7em;
+  left: 5px;
+  z-index: 1;
+  transform: translate(0, 0);
+  transition: top 0.1s ease-in-out, left 0.1s ease-in-out,
+    transform 0.1s ease-in-out, opacity 0s ease-in-out, z-index 0s ease-in-out,
+    color 0.2s ease-in-out, background-color 0.1s ease-in-out;
+  color: var(--Highlight-Active);
+  background-color: var(--Grey100);
+}
+.SearchField-Container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.Search-Container {
+  border: none;
+  border-radius: 5px;
+  padding: 0;
+  height: 5vh;
+  max-height: 40px;
+  position: relative;
+  background-color: var(--Grey100);
+  width: 100%;
+  margin: 0;
+}
+.SearchField-Input:focus .Search-Container {
+  border: #004fbc 1px solid;
+}
+
+.Search-Icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translate(0, -50%);
+  color: var(--Grey600);
+  cursor: pointer;
+}
+
+.SearchField-Input {
+  width: 100%;
+  height: 100%;
+  line-height: 6ex;
+  border-radius: 5px;
+  border: var(--Grey400) 2px solid;
+  background-color: var(--Grey100);
+  transition: all 0.2s ease-in-out;
+  height: 35px;
+  padding: 0 2.3rem 0 0.5rem;
+}
+
+.SearchField-Input:focus {
+  outline: none;
+  border: var(--Highlight-Active) 2px solid;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-group > input {
+  padding: 0 0 0 10px;
+}
+.Dropdown-Container-Div * {
+  z-index: 4;
+}
+.Dropdown-Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  margin-top: 5px;
+  border: var(--Grey300) 2px solid;
+  max-height: 30vh;
+  overflow-y: scroll;
+  padding: 0;
+}
+.Dropdown-Container li {
+  color: black;
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+  border-bottom: var(--Grey300) 1px solid;
+  width: 100%;
+  list-style: none;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--Grey100);
+  z-index: 4;
+}
