@@ -32,12 +32,16 @@ function App() {
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.log(error))
-        .finally(() => console.log("done"));
+        .finally(() => console.log("data loaded"));
      
 
   }, []);
 
-  useEffect(() => {
+  function updateRows(data : dataModel) {
+    if (data.length === 0) {
+      console.log("no data");
+      return [];
+    }
     const rowsTemp = data.map((row) => {
       const imageArray = [];
       if (row.image_urls) {
@@ -58,9 +62,10 @@ function App() {
         images: imageArray,
       };
     });
-    //setRows(rowsTemp);
-    console.log("rows updated");
-  }, [data]);
+    console.log(rowsTemp);
+    return rowsTemp;
+    
+  }
   
 
   return (
@@ -92,7 +97,7 @@ function App() {
           placeholder="Comment"
         />
       </header>
-      <ParameterTable rows={rows} />
+      <ParameterTable rows={updateRows(data) as dataModel} />
     </div>
   );
 }
