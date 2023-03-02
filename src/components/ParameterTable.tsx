@@ -3,33 +3,41 @@ import "./ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { FixedSizeList } from "react-window";
 
-type TableRowProps = {
+export interface TableRowProps {
   id: number;
   name: string;
-  description: string;
-  unit: string;
-  unit_description: string;
-  rigfamily: string;
-  rigfamily_description: string;
-  decimals: number;
-  min: number;
-  max: number;
-  datatype: string;
-  modified_date: string;
+  description: string | null;
+  unit_name: string | null;
+  unit_description: string | null;
+  rigfamily_name: string | null;
+  rigfamily_description: string | null;
+  decimals: number | null;
+  min: number | null;
+  max: number | null;
+  datatype: string | null;
+  created_by: string | null;
+  modified_by: string | null;
+  creation_date: string | null;
+  modified_date: string | null;
   active?: boolean;
-  images: string[];
-};
+  images?: string[] | null;
+  comment: string | null;
+  }
 interface ImageState {
   [key: number]: number;
 }
+
 
 function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
 
+  console.log(props.rows);
+    
+
   const HandleClickParameter = (event: any, id: number) => {
-    console.log(currentImage);
     const isExpanded = expandedRows.includes(id);
     if (isExpanded) {
       setExpandedRows(expandedRows.filter((rowId) => rowId !== id));
@@ -104,9 +112,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 </td>
                 <td>{row.name}</td>
                 <td>{row.description}</td>
-                <td>{row.unit}</td>
+                <td>{row.unit_name}</td>
                 <td>{row.unit_description}</td>
-                <td>{row.rigfamily}</td>
+                <td>{row.rigfamily_name}</td>
                 <td>{row.rigfamily_description}</td>
                 <td>{row.decimals}</td>
                 <td>{row.min}</td>
@@ -126,7 +134,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td colSpan={12}>
                   <div className="Expandable-Area">
                     <div className="Images-Container">
-                      {row.images.length > 0 && (<>
+                      {row.images && (<>
                       
                           {
                             <img
@@ -146,7 +154,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                           <button
                             className="Image-Button Image-ButtonRight"
                             onClick={(event) =>
-                              HandleNextButton(event, row.id, row.images.length)
+                              HandleNextButton(event, row.id, row.images ? row.images.length : 0)
                             }
                           >
                             <ArrowForwardIcon></ArrowForwardIcon>
