@@ -101,73 +101,74 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
           </tr>
         </thead>
         <tbody>
-          {props.rows.map((row) => (
-            <>
-              <tr
-                key={row.id}
-                onClick={(event) => HandleClickParameter(event, row.id)}
-              >
-                <td className="Table-Arrow">
-                  <ExpandMoreIcon></ExpandMoreIcon>
-                </td>
-                <td>{row.name}</td>
-                <td>{row.description}</td>
-                <td>{row.unit_name}</td>
-                <td>{row.unit_description}</td>
-                <td>{row.rigfamily_name}</td>
-                <td>{row.rigfamily_description}</td>
-                <td>{row.decimals}</td>
-                <td>{row.min}</td>
-                <td>{row.max}</td>
-                <td>{row.datatype}</td>
-                <td>{row.modified_date}</td>
-              </tr>
+  {props.rows.map((row) => (
+    <React.Fragment key={row.id}>
+      <tr
+        key={row.id}
+        onClick={(event) => HandleClickParameter(event, row.id)}
+      >
+        <td className="Table-Arrow">
+          <ExpandMoreIcon />
+        </td>
+        <td>{row.name}</td>
+        <td>{row.description}</td>
+        <td>{row.unit_name}</td>
+        <td>{row.unit_description}</td>
+        <td>{row.rigfamily_name}</td>
+        <td>{row.rigfamily_description}</td>
+        <td>{row.decimals}</td>
+        <td>{row.min}</td>
+        <td>{row.max}</td>
+        <td>{row.datatype}</td>
+        <td>{row.modified_date}</td>
+      </tr>
 
-              <tr
-                key={row.id + "expandable"}
-                className={
-                  expandedRows.includes(row.id)
-                    ? "Expandable-Row Active-Row"
-                    : "Expandable-Row"
-                }
-              >
-                <td colSpan={12}>
-                  <div className="Expandable-Area">
-                    <div className="Images-Container">
-                      {row.images && (<>
-                      
-                          {
-                            <img
-                              className="Image"
-                              src={row.images[currentImage[row.id]]}
-                            ></img>
-                          }
-                          <legend>
-                            {currentImage[row.id] + 1}/{row.images.length}
-                          </legend>
-                          <button
-                            className="Image-Button Image-ButtonLeft"
-                            onClick={(event) => HandlePrevButton(event, row.id)}
-                          >
-                            <ArrowBackIcon></ArrowBackIcon>
-                          </button>
-                          <button
-                            className="Image-Button Image-ButtonRight"
-                            onClick={(event) =>
-                              HandleNextButton(event, row.id, row.images ? row.images.length : 0)
-                            }
-                          >
-                            <ArrowForwardIcon></ArrowForwardIcon>
-                          </button>
-                        </>)
+      {expandedRows.includes(row.id) && (
+        <tr
+          key={row.id + "expandable"}
+          className="Expandable-Row Active-Row"
+        >
+          <td colSpan={12}>
+            <div className="Expandable-Area">
+              <div className="Images-Container">
+                {row.images && (
+                  <>
+                    <img
+                      className="Image"
+                      src={row.images[currentImage[row.id]]}
+                      alt=""
+                    />
+                    <legend>
+                      {currentImage[row.id] + 1}/{row.images.length}
+                    </legend>
+                    <button
+                      className="Image-Button Image-ButtonLeft"
+                      onClick={(event) => HandlePrevButton(event, row.id)}
+                    >
+                      <ArrowBackIcon />
+                    </button>
+                    <button
+                      className="Image-Button Image-ButtonRight"
+                      onClick={(event) =>
+                        HandleNextButton(
+                          event,
+                          row.id,
+                          row.images ? row.images.length : 0
+                        )
                       }
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </>
-          ))}
-        </tbody>
+                    >
+                      <ArrowForwardIcon />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+    </React.Fragment>
+  ))}
+</tbody>
       </table>
     </div>
   );
