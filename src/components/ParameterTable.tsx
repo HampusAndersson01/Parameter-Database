@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FixedSizeList } from "react-window";
+import { table } from "console";
 
 export interface TableRowProps {
   id: number;
@@ -37,6 +38,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [allDataLoaded, setAllDataLoaded] = useState(false);
+
+  const tableRef = useRef<HTMLTableElement>(null);
+  const [isSticky, setIsSticky] = useState(false);
 
   console.log(props.rows.length);
   // Load more data when the current page changes
@@ -104,37 +108,50 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         [props.rows[i].id]: 0,
       }));
     }
-  }, [props.rows]);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const top = tableRef.current ? tableRef.current.getBoundingClientRect().top : 0;
+      setIsSticky(top < 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="Table-Container">
-      <table>
-        <thead>
+      <table ref={tableRef}>
+        <thead className={isSticky ? "sticky" : ""}>
           <tr>
             <th></th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Unit</th>
-            <th>Unit Description</th>
-            <th>Rig Family</th>
-            <th>Rig Family Description</th>
-            <th>Decimals</th>
-            <th>Min</th>
-            <th>Max</th>
-            <th>Datatype</th>
-            <th>Modified Date</th>
+            <th id="TableName">Name</th>
+            <th id="TableDescription">Description</th>
+            <th id="TableUnit">Unit</th>
+            <th id="TableUnitDesc">Unit Description</th>
+            <th id="TableRig">Rig Family</th>
+            <th id="TableRigDesc">Rig Family Description</th>
+            <th id="TableDecimals">Decimals</th>
+            <th id="TableMin">Min</th>
+            <th id="TableMax">Max</th>
+            <th id="TableDataType">Datatype</th>
+            <th id="TableModifiedDate">Modified Date</th>
           </tr>
-        </thead>
+        </thead >
         <tbody>
           {props.rows.slice(0, currentPage * rowsPerPage).map((row) => (
-            <React.Fragment key={row.id}>
+            <>
               <tr
+                key={row.id}
                 onClick={(event) => HandleClickParameter(event, row.id)}
               >
                 <td className="Table-Arrow">
                   <ExpandMoreIcon></ExpandMoreIcon>
                 </td>
-                <td>{row.name}</td>
+                <td className="">{row.name}</td>
                 <td>{row.description}</td>
                 <td>{row.unit_name}</td>
                 <td>{row.unit_description}</td>
@@ -146,7 +163,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td>{row.datatype}</td>
                 <td>{row.modified_date}</td>
               </tr>
-
+  
               <tr
                 key={row.id + "expandable"}
                 className={
@@ -158,38 +175,51 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td colSpan={12}>
                   <div className="Expandable-Area">
                     <div className="Images-Container">
-                      {row.images && (<>
-                      
-                          {
-                            <img
-                              className="Image"
-                              src={row.images[currentImage[row.id]]}
-                            ></img>
-                          }
-                          <legend>
-                            {currentImage[row.id] + 1}/{row.images.length}
-                          </legend>
-                          <button
-                            className="Image-Button Image-ButtonLeft"
-                            onClick={(event) => HandlePrevButton(event, row.id)}
-                          >
-                            <ArrowBackIcon></ArrowBackIcon>
-                          </button>
-                          <button
-                            className="Image-Button Image-ButtonRight"
-                            onClick={(event) =>
-                              HandleNextButton(event, row.id, row.images ? row.images.length : 0)
+                      {row.images &&
+                        row.images.length > 0 &&
+                        row.images[currentImage[row.id]] && (
+                          <img
+                            src={row.images[currentImage[row.id]]}
+                            alt="parameter"
+                          />
+                        )}
+                      {row.images && row.images.length > 1 && (
+                        <div className="Image-Nav">
+                          <ArrowBackIcon
+                            className={
+                              currentImage[row.id] === 0
+                                ? "Image-Nav-Button Disabled"
+                                : "Image-Nav-Button"
                             }
-                          >
-                            <ArrowForwardIcon></ArrowForwardIcon>
-                          </button>
-                        </>)
-                      }
+                            onClick={(event) => HandlePrevButton(event, row.id)}
+                          />
+                          <p>
+                            {currentImage[row.id] + 1} of {row.images.length}
+                          </p>
+                          <ArrowForwardIcon
+                            className={
+                              currentImage[row.id] === row.images.length - 1
+                                ? "Image-Nav-Button Disabled"
+                                : "Image-Nav-Button"
+                            }
+                            onClick={(event) =>
+                              HandleNextButton(
+                                event,
+                                row.id,
+                                row.images ? row.images.length : 0
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="Comment-Container">
+                      <p>{row.comment}</p>
                     </div>
                   </div>
                 </td>
               </tr>
-            </React.Fragment>
+            </>
           ))}
         </tbody>
       </table>

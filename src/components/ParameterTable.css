@@ -3,32 +3,50 @@
 }
 
 .Table-Container {
-  overflow-x: scroll;
   overflow-y: auto;
   width: 100vw;
 }
 
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  border-radius: 5px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  width: 100vw;
   text-align: center;
-  min-width: 1000px;
+  overflow-x: scroll;
+  table-layout: fixed;
+  border-collapse: collapse;  
 }
 thead {
   background-color: var(--Black);
   color: var(--White);
+
+}
+thead.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100vw;
 }
 thead th {
   padding: 0.5rem;
+  
 }
 tbody td {
   border-bottom: 1px solid var(--Grey300);
+  overflow: hidden;
+}
+td, th {
+  height: var(--Row-Height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 tbody tr {
-  height: var(--Row-Height);
+  overflow: hidden;
+}
+
+#TableName {
+  width: fit-content;
+}
+#TableDescription {
+  overflow: hidden;
 }
 .Table-Arrow {
   transition: transform 0.2s ease-in-out;
