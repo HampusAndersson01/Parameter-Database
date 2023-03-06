@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-window": "^1.8.5"
+    "@types/react-window": "^1.8.5",
+    "gh-pages": "^5.0.0"
   }
 }
