@@ -81,33 +81,36 @@ tr.Active-Row .Table-Arrow {
   height: 80%;
   width: 20vw;
   border: 1px var(--Grey300) solid;
+  overflow: hidden;
 }
-.Image {
+.Images-Container img {
   height: 100%;
   width: 100%;
   object-fit: contain;
   display: block;
+  
 }
 .Image.Active {
   display: block;
 }
-.Image-ButtonLeft {
-  left: 0;
-}
-.Image-ButtonRight {
-  right: 0;
-}
-.Image-Button {
+.Image-Nav{
   position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
+  top: 0;
+  bottom: 0;
   z-index: 1;
-  display: block;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
-.Disabled-Button {
-  display: none;
+.Image-Nav svg {
+  stroke: var(--Grey300);
+  stroke-width: 0.5px;
 }
+.Image-Nav svg:hover {
+  cursor: pointer;
+  stroke: var(--Grey600);
+}
+.Image-Nav svg.Disabled {
+  opacity: 0;
+}
+

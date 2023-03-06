@@ -6,6 +6,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { FixedSizeList } from "react-window";
 import { table } from "console";
 
+
+interface Image {
+  image_url: string;
+  image_name: string | null;
+  image_description: string | null;
+}
 export interface TableRowProps {
   id: number;
   name: string;
@@ -23,7 +29,7 @@ export interface TableRowProps {
   creation_date: string | null;
   modified_date: string | null;
   active?: boolean;
-  images?: string[] | null;
+  images?: Image[] | null;
   comment: string | null;
   }
 interface ImageState {
@@ -35,6 +41,18 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
 
+  // settCurrentImage on data load
+  useEffect(() => {
+    const newCurrentImage: ImageState = {};
+    props.rows.forEach((row) => {
+      if (row.images) {
+        newCurrentImage[row.id] = 0;
+      }
+    });
+    setCurrentImage(newCurrentImage);
+  }, [props.rows]);
+
+
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [allDataLoaded, setAllDataLoaded] = useState(false);
@@ -42,7 +60,6 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const tableRef = useRef<HTMLTableElement>(null);
   const [isSticky, setIsSticky] = useState(false);
 
-  console.log(props.rows.length);
   // Load more data when the current page changes
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -127,18 +144,15 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       <table ref={tableRef}>
         <thead className={isSticky ? "sticky" : ""}>
           <tr>
-            <th></th>
+            <th>{props.rows.length}</th>
             <th id="TableName">Name</th>
             <th id="TableDescription">Description</th>
             <th id="TableUnit">Unit</th>
-            <th id="TableUnitDesc">Unit Description</th>
             <th id="TableRig">Rig Family</th>
-            <th id="TableRigDesc">Rig Family Description</th>
             <th id="TableDecimals">Decimals</th>
             <th id="TableMin">Min</th>
             <th id="TableMax">Max</th>
             <th id="TableDataType">Datatype</th>
-            <th id="TableModifiedDate">Modified Date</th>
           </tr>
         </thead >
         <tbody>
@@ -154,14 +168,11 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td className="">{row.name}</td>
                 <td>{row.description}</td>
                 <td>{row.unit_name}</td>
-                <td>{row.unit_description}</td>
                 <td>{row.rigfamily_name}</td>
-                <td>{row.rigfamily_description}</td>
                 <td>{row.decimals}</td>
                 <td>{row.min}</td>
                 <td>{row.max}</td>
                 <td>{row.datatype}</td>
-                <td>{row.modified_date}</td>
               </tr>
   
               <tr
@@ -176,11 +187,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                   <div className="Expandable-Area">
                     <div className="Images-Container">
                       {row.images &&
-                        row.images.length > 0 &&
-                        row.images[currentImage[row.id]] && (
+                        row.images.length > 0 && (
                           <img
-                            src={row.images[currentImage[row.id]]}
-                            alt="parameter"
+                            src={row.images[currentImage[row.id]] ? row.images[currentImage[row.id]].image_url : ""}
+                            alt="error"
                           />
                         )}
                       {row.images && row.images.length > 1 && (
@@ -193,8 +203,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                             }
                             onClick={(event) => HandlePrevButton(event, row.id)}
                           />
+                        
                           <p>
-                            {currentImage[row.id] + 1} of {row.images.length}
+                            {currentImage[row.id] + 1}/{row.images.length}
                           </p>
                           <ArrowForwardIcon
                             className={

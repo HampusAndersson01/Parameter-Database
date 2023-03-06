@@ -6,19 +6,19 @@ function SearchField(props: {
   data: (string | null)[];
   placeholder: string;
   id?: string;
+  onSearch?: any;
 }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-
   
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
     if (!isDropdownOpen){
       setIsDropdownOpen(true);
-      setSelectedIndex(0);
+      setSelectedIndex(-1);
     }
   };
 
@@ -42,15 +42,24 @@ function SearchField(props: {
       setIsDropdownOpen(false);
     }, 100);
   };
-  const handleClick = () => {
-    //TODO Add search functionality
+  const handleClick = (event: any) => {
+    searchForData();
   };
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
-      //TODO Add search functionality
       if(isDropdownOpen){
-        handleCategorySelect(getFilteredData()[selectedIndex]);
+        if(selectedIndex === -1){
+          setIsDropdownOpen(false);
+          searchForData();
+        }else{
+          handleCategorySelect(getFilteredData()[selectedIndex]);
+        }
+      }else{
+        searchForData();
       }
+    }
+    if (event.key === "Escape") {
+      setIsDropdownOpen(false);
     }
     if (event.key === "ArrowDown") {
       if (selectedIndex < getFilteredData().length - 1) {
@@ -83,6 +92,13 @@ function SearchField(props: {
       return filteredData;
     }
     return filteredData.filter((value) => value.toLowerCase().includes(searchValue.toLowerCase()));
+
+  }
+
+  function searchForData() {
+    //TODO Add search functionality
+    console.log("Search for: " + searchValue);
+    props.onSearch(searchValue);
 
   }
 
