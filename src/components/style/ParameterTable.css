@@ -4,20 +4,18 @@
 
 .Table-Container {
   overflow-y: auto;
-  width: 100vw;
 }
 
 table {
-  width: 100vw;
+  width: 100%;
   text-align: center;
   overflow-x: scroll;
   table-layout: fixed;
-  border-collapse: collapse;  
+  border-collapse: collapse;
 }
 thead {
   background-color: var(--Black);
   color: var(--White);
-
 }
 thead.sticky {
   position: fixed;
@@ -27,13 +25,13 @@ thead.sticky {
 }
 thead th {
   padding: 0.5rem;
-  
 }
 tbody td {
   border-bottom: 1px solid var(--Grey300);
   overflow: hidden;
 }
-td, th {
+td,
+th {
   height: var(--Row-Height);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -64,47 +62,85 @@ tr.Active-Row .Table-Arrow {
   transform: scale(1, -1);
   transition: transform 0.2s ease-in-out;
 }
-.Expandable-Area {
-  background-color: #f5f5f5;
-  height: calc(var(--Row-Height) * 6);
-}
+
 .Expandable-Row {
   display: none;
 }
 .Expandable-Row.Active-Row {
   display: table-row;
 }
+.Expandable-Area {
+  background-color: #f5f5f5;
+  height: calc(var(--Row-Height) * 10);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas: "Expandable-Left Expandable-Right";
+}
+.Expandable-Left {
+  display: grid;
+  height: calc(var(--Row-Height) * 10);
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr 2fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ParameterName"
+    "ParameterDescription"
+    "."
+    ".";
+  grid-area: Expandable-Left;
+  overflow: hidden;
+}
+.Expandable-Right {
+  display: grid;
+  height: calc(var(--Row-Height) * 10);
+  grid-template-columns: 1fr 2.5fr 4fr 2.5fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ParameterUnit ParameterCreated ParameterPossibleValues Images"
+    "ParameterDecimals ParameterCreatedBy ParameterPossibleValues Images"
+    "ParameterMin ParameterLastModified ParameterPossibleValues Images"
+    "ParameterMax ParameterLastModifiedBy ParameterPossibleValues Images"
+    "ParameterType ParameterComment ParameterPossibleValues Images";
+  grid-area: Expandable-Right;
+}
 .Images-Container {
   /* Buttons over image */
   /* TODO Add counter and hide arrow when movement stopped*/
-  position: relative;
-  height: 80%;
+  height: calc(100% - 2rem);
   width: 20vw;
-  border: 1px var(--Grey300) solid;
   overflow: hidden;
+  grid-area: Images;
+  position: relative;
 }
 .Images-Container img {
   height: 100%;
   width: 100%;
   object-fit: contain;
   display: block;
-  
 }
 .Image.Active {
   display: block;
 }
-.Image-Nav{
+.Image-Nav {
   position: absolute;
-  top: 0;
   bottom: 0;
   z-index: 1;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 .Image-Nav svg {
   stroke: var(--Grey300);
   stroke-width: 0.5px;
+  height: 100%;
 }
 .Image-Nav svg:hover {
   cursor: pointer;
@@ -113,4 +149,54 @@ tr.Active-Row .Table-Arrow {
 .Image-Nav svg.Disabled {
   opacity: 0;
 }
+.Image-Nav p {
+  color: white;
+  margin-top: auto;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  text-shadow: -1px -1px 0 black;
+}
+.Comment-Container {
+  grid-area: Comment;
+}
 
+.PossibleValues {
+  grid-area: PossibleValues;
+}
+
+.Unit {
+  grid-area: ParameterUnit;
+}
+.Decimals {
+  grid-area: ParameterDecimals;
+}
+.Min {
+  grid-area: ParameterMin;
+}
+.Max {
+  grid-area: ParameterMax;
+}
+.Type {
+  grid-area: ParameterType;
+}
+.Created {
+  grid-area: ParameterCreated;
+}
+.Created_By {
+  grid-area: ParameterCreatedBy;
+}
+.Last_Modified {
+  grid-area: ParameterLastModified;
+}
+.Modified_By {
+  grid-area: ParameterLastModifiedBy;
+}
+.Comment {
+  grid-area: ParameterComment;
+}
+.Possible_Values {
+  grid-area: ParameterPossibleValues;
+}
+.Images {
+  grid-area: Images;
+}

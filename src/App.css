@@ -36,6 +36,23 @@
 #RigFamSearch {
   flex: 1 1 auto;
 }
+.SearchField-Container:not(#searchButton):last-child {
+  margin-right: 0;
+}
+#DescriptionSearch {
+  margin-right: 0;
+}
+#searchButton {
+  margin-top: 1rem;
+  color: var(--White);
+  background-color: var(--Dark_Blue);
+  border: none;
+  border-radius: 5px;
+  flex: 1 1 auto;
+  height: 5vh;
+  max-height: 35px;
+  min-height: 22px;
+}
 
 @media screen and (min-width: 750px) {
   #ParameterSearch,
@@ -50,10 +67,5 @@
   }
   .SearchField-Container {
     margin-right: 1rem;
-  }
-
-  .SearchField-Container:not(:last-child):before {
-    content: "";
-    margin-right: 0;
   }
 }
