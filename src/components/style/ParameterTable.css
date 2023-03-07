@@ -113,7 +113,7 @@ tr.Active-Row .Table-Arrow {
 .Images-Container {
   /* Buttons over image */
   /* TODO Add counter and hide arrow when movement stopped*/
-  height: calc(100% - 2rem);
+  height: 100%;
   width: 20vw;
   overflow: hidden;
   grid-area: Images;
