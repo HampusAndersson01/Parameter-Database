@@ -3,8 +3,6 @@ import "./style/ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { FixedSizeList } from "react-window";
-import { table } from "console";
 
 
 interface Image {
@@ -31,11 +29,10 @@ export interface TableRowProps {
   active?: boolean;
   images?: Image[] | null;
   comment: string | null;
-  }
+}
 interface ImageState {
   [key: number]: number;
 }
-
 
 function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -65,12 +62,12 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   const handleScroll = () => {
     const scrollTop = document.documentElement.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
-  
+
     // If user has scrolled to the bottom of the page and there is more data to load, update the current page
     if (scrollTop + clientHeight >= scrollHeight && !allDataLoaded) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -82,7 +79,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       setAllDataLoaded(true);
     }
   }, [currentPage, rowsPerPage, props.rows.length]);
-    
+
   const HandleClickParameter = (event: any, id: number) => {
     const isExpanded = expandedRows.includes(id);
     if (isExpanded) {
@@ -127,17 +124,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     }
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const top = tableRef.current ? tableRef.current.getBoundingClientRect().top : 0;
-      setIsSticky(top < 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+ 
 
   return (
     <div className="Table-Container">
@@ -154,7 +141,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             <th id="TableMax">Max</th>
             <th id="TableDataType">Datatype</th>
           </tr>
-        </thead >
+        </thead>
         <tbody>
           {props.rows.slice(0, currentPage * rowsPerPage).map((row) => (
             <>
@@ -174,7 +161,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td>{row.max}</td>
                 <td>{row.datatype}</td>
               </tr>
-  
+
               <tr
                 key={row.id + "expandable"}
                 className={

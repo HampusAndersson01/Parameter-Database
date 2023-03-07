@@ -20,14 +20,13 @@ type dataModel = {
   modified_by: string | null;
   comment: null | string;
   unit_name: string | null;
-  unit_description: string | null; 
+  unit_description: string | null;
   rigfamily_name: string | null;
   rigfamily_description: string | null;
   image_name: string | null;
   image_description: string | null;
   image_urls: string | null;
 }[];
-
 
 
 function App() {
@@ -58,10 +57,11 @@ function App() {
         const names = row.image_name
           ? row.image_name.split(";")
           : Array(urls.length).fill(null);
-        const descriptions = row.image_description 
-          ? row.image_description.split(";") 
-          : Array(urls.length).fill(null);
-  
+        var descriptions =
+          row.image_description !== undefined && row.image_description !== null
+            ? row.image_description.split(";")
+            : Array(urls.length).fill(null);
+
         for (let i = 0; i < urls.length; i++) {
           imageArray.push({
             image_url: urls[i],
@@ -142,7 +142,13 @@ function App() {
         />
         <SearchField
           id="CommentSearch"
-          data={Array.from(new Set(data.map((row) => row.comment).filter((name) => name != null))) as unknown as string[]}
+          data={
+            (Array.from(
+              new Set(
+                data.map((row) => row.comment).filter((name) => name != null)
+              )
+            ) as unknown) as string[]
+          }
           placeholder="Comment"
           onSearch={(searchString: string) =>  handleSearch(searchString, "comment")}
         />

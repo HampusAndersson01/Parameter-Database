@@ -1,13 +1,11 @@
 .App-header {
-  /* background-color: var(--Black); */
-
-  height: var(--Header-Default);
+  min-height: var(--Header-Default);
+  height: fit-content;
   padding: 1rem;
   color: white;
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
-  flex-wrap: nowrap;
   background-color: var(--Grey100);
   align-items: center;
   padding-top: 2rem;
@@ -23,110 +21,39 @@
   width: 100%;
   border-radius: 5px;
 }
-#ParameterSearch {
-  width: 13vw;
+
+.SearchField-Container {
+  margin-top: 1rem;
 }
-#DescriptionSearch {
-  width: 23vw;
-}
-#UnitSearch {
-  width: 8vw;
-}
-#RigFamSearch {
-  width: 8vw;
-}
-#SensorSearch {
-  width: 13vw;
-}
+
+#ParameterSearch,
+#DescriptionSearch,
 #CommentSearch {
-  width: 23vw;
+  flex: 1 1 100%;
 }
 
+#UnitSearch,
+#RigFamSearch {
+  flex: 1 1 auto;
+}
 
-/* Responsive */
-@media screen and (max-width: 1250px) {
-  .App-header {
-    flex-wrap: wrap;
-  }
-  #ParameterSearch {
-    width: 26vw;
-  }
-  #DescriptionSearch {
-    width: 46vw;
-  }
-  #UnitSearch {
-    width: 13vw;
-  }
-  #RigFamSearch {
-    width: 13vw;
-  }
-  #SensorSearch {
-    width: 26vw;
-  }
+@media screen and (min-width: 750px) {
+  #ParameterSearch,
+  #DescriptionSearch,
   #CommentSearch {
-    width: 46vw;
-  }
-}
-@media screen and (max-width: 750px) {
-  .App-header {
-    flex-wrap: wrap;
-    height: var(--Header-750);
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
+    flex-basis: 47.5%;
   }
 
-  #ParameterSearch {
-    width: 60vw;
-    order: 0;
-  }
-  #DescriptionSearch {
-    flex: 90vw;
-    order: 2;
-  }
-  #UnitSearch {
-    width: 30vw;
-    order: 1;
-  }
+  #UnitSearch,
   #RigFamSearch {
-    width: 30vw;
-    order: 3;
-  }
-  #SensorSearch {
-    width: 60vw;
-    order: 4;
-  }
-  #CommentSearch {
-    flex: 90vw;
-    order: 5;
-  }
-}
-@media screen and (max-width: 320px) {
-  .App-header {
-    flex-wrap: wrap;
-    height: var(--Header-320);
-    flex-flow: row wrap;
+    flex-basis: 21.25%;
   }
   .SearchField-Container {
-    margin: 0.2rem 0;
+    margin-right: 1rem;
   }
 
-  #ParameterSearch {
-    width: 100vw;
-  }
-  #DescriptionSearch {
-    width: 100vw;
-  }
-  #UnitSearch {
-    width: 100vw;
-  }
-  #RigFamSearch {
-    width: 100vw;
-  }
-  #SensorSearch {
-    width: 100vw;
-  }
-  #CommentSearch {
-    width: 100vw;
+  .SearchField-Container:not(:last-child):before {
+    content: "";
+    margin-right: 0;
   }
 }
