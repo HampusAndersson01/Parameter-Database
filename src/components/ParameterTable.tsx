@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "./ParameterTable.css";
+import "./style/ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";

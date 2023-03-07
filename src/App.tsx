@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import SearchField from "./components/SearchField";
 import ParameterTable, {TableRowProps}from "./components/ParameterTable";
-import { Button } from "@mui/material";
+import Toolbar from "./components/Toolbar";
 
 
 
@@ -113,6 +113,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/* Toolbar */}
+        <Toolbar></Toolbar>
+      
         <SearchField
           id="ParameterSearch"
           data={Array.from(new Set(data.map((row) => row.name)))}
@@ -123,21 +126,25 @@ function App() {
           id="DescriptionSearch"
           data={Array.from(new Set(data.map((row) => row.description)))}
           placeholder="Description"
+          onSearch={(searchString: string) =>  handleSearch(searchString, "description")}
         />
         <SearchField
           id="UnitSearch"
           data={Array.from(new Set(data.map((row) => row.unit_name)))}
           placeholder="Unit"
+          onSearch={(searchString: string) =>  handleSearch(searchString, "unit")}
         />
         <SearchField
           id="RigFamSearch"
           data={Array.from(new Set(data.map((row) => row.rigfamily_name)))}
           placeholder="RIG_FAM"
+          onSearch={(searchString: string) =>  handleSearch(searchString, "RIG_FAM")}
         />
         <SearchField
           id="CommentSearch"
           data={Array.from(new Set(data.map((row) => row.comment).filter((name) => name != null))) as unknown as string[]}
           placeholder="Comment"
+          onSearch={(searchString: string) =>  handleSearch(searchString, "comment")}
         />
       </header>
       <ParameterTable rows={updateRows(filteredData)} />

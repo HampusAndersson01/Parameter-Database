@@ -34,4 +34,7 @@ body {
   --Header-Default: 150px;
   --Header-750: 240px;
   --Header-320: 320px;
+
+  --Toolbar-Height: 50px;
+  --Toolbar-Phone: 60px;
 }

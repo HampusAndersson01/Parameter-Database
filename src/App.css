@@ -10,6 +10,7 @@
   flex-wrap: nowrap;
   background-color: var(--Grey100);
   align-items: center;
+  padding-top: 2rem;
 }
 
 .App-search {
@@ -21,8 +22,6 @@
   border: none;
   width: 100%;
   border-radius: 5px;
-}
-.SearchField-Container {
 }
 #ParameterSearch {
   width: 13vw;
@@ -42,6 +41,7 @@
 #CommentSearch {
   width: 23vw;
 }
+
 
 /* Responsive */
 @media screen and (max-width: 1250px) {

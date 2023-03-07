@@ -75,7 +75,7 @@
   padding: 0 0 0 10px;
 }
 .Dropdown-Container-Div * {
-  z-index: 4;
+  z-index: 0;
 }
 .Dropdown-Container {
   display: flex;
@@ -103,7 +103,7 @@
   list-style: none;
   padding: 0.25rem 0.5rem;
   background-color: var(--Grey100);
-  z-index: 4;
+  z-index: 1;
 }
 .Dropdown-Container li.selected  {
   background-color: var(--Grey300)
