@@ -52,6 +52,10 @@
   height: 5vh;
   max-height: 35px;
   min-height: 22px;
+  cursor: pointer;
+}
+#searchButton:hover {
+  background-color: var(--Highlight-Active);
 }
 
 @media screen and (min-width: 750px) {

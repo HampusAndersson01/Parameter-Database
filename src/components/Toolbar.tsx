@@ -46,7 +46,7 @@ function Toolbar(props: any) {
       setSecondToolbarValue(value);
       setSelectedToolbarButton("");
       return;
-    } else {
+    } else if (isToolbarExpanded) {
       setIsSecondToolbarExpanded(true);
       setSecondToolbarValue(value);
       setSelectedToolbarButton("");
@@ -71,7 +71,7 @@ function Toolbar(props: any) {
             className="toolbarLogo"
             onClick={() => handleSecondToolbarClick("user")}
           >
-            <AccountCircleIcon></AccountCircleIcon>
+            {/* TODO: Replace with proper profile */}
           </div>
           {/* Nav buttons */}
           <div className="toolbarButtons">
@@ -153,10 +153,39 @@ function Toolbar(props: any) {
                 : "expandingToolbarItems"
             }
           >
-            <ul>
-              <li>Button 1</li>
-              <li>Button 2</li>
-              <li>Button 3</li>
+            <ul
+              className={
+                selectedToolbarButton === ""
+                  ? "itemsPrimary open"
+                  : "itemsPrimary"
+              }
+            >
+              <li onClick={() => handleItemClick("create new parameter")}>
+                Create new parameter
+              </li>
+              <li onClick={() => handleItemClick("importparameters")}>
+                Import new parameter(s) from Excel
+              </li>
+            </ul>
+            <ul
+              className={
+                selectedToolbarButton === "create new parameter"
+                  ? "itemsSecondary open"
+                  : "itemsSecondary"
+              }
+            >
+              <li onClick={() => handleItemClick("")}>Back</li>
+            </ul>
+            <ul
+              className={
+                selectedToolbarButton === "importparameters"
+                  ? "itemsSecondary open"
+                  : "itemsSecondary"
+              }
+            >
+              <li>Upload file</li>
+              <li>Download template</li>
+              <li onClick={() => handleItemClick("")}>Back</li>
             </ul>
           </div>
         </nav>
