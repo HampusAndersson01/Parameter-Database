@@ -40,6 +40,7 @@ th {
 tbody tr {
   overflow: hidden;
 }
+/* TODO Fix min width on table */
 #TableIndex {
   width: 7ch;
 }
@@ -98,14 +99,6 @@ tr.Active-Row .Table-Arrow {
   width: 100%;
   height: calc(var(--Row-Height) * 10);
   max-height: 100%;
-  /* grid-template-columns: auto;
-  grid-template-rows: 1fr 2fr 1fr 2fr;
-  gap: 0px 0px;
-  grid-template-areas:
-    "ParameterName"
-    "ParameterDescription"
-    "RigFamily"
-    "RigFamilyDescription"; */
   grid-area: Expandable-Left;
 }
 .Name, .Rig_Family {

@@ -127,6 +127,11 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     }
   }, []);
 
+  const rigFamilies = props.rows
+  .filter(row => row.rigfamily_name !== null)
+  .map(row => row.rigfamily_name as string);
+  const uniqueRigFamilies = Array.from(new Set(rigFamilies));
+
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
@@ -178,76 +183,108 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                     <div className="Expandable-Left">
                       {/* Column 1 */}
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Name"
                         data={row.name}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Description"
                         data={row.description}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Rig Family"
                         data={row.rigfamily_name}
+                        editable={true}
+                        options={uniqueRigFamilies}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Rig Family Description"
                         data={row.rigfamily_description}
+                        editable={false}
                       ></StyledBoxWLabel>
                     </div>
                     <div className="Expandable-Right">
                       {/* Column 2 */}
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Unit"
                         data={row.unit_name}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Decimals"
                         data={row.decimals}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Min"
                         data={row.min}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Max"
                         data={row.max}
+                        editable={true}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Type"
                         data={row.datatype}
+                        editable={true}
                       ></StyledBoxWLabel>
 
                       {/* Column 3 */}
 
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Created"
                         data={row.creation_date}
+                        editable={false}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Created By"
                         data={row.created_by}
+                        editable={false}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Last Modified"
                         data={row.modified_date}
+                        editable={false}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Modified By"
                         data={row.modified_by}
+                        editable={false}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Comment"
                         data={row.comment}
+                        editable={true}
                       ></StyledBoxWLabel>
 
                       {/* Column 4 */}
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Possible Values"
                         html={<></>}
+                        editable={false}
                       ></StyledBoxWLabel>
 
                       {/* Column 5 */}
                       <StyledBoxWLabel
+                        id={row.id}
                         label="Images"
                         html={
                           <div className="Images-Container">
@@ -258,7 +295,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                                     ? row.images[currentImage[row.id]].image_url
                                     : ""
                                 }
-                                alt="error"
+                                alt={row.images[currentImage[row.id]]
+                                  ? row.images[currentImage[row.id]].image_name as string
+                                  : ""}
                               />
                             )}
                             {row.images && row.images.length > 1 && (
@@ -296,6 +335,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                             )}
                           </div>
                         }
+                        editable={false}
                       ></StyledBoxWLabel>
                     </div>
                   </div>
