@@ -82,7 +82,7 @@ function Toolbar(props: any) {
               >
                 Add parameter(s)
               </li>
-              <li className="toolbarButton">About</li>
+              <li className="toolbarButton">Edit mode</li>
             </ul>
           </div>
           <button

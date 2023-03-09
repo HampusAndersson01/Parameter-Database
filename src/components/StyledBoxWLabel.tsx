@@ -9,7 +9,7 @@ function StyledBoxWLabel(props: {
   return (
     <>
       <div
-        className={"styledBoxWLabelContainer " + props.label.replace(" ", "_")}
+        className={"styledBoxWLabelContainer " + props.label.replace(/ /g, "_")}
       >
         <fieldset className="styledBoxWLabel">
           <legend className="styledBoxWLabelLabel">{props.label}</legend>

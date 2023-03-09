@@ -4,6 +4,7 @@ import SearchField from "./components/SearchField";
 import ParameterTable, { TableRowProps } from "./components/ParameterTable";
 import Toolbar from "./components/Toolbar";
 import { DebugContext } from "./context/DebugContext";
+import { EditModeContext } from "./context/EditModeContext";
 
 type dataModel = {
   id: number;
@@ -31,6 +32,8 @@ function App() {
   const [data, setData] = useState<dataModel>([]);
   const [filteredData, setFilteredData] = useState<dataModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+
 
   // variable to store the search strings for the different fields
   const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
@@ -127,7 +130,8 @@ function App() {
   }
 
   return (
-    <DebugContext.Provider value={{ debugMode, setDebugMode }}>
+    <DebugContext.Provider value={{ debugMode, setDebugMode}}>
+      <EditModeContext.Provider value={{ editMode, setEditMode}}>
       <div className="App">
         <header className="App-header">
           {/* Toolbar */}
@@ -185,6 +189,7 @@ function App() {
         </header>
         <ParameterTable rows={updateRows(filteredData)} />
       </div>
+      </EditModeContext.Provider>
     </DebugContext.Provider>
   );
 }

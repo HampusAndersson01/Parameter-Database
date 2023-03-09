@@ -5,6 +5,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StyledBoxWLabel from "./StyledBoxWLabel";
 import { DebugContext } from "../context/DebugContext";
+import { EditModeContext } from "../context/EditModeContext";
 
 interface Image {
   image_url: string;
@@ -39,6 +40,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
   const { debugMode } = useContext(DebugContext);
+  const { editMode } = useContext(EditModeContext);
 
   // settCurrentImage on data load
   useEffect(() => {
@@ -130,7 +132,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       <table ref={tableRef}>
         <thead className={isSticky ? "sticky" : ""}>
           <tr>
-            <th>{props.rows.length.toLocaleString()}</th>
+            <th id="TableIndex">{props.rows.length.toLocaleString()}</th>
             <th id="TableName">Name</th>
             <th id="TableDescription">Description</th>
             <th id="TableUnit">Unit</th>
