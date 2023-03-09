@@ -18,8 +18,8 @@ export interface TableRowProps {
   description: string | null;
   unit_name: string | null;
   unit_description: string | null;
-  rigfamily_name: string | null;
-  rigfamily_description: string | null;
+  rigfamily_name: string[];
+  rigfamily_description: (string | null)[];
   decimals: number | null;
   min: number | null;
   max: number | null;
@@ -36,7 +36,7 @@ interface ImageState {
   [key: number]: number;
 }
 
-function ParameterTable(props: { rows: TableRowProps[] }) {
+function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
   const { debugMode } = useContext(DebugContext);
@@ -127,11 +127,6 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     }
   }, []);
 
-  const rigFamilies = props.rows
-  .filter(row => row.rigfamily_name !== null)
-  .map(row => row.rigfamily_name as string);
-  const uniqueRigFamilies = Array.from(new Set(rigFamilies));
-
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
@@ -163,7 +158,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td>{row.name}</td>
                 <td>{row.description}</td>
                 <td>{row.unit_name}</td>
-                <td>{row.rigfamily_name}</td>
+                <td>{row.rigfamily_name.join(", ")}</td>
                 <td>{row.decimals}</td>
                 <td>{row.min}</td>
                 <td>{row.max}</td>
@@ -199,7 +194,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                         label="Rig Family"
                         data={row.rigfamily_name}
                         editable={true}
-                        options={uniqueRigFamilies}
+                        options={props.rigFamilies}
                       ></StyledBoxWLabel>
                       <StyledBoxWLabel
                         id={row.id}
