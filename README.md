@@ -6,6 +6,8 @@ router.post('/', controller.createParameters);
 router.put('/:id', controller.updateParameter);
 router.delete('/:id', controller.deleteParameter); -->
 
+## Parameters
+
 ### /parameters/ - GET - get all parameters 
 
 ### /parameters/:id - GET - get parameter by id
@@ -58,6 +60,6 @@ router.delete('/:id', controller.deleteParameter); -->
 
 ### /parameters/:id - DELETE - delete parameter by id | ***TODO***
 
+## Rigfamilies
 
-
-
+### /rigfamilies/ - GET - get all rigfamilies
