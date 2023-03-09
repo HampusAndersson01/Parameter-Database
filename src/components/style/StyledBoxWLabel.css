@@ -1,0 +1,41 @@
+.styledBoxWLabelLabel {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--Black);
+  text-align: start;
+  width: min-content;
+}
+.styledBoxWLabel {
+  filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
+  background-color: var(--Grey100);
+  padding: 5px 5px 5px 5px;
+  height: 100%;
+  border-radius: 4px;
+  width: 100%;
+  overflow: hidden;
+  min-width: 0;
+}
+.styledBoxWLabelContainer {
+  padding: 0.5rem;
+}
+.styledBoxWLabelData {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--Black);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0.2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  text-align: center;
+}
+.styledBoxWLabelData {
+  width: 100%;
+}

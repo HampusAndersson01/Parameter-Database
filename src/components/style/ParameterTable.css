@@ -1,0 +1,232 @@
+:root {
+  --Row-Height: 35px;
+}
+
+.Table-Container {
+  overflow-y: auto;
+}
+
+table {
+  min-width: 100%;
+  text-align: center;
+  overflow-x: scroll;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+thead {
+  background-color: var(--Black);
+  color: var(--White);
+}
+thead.sticky {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100vw;
+}
+thead th {
+  padding: 0.5rem;
+}
+tbody td {
+  border-bottom: 1px solid var(--Grey300);
+  overflow: hidden;
+  padding: 0 0.5rem;
+}
+td,
+th {
+  height: var(--Row-Height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+tbody tr {
+  overflow: hidden;
+}
+#TableIndex {
+  width: 7ch;
+}
+#TableName {
+  width: 40ch;
+}
+#TableDescription {
+  width: 30ch;
+}
+#TableUnit{
+  width: 15ch;
+}
+#TableRig {
+  width: 10ch;
+}
+.Table-Arrow {
+  transition: transform 0.2s ease-in-out;
+  padding: 0;
+}
+.Table-Arrow:hover {
+  cursor: pointer;
+}
+.Table-Arrow svg {
+  height: 30px;
+  width: 30px;
+  fill: var(--Grey600);
+}
+tr.Active-Row .Table-Arrow {
+  transform: scale(1, -1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.Expandable-Row {
+  display: none;
+}
+.Expandable-Row.Active-Row {
+  display: table-row;
+}
+.Expandable-Area {
+  background-color: #f5f5f5;
+  height: calc(var(--Row-Height) * 10);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "Expandable-Left Expandable-Right";
+}
+.Expandable-Left {
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: calc(var(--Row-Height) * 10);
+  max-height: 100%;
+  /* grid-template-columns: auto;
+  grid-template-rows: 1fr 2fr 1fr 2fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "ParameterName"
+    "ParameterDescription"
+    "RigFamily"
+    "RigFamilyDescription"; */
+  grid-area: Expandable-Left;
+}
+.Name, .Rig_Family {
+  grid-area: ParameterName;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+} 
+
+.Rig_Family_Description,.Description {
+  grid-area: RigFamilyDescription;
+  flex-grow: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.Expandable-Left div{
+  width: 100%;
+}
+.Expandable-Right {
+  display: grid;
+  height: calc(var(--Row-Height) * 10);
+  grid-template-columns: 1fr 2.5fr 4fr 2.5fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ParameterUnit ParameterCreated ParameterPossibleValues Images"
+    "ParameterDecimals ParameterCreatedBy ParameterPossibleValues Images"
+    "ParameterMin ParameterLastModified ParameterPossibleValues Images"
+    "ParameterMax ParameterLastModifiedBy ParameterPossibleValues Images"
+    "ParameterType ParameterComment ParameterPossibleValues Images";
+  grid-area: Expandable-Right;
+}
+.Images-Container {
+  height: 100%;
+  width: 20vw;
+  overflow: hidden;
+  grid-area: Images;
+  position: relative;
+}
+.Images-Container img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  display: block;
+}
+.Image.Active {
+  display: block;
+}
+.Image-Nav {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+.Image-Nav svg {
+  stroke: var(--Grey300);
+  stroke-width: 0.5px;
+  height: 100%;
+}
+.Image-Nav svg:hover {
+  cursor: pointer;
+  stroke: var(--Grey600);
+  background-color: rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+}
+.Image-Nav svg.Disabled {
+  opacity: 0;
+}
+.Image-Nav p {
+  color: white;
+  margin-top: auto;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  text-shadow: -1px -1px 0 black;
+}
+.Comment-Container {
+  grid-area: Comment;
+}
+
+.PossibleValues {
+  grid-area: PossibleValues;
+}
+
+.Unit {
+  grid-area: ParameterUnit;
+}
+.Decimals {
+  grid-area: ParameterDecimals;
+}
+.Min {
+  grid-area: ParameterMin;
+}
+.Max {
+  grid-area: ParameterMax;
+}
+.Type {
+  grid-area: ParameterType;
+}
+.Created {
+  grid-area: ParameterCreated;
+}
+.Created_By {
+  grid-area: ParameterCreatedBy;
+}
+.Last_Modified {
+  grid-area: ParameterLastModified;
+}
+.Modified_By {
+  grid-area: ParameterLastModifiedBy;
+}
+.Comment {
+  grid-area: ParameterComment;
+}
+.Possible_Values {
+  grid-area: ParameterPossibleValues;
+}
+.Images {
+  grid-area: Images;
+}
+

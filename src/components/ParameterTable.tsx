@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./ParameterTable.css";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import "./style/ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { FixedSizeList } from "react-window";
-import { table } from "console";
-
+import StyledBoxWLabel from "./StyledBoxWLabel";
+import { DebugContext } from "../context/DebugContext";
+import { EditModeContext } from "../context/EditModeContext";
 
 interface Image {
   image_url: string;
@@ -31,15 +31,16 @@ export interface TableRowProps {
   active?: boolean;
   images?: Image[] | null;
   comment: string | null;
-  }
+}
 interface ImageState {
   [key: number]: number;
 }
 
-
 function ParameterTable(props: { rows: TableRowProps[] }) {
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [currentImage, setCurrentImage] = useState<ImageState>({});
+  const { debugMode } = useContext(DebugContext);
+  const { editMode } = useContext(EditModeContext);
 
   // settCurrentImage on data load
   useEffect(() => {
@@ -51,7 +52,6 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     });
     setCurrentImage(newCurrentImage);
   }, [props.rows]);
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -65,12 +65,12 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   const handleScroll = () => {
     const scrollTop = document.documentElement.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
-  
+
     // If user has scrolled to the bottom of the page and there is more data to load, update the current page
     if (scrollTop + clientHeight >= scrollHeight && !allDataLoaded) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -82,7 +82,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       setAllDataLoaded(true);
     }
   }, [currentPage, rowsPerPage, props.rows.length]);
-    
+
   const HandleClickParameter = (event: any, id: number) => {
     const isExpanded = expandedRows.includes(id);
     if (isExpanded) {
@@ -127,24 +127,12 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
     }
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const top = tableRef.current ? tableRef.current.getBoundingClientRect().top : 0;
-      setIsSticky(top < 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
         <thead className={isSticky ? "sticky" : ""}>
           <tr>
-            <th>{props.rows.length}</th>
+            <th id="TableIndex">{props.rows.length.toLocaleString()}</th>
             <th id="TableName">Name</th>
             <th id="TableDescription">Description</th>
             <th id="TableUnit">Unit</th>
@@ -154,7 +142,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             <th id="TableMax">Max</th>
             <th id="TableDataType">Datatype</th>
           </tr>
-        </thead >
+        </thead>
         <tbody>
           {props.rows.slice(0, currentPage * rowsPerPage).map((row) => (
             <>
@@ -164,8 +152,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
               >
                 <td className="Table-Arrow">
                   <ExpandMoreIcon></ExpandMoreIcon>
+
+                  {debugMode ? row.id : <></>}
                 </td>
-                <td className="">{row.name}</td>
+                <td>{row.name}</td>
                 <td>{row.description}</td>
                 <td>{row.unit_name}</td>
                 <td>{row.rigfamily_name}</td>
@@ -174,7 +164,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                 <td>{row.max}</td>
                 <td>{row.datatype}</td>
               </tr>
-  
+
               <tr
                 key={row.id + "expandable"}
                 className={
@@ -183,49 +173,130 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
                     : "Expandable-Row"
                 }
               >
-                <td colSpan={12}>
+                <td colSpan={9}>
                   <div className="Expandable-Area">
-                    <div className="Images-Container">
-                      {row.images &&
-                        row.images.length > 0 && (
-                          <img
-                            src={row.images[currentImage[row.id]] ? row.images[currentImage[row.id]].image_url : ""}
-                            alt="error"
-                          />
-                        )}
-                      {row.images && row.images.length > 1 && (
-                        <div className="Image-Nav">
-                          <ArrowBackIcon
-                            className={
-                              currentImage[row.id] === 0
-                                ? "Image-Nav-Button Disabled"
-                                : "Image-Nav-Button"
-                            }
-                            onClick={(event) => HandlePrevButton(event, row.id)}
-                          />
-                        
-                          <p>
-                            {currentImage[row.id] + 1}/{row.images.length}
-                          </p>
-                          <ArrowForwardIcon
-                            className={
-                              currentImage[row.id] === row.images.length - 1
-                                ? "Image-Nav-Button Disabled"
-                                : "Image-Nav-Button"
-                            }
-                            onClick={(event) =>
-                              HandleNextButton(
-                                event,
-                                row.id,
-                                row.images ? row.images.length : 0
-                              )
-                            }
-                          />
-                        </div>
-                      )}
+                    <div className="Expandable-Left">
+                      {/* Column 1 */}
+                      <StyledBoxWLabel
+                        label="Name"
+                        data={row.name}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Description"
+                        data={row.description}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Rig Family"
+                        data={row.rigfamily_name}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Rig Family Description"
+                        data={row.rigfamily_description}
+                      ></StyledBoxWLabel>
                     </div>
-                    <div className="Comment-Container">
-                      <p>{row.comment}</p>
+                    <div className="Expandable-Right">
+                      {/* Column 2 */}
+                      <StyledBoxWLabel
+                        label="Unit"
+                        data={row.unit_name}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Decimals"
+                        data={row.decimals}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Min"
+                        data={row.min}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Max"
+                        data={row.max}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Type"
+                        data={row.datatype}
+                      ></StyledBoxWLabel>
+
+                      {/* Column 3 */}
+
+                      <StyledBoxWLabel
+                        label="Created"
+                        data={row.creation_date}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Created By"
+                        data={row.created_by}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Last Modified"
+                        data={row.modified_date}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Modified By"
+                        data={row.modified_by}
+                      ></StyledBoxWLabel>
+                      <StyledBoxWLabel
+                        label="Comment"
+                        data={row.comment}
+                      ></StyledBoxWLabel>
+
+                      {/* Column 4 */}
+                      <StyledBoxWLabel
+                        label="Possible Values"
+                        html={<></>}
+                      ></StyledBoxWLabel>
+
+                      {/* Column 5 */}
+                      <StyledBoxWLabel
+                        label="Images"
+                        html={
+                          <div className="Images-Container">
+                            {row.images && row.images.length > 0 && (
+                              <img
+                                src={
+                                  row.images[currentImage[row.id]]
+                                    ? row.images[currentImage[row.id]].image_url
+                                    : ""
+                                }
+                                alt="error"
+                              />
+                            )}
+                            {row.images && row.images.length > 1 && (
+                              <div className="Image-Nav">
+                                <ArrowBackIcon
+                                  className={
+                                    currentImage[row.id] === 0
+                                      ? "Image-Nav-Button Disabled"
+                                      : "Image-Nav-Button"
+                                  }
+                                  onClick={(event) =>
+                                    HandlePrevButton(event, row.id)
+                                  }
+                                />
+
+                                <p>
+                                  {currentImage[row.id] + 1}/{row.images.length}
+                                </p>
+                                <ArrowForwardIcon
+                                  className={
+                                    currentImage[row.id] ===
+                                    row.images.length - 1
+                                      ? "Image-Nav-Button Disabled"
+                                      : "Image-Nav-Button"
+                                  }
+                                  onClick={(event) =>
+                                    HandleNextButton(
+                                      event,
+                                      row.id,
+                                      row.images ? row.images.length : 0
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+                        }
+                      ></StyledBoxWLabel>
                     </div>
                   </div>
                 </td>

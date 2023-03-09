@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import SearchField from "./components/SearchField";
-import ParameterTable, {TableRowProps}from "./components/ParameterTable";
-import { Button } from "@mui/material";
-
-
+import ParameterTable, { TableRowProps } from "./components/ParameterTable";
+import Toolbar from "./components/Toolbar";
+import { DebugContext } from "./context/DebugContext";
+import { EditModeContext } from "./context/EditModeContext";
 
 type dataModel = {
   id: number;
@@ -20,7 +20,7 @@ type dataModel = {
   modified_by: string | null;
   comment: null | string;
   unit_name: string | null;
-  unit_description: string | null; 
+  unit_description: string | null;
   rigfamily_name: string | null;
   rigfamily_description: string | null;
   image_name: string | null;
@@ -28,22 +28,24 @@ type dataModel = {
   image_urls: string | null;
 }[];
 
-
-
 function App() {
   const [data, setData] = useState<dataModel>([]);
   const [filteredData, setFilteredData] = useState<dataModel>([]);
-  const [searchString, setSearchString] = useState<string>("");
-  const [searchField, setSearchField] = useState<string>("");
+  const [debugMode, setDebugMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+
+
+  // variable to store the search strings for the different fields
+  const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
+    {}
+  );
 
   useEffect(() => {
-      fetch("http://localhost:3000/parameters")
-        .then((response) => response.json())
-        .then((data) => setData(data))
-        .catch((error) => console.log(error))
-        .finally(() => console.log("data loaded"));
-     
-
+    fetch("http://localhost:3000/parameters")
+      .then((response) => response.json())
+      .then((data) => setData(data))
+      .catch((error) => console.log(error))
+      .finally(() => console.log("data loaded"));
   }, []);
 
   useEffect(() => {
@@ -58,10 +60,11 @@ function App() {
         const names = row.image_name
           ? row.image_name.split(";")
           : Array(urls.length).fill(null);
-        const descriptions = row.image_description 
-          ? row.image_description.split(";") 
-          : Array(urls.length).fill(null);
-  
+        var descriptions =
+          row.image_description !== undefined && row.image_description !== null
+            ? row.image_description.split(";")
+            : Array(urls.length).fill(null);
+
         for (let i = 0; i < urls.length; i++) {
           imageArray.push({
             image_url: urls[i],
@@ -76,72 +79,118 @@ function App() {
       };
     });
   }
-  
+
   function filterData(data: dataModel) {
     return data.filter((row) => {
-      if (searchString === "") {
-        return true;
+      if (Object.keys(searchStrings).length === 0) {
+        return false;
       }
-      switch (searchField) {
-        case "parameter":
-          return row.name.toLowerCase().includes(searchString.toLowerCase());
-        case "description":
-          return row.description ? row.description.toLowerCase().includes(searchString.toLowerCase()) : false;
-        case "unit":
-          return row.unit_name ? row.unit_name.toLowerCase().includes(searchString.toLowerCase()) : false;
-        case "RIG_FAM":
-          return row.rigfamily_name ? row.rigfamily_name.toLowerCase().includes(searchString.toLowerCase()) : false;
-        case "comment":
-          return row.comment ? row.comment.toLowerCase().includes(searchString.toLowerCase()) : false;
-        default:
+      // Iterate over the search strings and check if the row includes all of them
+      return Object.entries(searchStrings).every(([field, value]) => {
+        if (!value) {
           return true;
-      }
-    }
-    );
-  }
-  function handleSearch(value: string,field: string) {
-    setSearchString(value);
-    setSearchField(field);
-    console.log(value, field);
-  }
+        }
 
-  useEffect(() => {
+        switch (field) {
+          case "parameter":
+            return row.name.toLowerCase().includes(value.toLowerCase());
+
+          case "description":
+            return row.description
+              ? row.description.toLowerCase().includes(value.toLowerCase())
+              : false;
+
+          case "unit":
+            return row.unit_name
+              ? row.unit_name.toLowerCase().includes(value.toLowerCase())
+              : false;
+
+          case "RIG_FAM":
+            return row.rigfamily_name
+              ? row.rigfamily_name.toLowerCase().includes(value.toLowerCase())
+              : false;
+
+          case "comment":
+            return row.comment
+              ? row.comment.toLowerCase().includes(value.toLowerCase())
+              : false;
+
+          default:
+            return true;
+        }
+      });
+    });
+  }
+  function handleValueChange(value: string, field: string) {
+    setSearchStrings({ ...searchStrings, [field]: value });
+  }
+  function handleSearch() {
+    console.log(searchStrings);
     setFilteredData(filterData(data));
-  }, [searchString, searchField]);
-
+  }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <SearchField
-          id="ParameterSearch"
-          data={Array.from(new Set(data.map((row) => row.name)))}
-          placeholder="Parameter"
-          onSearch={(searchString: string) =>  handleSearch(searchString, "parameter")}
-        />
-        <SearchField
-          id="DescriptionSearch"
-          data={Array.from(new Set(data.map((row) => row.description)))}
-          placeholder="Description"
-        />
-        <SearchField
-          id="UnitSearch"
-          data={Array.from(new Set(data.map((row) => row.unit_name)))}
-          placeholder="Unit"
-        />
-        <SearchField
-          id="RigFamSearch"
-          data={Array.from(new Set(data.map((row) => row.rigfamily_name)))}
-          placeholder="RIG_FAM"
-        />
-        <SearchField
-          id="CommentSearch"
-          data={Array.from(new Set(data.map((row) => row.comment).filter((name) => name != null))) as unknown as string[]}
-          placeholder="Comment"
-        />
-      </header>
-      <ParameterTable rows={updateRows(filteredData)} />
-    </div>
+    <DebugContext.Provider value={{ debugMode, setDebugMode}}>
+      <EditModeContext.Provider value={{ editMode, setEditMode}}>
+      <div className="App">
+        <header className="App-header">
+          {/* Toolbar */}
+          <Toolbar></Toolbar>
+
+          <SearchField
+            id="ParameterSearch"
+            data={Array.from(new Set(data.map((row) => row.name)))}
+            placeholder="Parameter"
+            onChange={(value: any) => {
+              handleValueChange(value, "parameter");
+            }}
+          />
+          <SearchField
+            id="DescriptionSearch"
+            data={Array.from(new Set(data.map((row) => row.description)))}
+            placeholder="Description"
+            onChange={(value: any) => {
+              handleValueChange(value, "description");
+            }}
+          />
+          <SearchField
+            id="UnitSearch"
+            data={Array.from(new Set(data.map((row) => row.unit_name)))}
+            placeholder="Unit"
+            onChange={(value: any) => {
+              handleValueChange(value, "unit");
+            }}
+          />
+          <SearchField
+            id="RigFamSearch"
+            data={Array.from(new Set(data.map((row) => row.rigfamily_name)))}
+            placeholder="RIG_FAM"
+            onChange={(value: any) => {
+              handleValueChange(value, "RIG_FAM");
+            }}
+          />
+          <SearchField
+            id="CommentSearch"
+            data={
+              Array.from(
+                new Set(
+                  data.map((row) => row.comment).filter((name) => name != null)
+                )
+              ) as unknown as string[]
+            }
+            placeholder="Comment"
+            onChange={(value: any) => {
+              handleValueChange(value, "comment");
+            }}
+          />
+          <button id="searchButton" onClick={handleSearch}>
+            Search
+          </button>
+        </header>
+        <ParameterTable rows={updateRows(filteredData)} />
+      </div>
+      </EditModeContext.Provider>
+    </DebugContext.Provider>
   );
 }
 

@@ -1,22 +1,26 @@
-import React, { useState } from "react";
-import "./SearchField.css";
+import React, { useEffect, useState } from "react";
+import "./style/SearchField.css";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 function SearchField(props: {
+  onChange: any;
   data: (string | null)[];
   placeholder: string;
   id?: string;
-  onSearch?: any;
 }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  
+
+  useEffect(() => {
+    props.onChange(searchValue);
+  }, [searchValue]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
-    if (!isDropdownOpen){
+    if (!isDropdownOpen) {
       setIsDropdownOpen(true);
       setSelectedIndex(-1);
     }
@@ -42,20 +46,14 @@ function SearchField(props: {
       setIsDropdownOpen(false);
     }, 100);
   };
-  const handleClick = (event: any) => {
-    searchForData();
-  };
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
-      if(isDropdownOpen){
-        if(selectedIndex === -1){
+      if (isDropdownOpen) {
+        if (selectedIndex === -1) {
           setIsDropdownOpen(false);
-          searchForData();
-        }else{
+        } else {
           handleCategorySelect(getFilteredData()[selectedIndex]);
         }
-      }else{
-        searchForData();
       }
     }
     if (event.key === "Escape") {
@@ -65,10 +63,11 @@ function SearchField(props: {
       if (selectedIndex < getFilteredData().length - 1) {
         setSelectedIndex(selectedIndex + 1);
         if (listRef.current) {
-          
-            listRef.current.children[selectedIndex + 1].scrollIntoView({block: "end", behavior: "smooth"});
+          listRef.current.children[selectedIndex + 1].scrollIntoView({
+            block: "end",
+            behavior: "smooth",
+          });
         }
-        
       }
     }
     if (event.key === "ArrowUp") {
@@ -76,7 +75,6 @@ function SearchField(props: {
         setSelectedIndex(selectedIndex - 1);
       }
     }
-
   };
   const handleHoverEnter = (event: any) => {
     setSelectedIndex(parseInt(event.target.id));
@@ -85,26 +83,25 @@ function SearchField(props: {
     setSelectedIndex(-1);
   };
 
+  const handleClear = () => {
+    setSearchValue("");
+    setShowLabel(false);
+  };
 
   function getFilteredData() {
-    const filteredData = props.data.filter((value) => value !== null) as string[];
+    const filteredData = props.data.filter(
+      (value) => value !== null
+    ) as string[];
     if (searchValue === "") {
       return filteredData;
     }
-    return filteredData.filter((value) => value.toLowerCase().includes(searchValue.toLowerCase()));
-
-  }
-
-  function searchForData() {
-    //TODO Add search functionality
-    console.log("Search for: " + searchValue);
-    props.onSearch(searchValue);
-
+    return filteredData.filter((value) =>
+      value.toLowerCase().includes(searchValue.toLowerCase())
+    );
   }
 
   const listRef = React.useRef<HTMLUListElement>(null);
   return (
-
     <div className="SearchField-Container " id={props.id}>
       <fieldset className="Search-Container">
         <legend
@@ -114,7 +111,7 @@ function SearchField(props: {
         >
           {props.placeholder}
         </legend>
-        <SearchIcon className="Search-Icon" onClick={handleClick}></SearchIcon>
+
         <input
           className="SearchField-Input"
           onChange={handleInputChange}
@@ -124,20 +121,22 @@ function SearchField(props: {
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
         ></input>
-        <div 
-        className="Dropdown-Container-Div"
-        
-        >
+        <div className={searchValue !== "" ? "clearIcon show" : "clearIcon"}>
+          <ClearIcon onClick={handleClear}></ClearIcon>
+        </div>
+
+        <div className="Dropdown-Container-Div">
           {isDropdownOpen && (
             <ul className="Dropdown-Container" ref={listRef}>
-              {getFilteredData().map((value,index) => (
-                <li 
-                className={selectedIndex === index ? "selected" : ""}
-                id={index.toString()}
-                onMouseEnter={handleHoverEnter} 
-                onMouseLeave={handleHoverLeave} 
-                key={value} 
-                onClick={() => handleCategorySelect(value)}>
+              {getFilteredData().map((value, index) => (
+                <li
+                  className={selectedIndex === index ? "selected" : ""}
+                  id={index.toString()}
+                  onMouseEnter={handleHoverEnter}
+                  onMouseLeave={handleHoverLeave}
+                  key={value}
+                  onClick={() => handleCategorySelect(value)}
+                >
                   {value}
                 </li>
               ))}
