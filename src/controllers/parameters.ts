@@ -34,13 +34,13 @@ export const getParameters = async (
   try {
     const [rows, fields] = await pool.query(
       `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
-      u.name AS unit_name, u.description AS unit_description, rf.name AS rigfamily_name, rf.description AS rigfamily_description, 
-      GROUP_CONCAT(img.name SEPARATOR ';') AS image_name, GROUP_CONCAT(img.description SEPARATOR ';') AS image_description, GROUP_CONCAT(img.url SEPARATOR ';') AS image_urls
+      u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
+      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
-      LEFT JOIN rigfamily rf ON p.rigfamily_id = rf.id 
-      LEFT JOIN parameter_rigfamily pr ON p.id = pr.parameter_id 
       LEFT JOIN images img ON p.id = img.parameter_id 
+      LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
+      LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
       GROUP BY p.id`
     );
     res.json(rows);
@@ -58,14 +58,15 @@ export const getParameter = async (
   try {
     const [rows, fields] = await pool.query(
       `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
-      u.name AS unit_name, u.description AS unit_description, rf.name AS rigfamily_name, rf.description AS rigfamily_description, 
-      GROUP_CONCAT(img.name SEPARATOR ';') AS image_name, GROUP_CONCAT(img.description SEPARATOR ';') AS image_description, GROUP_CONCAT(img.url SEPARATOR ';') AS image_urls
+      u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
+      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
-      LEFT JOIN rigfamily rf ON p.rigfamily_id = rf.id 
-      LEFT JOIN parameter_rigfamily pr ON p.id = pr.parameter_id 
       LEFT JOIN images img ON p.id = img.parameter_id 
-      WHERE p.id = ?`,
+      LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
+      LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
+      WHERE p.id = ?;
+      `,
       [req.params.id]
     );
     if (rows[0].id === null) {
@@ -132,31 +133,42 @@ export const createParameters = async (req: Request, res: Response) => {
       }
 
       // Insert new rigfamily if not exists
-      let rigfamilyId = null;
+      // Split rigfamily name and description into arrays using ; as separator and loop through them
+      const rigfamilyId: number[] = [];
+      let rigfamilyDescription = [];
       if (newParameter.rigfamily) {
-        const [rigfamilyRows] = await conn.query(
-          `SELECT id FROM rigfamily WHERE name = ? LIMIT 1`,
-          [newParameter.rigfamily.name]
-        )as RowDataPacket[];
-        if (rigfamilyRows.length > 0) {
-          rigfamilyId = rigfamilyRows[0].id;
-        } else {
-          const [rigfamilyResult] = await conn.query(
-            `INSERT INTO rigfamily (name, description) VALUES (?, ?)`,
-            [newParameter.rigfamily.name, newParameter.rigfamily.description || null]
-          );
-          rigfamilyId = (rigfamilyResult as OkPacket).insertId;
+        
+        
+        let rigfamilyName = newParameter.rigfamily.name.split(";");
+        if (newParameter.rigfamily.description) {
+          rigfamilyDescription = newParameter.rigfamily.description.split(";");
+        }else{
+          rigfamilyDescription = Array(rigfamilyName.length).fill("");
+        }
+        for (let i = 0; i < rigfamilyName.length; i++) {
+          const [rigfamilyRows] = await conn.query(
+            `SELECT id FROM rigfamily WHERE name = ? LIMIT 1`,
+            [rigfamilyName[i]]
+          )as RowDataPacket[];
+          if (rigfamilyRows.length > 0) {
+            rigfamilyId.push(rigfamilyRows[0].id);
+          } else {
+            const [rigfamilyResult] = await conn.query(
+              `INSERT INTO rigfamily (name, description) VALUES (?, ?)`,
+              [rigfamilyName[i], rigfamilyDescription[i]]
+            );
+            rigfamilyId.push((rigfamilyResult as OkPacket).insertId);
+          }
         }
       }
 
       // Insert new parameter
       const [parameterResult] = await conn.query(
-        `INSERT INTO parameters (name, description, unit_id, rigfamily_id, datatype, decimals, min, max, comment, created_by, modified_by, creation_date, modified_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO parameters (name, description, unit_id, datatype, decimals, min, max, comment, created_by, modified_by, creation_date, modified_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           newParameter.name,
           newParameter.description || null,
           unitId,
-          rigfamilyId,
           newParameter.datatype || null,
           newParameter.decimals || null,
           newParameter.min || null,
@@ -172,11 +184,13 @@ export const createParameters = async (req: Request, res: Response) => {
       const parameterId = (parameterResult as OkPacket).insertId;
 
       // Insert parameter into rigfamily
-      if (rigfamilyId) {
+      if (rigfamilyId.length > 0) {
+        rigfamilyId.forEach(async (rigfamilyId) => {
         await conn.query(
           `INSERT INTO parameter_rigfamily (parameter_id, rigfamily_id) VALUES (?, ?)`,
           [parameterId, rigfamilyId]
         );
+        });
       }
 
       // Insert new images if any
