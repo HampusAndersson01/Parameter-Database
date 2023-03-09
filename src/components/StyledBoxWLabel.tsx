@@ -20,7 +20,7 @@ function StyledBoxWLabel(props: {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>, index?:number) => {
     setValue(event.target.value);
   };
 
@@ -43,7 +43,7 @@ function StyledBoxWLabel(props: {
             // If in edit mode, render the select element with options
             // if value is array, render multiple select elements
             Array.isArray(value) && value.length > 0 ? value.map((val, index) => {
-              return <select defaultValue={val} className={index === 0 ? "styledBoxWLabelData active" : "styledBoxWLabelData"} onChange={handleSelect}>
+              return <select defaultValue={val} className={index === 0 ? "styledBoxWLabelData active" : "styledBoxWLabelData"} onChange={() => handleSelect(Event,index)}>
               {/* Map over the options prop to create the select options */}
               <option value=""></option>
               {props.options !== undefined ? props.options.map((option, index) => {
