@@ -4,6 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { DebugContext } from "../context/DebugContext";
+import { EditModeContext } from "../context/EditModeContext";
 
 function Toolbar(props: any) {
   const [isToolbarExpanded, setIsToolbarExpanded] = useState<boolean>(false);
@@ -12,6 +13,7 @@ function Toolbar(props: any) {
   const [secondToolbarValue, setSecondToolbarValue] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
   const { debugMode, setDebugMode } = useContext(DebugContext);
+  const { editMode, setEditMode } = useContext(EditModeContext);
 
   const handleClickButton = () => {
     setIsToolbarExpanded(!isToolbarExpanded);
@@ -56,6 +58,9 @@ function Toolbar(props: any) {
   const handleDebugMode = () => {
     setDebugMode(!debugMode);
   };
+  const handleEditMode = () => {
+    setEditMode(!editMode);
+  };
   const [selectedToolbarButton, setSelectedToolbarButton] =
     useState<string>("");
 
@@ -82,7 +87,8 @@ function Toolbar(props: any) {
               >
                 Add parameter(s)
               </li>
-              <li className="toolbarButton">Edit mode</li>
+              <li className={editMode ? "toolbarButton editActive" : "toolbarButton"}
+              onClick={handleEditMode}>Edit mode</li>
             </ul>
           </div>
           <button

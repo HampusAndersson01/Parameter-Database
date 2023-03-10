@@ -28,9 +28,16 @@ type dataModel = {
   image_urls: string | null;
 }[];
 
+type rigFamilyModel = {
+  id: number;
+  name: string;
+  description: string | null;
+}[];
+
 function App() {
   const [data, setData] = useState<dataModel>([]);
   const [filteredData, setFilteredData] = useState<dataModel>([]);
+  const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -46,15 +53,22 @@ function App() {
       .then((data) => setData(data))
       .catch((error) => console.log(error))
       .finally(() => console.log("data loaded"));
+    fetch("http://localhost:3000/rigfamilies")
+      .then((response) => response.json())
+      .then((data) => setRigFamilies(data))
+      .catch((error) => console.log(error))
+      .finally(() => console.log("rigfamilies loaded"));
   }, []);
 
   useEffect(() => {
-    setFilteredData(filterData(data));
+    setFilteredData(filterData((data)));
   }, [data]);
 
   function updateRows(data: dataModel): TableRowProps[] {
     return data.map((row) => {
       const imageArray = [];
+      var rigfamily_name: string[] = [];
+      var rigfamily_description: string[] = []
       if (row.image_urls) {
         const urls = row.image_urls.split(";");
         const names = row.image_name
@@ -73,12 +87,22 @@ function App() {
           });
         }
       }
+      if(row.rigfamily_name){
+        rigfamily_name = row.rigfamily_name.split(";");
+        rigfamily_description = row.rigfamily_description
+          ? row.rigfamily_description.split(";")
+          : Array(rigfamily_name.length).fill("");
+      }
       return {
         ...row,
+        rigfamily_name,
+        rigfamily_description,
         images: imageArray,
       };
     });
   }
+
+  
 
   function filterData(data: dataModel) {
     return data.filter((row) => {
@@ -121,11 +145,14 @@ function App() {
       });
     });
   }
+  
+  
+
+
   function handleValueChange(value: string, field: string) {
     setSearchStrings({ ...searchStrings, [field]: value });
   }
   function handleSearch() {
-    console.log(searchStrings);
     setFilteredData(filterData(data));
   }
 
@@ -163,7 +190,7 @@ function App() {
           />
           <SearchField
             id="RigFamSearch"
-            data={Array.from(new Set(data.map((row) => row.rigfamily_name)))}
+            data={rigFamilies.map((row) => row.name)}
             placeholder="RIG_FAM"
             onChange={(value: any) => {
               handleValueChange(value, "RIG_FAM");
@@ -187,7 +214,7 @@ function App() {
             Search
           </button>
         </header>
-        <ParameterTable rows={updateRows(filteredData)} />
+        <ParameterTable rows={updateRows(filteredData)} rigFamilies={rigFamilies.map((row) => row.name)} />
       </div>
       </EditModeContext.Provider>
     </DebugContext.Provider>
