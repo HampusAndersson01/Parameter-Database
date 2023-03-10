@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style/ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import StyledBoxWLabel from "./StyledBoxWLabel";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 
@@ -32,26 +31,13 @@ export interface TableRowProps {
   images?: Image[] | null;
   comment: string | null;
 }
-interface ImageState {
-  [key: number]: number;
-}
 
-function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) {
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
-  const [currentImage, setCurrentImage] = useState<ImageState>({});
+function ParameterTable(props: {
+  rows: TableRowProps[];
+  rigFamilies: string[];
+}) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);
-
-  // settCurrentImage on data load
-  useEffect(() => {
-    const newCurrentImage: ImageState = {};
-    props.rows.forEach((row) => {
-      if (row.images) {
-        newCurrentImage[row.id] = 0;
-      }
-    });
-    setCurrentImage(newCurrentImage);
-  }, [props.rows]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -59,6 +45,8 @@ function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) 
 
   const tableRef = useRef<HTMLTableElement>(null);
   const [isSticky, setIsSticky] = useState(false);
+
+  const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   // Load more data when the current page changes
   useEffect(() => {
@@ -97,36 +85,6 @@ function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) 
     }
   };
 
-  const HandlePrevButton = (event: any, id: number) => {
-    // decrease this id currentImage
-    if (currentImage[id] != 0) {
-      setCurrentImage((prevState) => ({
-        ...prevState,
-        [id]: prevState[id] - 1,
-      }));
-    }
-  };
-
-  const HandleNextButton = (event: any, id: number, length: number) => {
-    // increase this id currentImage
-    if (currentImage[id] != length - 1) {
-      setCurrentImage((prevState) => ({
-        ...prevState,
-        [id]: prevState[id] + 1,
-      }));
-    }
-  };
-
-  useEffect(() => {
-    const rowLength = props.rows.length;
-    for (let i = 0; i < rowLength; i++) {
-      setCurrentImage((prevState) => ({
-        ...prevState,
-        [props.rows[i].id]: 0,
-      }));
-    }
-  }, []);
-
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
@@ -152,10 +110,11 @@ function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) 
               >
                 <td className="Table-Arrow">
                   <ExpandMoreIcon></ExpandMoreIcon>
-
-                  {debugMode ? row.id : <></>}
                 </td>
-                <td>{row.name}</td>
+                <td>
+                  {debugMode ? row.id + ": " : <></>}
+                  {row.name}
+                </td>
                 <td>{row.description}</td>
                 <td>{row.unit_name}</td>
                 <td>{row.rigfamily_name.join(", ")}</td>
@@ -164,178 +123,11 @@ function ParameterTable(props: { rows: TableRowProps[], rigFamilies: string[]}) 
                 <td>{row.max}</td>
                 <td>{row.datatype}</td>
               </tr>
-
-              <tr
-                key={row.id + "expandable"}
-                className={
-                  expandedRows.includes(row.id)
-                    ? "Expandable-Row Active-Row"
-                    : "Expandable-Row"
-                }
-              >
-                <td colSpan={9}>
-                  <div className="Expandable-Area">
-                    <div className="Expandable-Left">
-                      {/* Column 1 */}
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Name"
-                        data={row.name}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Description"
-                        data={row.description}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Rig Family"
-                        data={row.rigfamily_name}
-                        editable={true}
-                        options={props.rigFamilies}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Rig Family Description"
-                        data={row.rigfamily_description}
-                        editable={false}
-                      ></StyledBoxWLabel>
-                    </div>
-                    <div className="Expandable-Right">
-                      {/* Column 2 */}
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Unit"
-                        data={row.unit_name}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Decimals"
-                        data={row.decimals}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Min"
-                        data={row.min}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Max"
-                        data={row.max}
-                        editable={true}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Type"
-                        data={row.datatype}
-                        editable={true}
-                      ></StyledBoxWLabel>
-
-                      {/* Column 3 */}
-
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Created"
-                        data={row.creation_date}
-                        editable={false}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Created By"
-                        data={row.created_by}
-                        editable={false}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Last Modified"
-                        data={row.modified_date}
-                        editable={false}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Modified By"
-                        data={row.modified_by}
-                        editable={false}
-                      ></StyledBoxWLabel>
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Comment"
-                        data={row.comment}
-                        editable={true}
-                      ></StyledBoxWLabel>
-
-                      {/* Column 4 */}
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Possible Values"
-                        html={<></>}
-                        editable={false}
-                      ></StyledBoxWLabel>
-
-                      {/* Column 5 */}
-                      <StyledBoxWLabel
-                        id={row.id}
-                        label="Images"
-                        html={
-                          <div className="Images-Container">
-                            {row.images && row.images.length > 0 && (
-                              <img
-                                src={
-                                  row.images[currentImage[row.id]]
-                                    ? row.images[currentImage[row.id]].image_url
-                                    : ""
-                                }
-                                alt={row.images[currentImage[row.id]]
-                                  ? row.images[currentImage[row.id]].image_name as string
-                                  : ""}
-                              />
-                            )}
-                            {row.images && row.images.length > 1 && (
-                              <div className="Image-Nav">
-                                <ArrowBackIcon
-                                  className={
-                                    currentImage[row.id] === 0
-                                      ? "Image-Nav-Button Disabled"
-                                      : "Image-Nav-Button"
-                                  }
-                                  onClick={(event) =>
-                                    HandlePrevButton(event, row.id)
-                                  }
-                                />
-
-                                <p>
-                                  {currentImage[row.id] + 1}/{row.images.length}
-                                </p>
-                                <ArrowForwardIcon
-                                  className={
-                                    currentImage[row.id] ===
-                                    row.images.length - 1
-                                      ? "Image-Nav-Button Disabled"
-                                      : "Image-Nav-Button"
-                                  }
-                                  onClick={(event) =>
-                                    HandleNextButton(
-                                      event,
-                                      row.id,
-                                      row.images ? row.images.length : 0
-                                    )
-                                  }
-                                />
-                              </div>
-                            )}
-                          </div>
-                        }
-                        editable={false}
-                      ></StyledBoxWLabel>
-                    </div>
-                  </div>
-                </td>
-              </tr>
+              <ExpandedData
+                row={row}
+                rigFamilies={props.rigFamilies}
+                isExpanded={expandedRows.includes(row.id)}
+              ></ExpandedData>
             </>
           ))}
         </tbody>

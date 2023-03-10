@@ -50,7 +50,7 @@ tbody tr {
 #TableDescription {
   width: 30ch;
 }
-#TableUnit{
+#TableUnit {
   width: 15ch;
 }
 #TableRig {
@@ -75,12 +75,13 @@ tr.Active-Row .Table-Arrow {
 
 .Expandable-Row {
   display: none;
+  background-color: var(--Grey100);
 }
 .Expandable-Row.Active-Row {
   display: table-row;
 }
 .Expandable-Area {
-  background-color: #f5f5f5;
+  background-color: var(--Grey100);
   height: calc(var(--Row-Height) * 10);
   width: 100%;
   display: grid;
@@ -88,6 +89,7 @@ tr.Active-Row .Table-Arrow {
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: "Expandable-Left Expandable-Right";
+  position: relative;
 }
 .Expandable-Left {
   display: flex;
@@ -101,20 +103,22 @@ tr.Active-Row .Table-Arrow {
   max-height: 100%;
   grid-area: Expandable-Left;
 }
-.Name, .Rig_Family {
+.Name,
+.Rig_Family {
   grid-area: ParameterName;
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-} 
+}
 
-.Rig_Family_Description,.Description {
+.Rig_Family_Description,
+.Description {
   grid-area: RigFamilyDescription;
   flex-grow: 2;
   overflow-y: auto;
   overflow-x: hidden;
 }
-.Expandable-Left div{
+.Expandable-Left div {
   width: 100%;
 }
 .Expandable-Right {
@@ -223,3 +227,25 @@ tr.Active-Row .Table-Arrow {
   grid-area: Images;
 }
 
+.Expandable-Save {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.Expandable-Save svg {
+  height: 2.5rem;
+  width: 2.5rem;
+  cursor: pointer;
+  fill: var(--Highlight-Default);
+}
+.Expandable-Save svg:hover {
+  fill: var(--Highlight-Hover);
+}
+.Expandable-Save.active {
+  display: block;
+}
