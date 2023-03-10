@@ -96,8 +96,8 @@ interface NewParameter {
     description?: string;
     url: string;
   } | null;
-  created_by?: number | null;
-  modified_by?: number | null;
+  created_by?: string | null;
+  modified_by?: string | null;
   creation_date?: Date | null;
   modified_date?: Date | null;
 }
@@ -356,8 +356,8 @@ export const updateParameter = async (
         parameter.decimals || null,
         parameter.min || null,
         parameter.max || null,
-        parameter.creation_date || null,
-        parameter.modified_date || null,
+        new Date(parameter.creation_date) || null,
+        new Date(parameter.modified_date) || null,
         parameter.comment || null,
         parameter.created_by || null,
         parameter.modified_by || null,
