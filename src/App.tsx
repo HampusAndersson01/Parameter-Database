@@ -5,6 +5,8 @@ import ParameterTable, { TableRowProps } from "./components/ParameterTable";
 import Toolbar from "./components/Toolbar";
 import { DebugContext } from "./context/DebugContext";
 import { EditModeContext } from "./context/EditModeContext";
+import { RigFamiliesContext } from "./context/RigFamiliesContext";
+import { rigFamilyModel } from "./models/RigFamily";
 
 type dataModel = {
   id: number;
@@ -28,19 +30,13 @@ type dataModel = {
   image_urls: string | null;
 }[];
 
-type rigFamilyModel = {
-  id: number;
-  name: string;
-  description: string | null;
-}[];
 
 function App() {
   const [data, setData] = useState<dataModel>([]);
   const [filteredData, setFilteredData] = useState<dataModel>([]);
-  const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
-
+  const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
 
   // variable to store the search strings for the different fields
   const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
@@ -145,9 +141,6 @@ function App() {
       });
     });
   }
-  
-  
-
 
   function handleValueChange(value: string, field: string) {
     setSearchStrings({ ...searchStrings, [field]: value });
@@ -159,6 +152,7 @@ function App() {
   return (
     <DebugContext.Provider value={{ debugMode, setDebugMode}}>
       <EditModeContext.Provider value={{ editMode, setEditMode}}>
+        <RigFamiliesContext.Provider value={{ rigFamilies, setRigFamilies}}>
       <div className="App">
         <header className="App-header">
           {/* Toolbar */}
@@ -214,8 +208,9 @@ function App() {
             Search
           </button>
         </header>
-        <ParameterTable rows={updateRows(filteredData)} rigFamilies={rigFamilies.map((row) => row.name)} />
+        <ParameterTable rows={updateRows(filteredData)} />
       </div>
+      </RigFamiliesContext.Provider>
       </EditModeContext.Provider>
     </DebugContext.Provider>
   );

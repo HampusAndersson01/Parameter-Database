@@ -5,6 +5,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { RigFamiliesContext } from "../context/RigFamiliesContext";
+
 
 
 function StyledBoxWLabel(props: {
@@ -13,13 +15,15 @@ function StyledBoxWLabel(props: {
   data?: any | null;
   html?: any;
   editable?: boolean;
-  options?: string[];
+  options?: any[];
   onChange: any;
+  currentIndexOut?: ((index: number) => void);
   iterable?: boolean;
 }) {
   const { editMode } = useContext(EditModeContext);
   const [value, setValue] = useState(props.data);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIdx, setCurrentIdx] = useState<number>(0);
+  const { rigFamilies } = useContext(RigFamiliesContext);
 
   useEffect(() => {
     if (props.data !== undefined && props.data !== null) {
@@ -31,6 +35,7 @@ function StyledBoxWLabel(props: {
 
   useEffect(() => {
     props.onChange(value);
+  
   }, [value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,44 +45,86 @@ function StyledBoxWLabel(props: {
     event: React.ChangeEvent<HTMLSelectElement> | undefined,
     index?: number
   ) => {
+    console.log("handleSelect");
+    console.log("index: " + index);
     if (index !== undefined && event !== undefined) {
+      
       if (Array.isArray(value)) {
         let temp = value;
+        console.log("before: " + temp);
         temp[index] = event.target.value;
         setValue(temp);
+        console.log("after: " + temp);
       } else {
         setValue(event.target.value);
       }
+      
+      handleSetCurrentIndex(currentIdx);
+    }else if(event !== undefined){
+      setValue([event.target.value]);
     }
+    
   };
 
-  const handleNextOption = () => {
-    if (currentIndex < value.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+  const handleSetCurrentIndex = (index: number) => {
+    console.log("handleSetCurrentIndex");
+    console.log("index: " + index);
+    if (props.currentIndexOut){
+      props.currentIndexOut(index);
     }
   }
+
+  const handleNextOption = () => {
+    if (value[currentIdx] !== "" && value[currentIdx] !== undefined && value[currentIdx] !== null) {
+    if (currentIdx < value.length - 1) {
+      handleSetCurrentIndex(currentIdx + 1);
+      setCurrentIdx(currentIdx + 1);
+    }
+  }else{
+    alert("Please select a value or remove the option");
+  }
+}
   const handlePreviousOption = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+    if (value[currentIdx] !== "" && value[currentIdx] !== undefined && value[currentIdx] !== null) {
+      if (currentIdx > 0) {
+        handleSetCurrentIndex(currentIdx - 1);
+        setCurrentIdx(currentIdx - 1);
+      }
+    }else{
+      alert("Please select a value or remove the option");
     }
   }
   const handleAddOption = () => {
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && value[value.length - 1] !== "") {
       let temp = value;
       temp.push("");
       setValue(temp);
-      setCurrentIndex(temp.length - 1);
+      setCurrentIdx(temp.length - 1);
+      handleSetCurrentIndex(-1);
     }
   }
 
   const handleRemoveOption = () => {
     if (Array.isArray(value)) {
       let temp = value;
-      temp.splice(currentIndex, 1);
+      console.log("Before: " + value);
+      temp.splice(currentIdx, 1);
+      console.log("After: " + temp);
       setValue(temp);
-      if (currentIndex > 0) {
-        setCurrentIndex(currentIndex - 1);
+      if (currentIdx === 0){
+        
+        setCurrentIdx(0);
+        if (temp.length > 0){
+          handleSetCurrentIndex(0);
+        }else{
+          handleSetCurrentIndex(-1);
+        }
+      }else{
+        setCurrentIdx(currentIdx - 1);
+        handleSetCurrentIndex(currentIdx - 1);
       }
+
+
     }
   }
 
@@ -115,17 +162,18 @@ function StyledBoxWLabel(props: {
                           <select
                             defaultValue={val}
                             className={
-                              index === currentIndex
+                              index === currentIdx
                                 ? "styledBoxWLabelData active"
                                 : "styledBoxWLabelData"
                             }
+                            value={val}
                             onChange={(event) => handleSelect(event, index)}
                           >
                             {/* Map over the options prop to create the select options */}
-                            <option value=""></option>
+                            <option key="-1" value=""></option>
                             {props.options !== undefined ? (
-                              props.options.map((option, index) => {
-                                return <option key={index}>{option}</option>;
+                              rigFamilies.map((option, index) => {
+                                return <option key={index} value={option.name}>{option.name}</option>;
                               })
                             ) : (
                               <></>
@@ -138,11 +186,12 @@ function StyledBoxWLabel(props: {
                         defaultValue={value}
                         className="styledBoxWLabelData active"
                         onChange={handleSelect}
+                        value={value}
                       >
                         {/* Map over the options prop to create the select options */}
-                        <option value=""></option>
-                        {props.options.map((option, index) => {
-                          return <option key={index}>{option}</option>;
+                        <option key="-1" value=""></option>
+                        {rigFamilies.map((option, index) => {
+                            return <option key={index} value={option.name}>{option.name}</option>;
                         })}
                       </select>
                     )
@@ -153,7 +202,7 @@ function StyledBoxWLabel(props: {
                       return (
                         <input
                         className={
-                          index === currentIndex
+                          index === currentIdx
                             ? "styledBoxWLabelData active"
                             : "styledBoxWLabelData"
                         }

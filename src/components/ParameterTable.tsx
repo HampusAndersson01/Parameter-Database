@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./style/ParameterTable.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
@@ -34,7 +33,6 @@ export interface TableRowProps {
 
 function ParameterTable(props: {
   rows: TableRowProps[];
-  rigFamilies: string[];
 }) {
   const { debugMode } = useContext(DebugContext);
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,7 +121,6 @@ function ParameterTable(props: {
               </tr>
               <ExpandedData
                 row={row}
-                rigFamilies={props.rigFamilies}
                 isExpanded={expandedRows.includes(row.id)}
               ></ExpandedData>
             </>
