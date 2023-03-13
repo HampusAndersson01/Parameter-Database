@@ -7,6 +7,7 @@ import { TableRowProps } from "./ParameterTable";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { RigFamiliesContext } from "../context/RigFamiliesContext";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface UpdateParameter {
   name: string;
@@ -171,6 +172,13 @@ function ExpandedData(props: {
     }
   };
 
+  const handleDelete = () => {
+    const result = window.confirm("Are you sure you want to delete?");
+    if (result) {
+      //TODO: Delete from database
+      // delete request to delete parameter
+    }
+  };
 
   return (
     <>
@@ -181,14 +189,19 @@ function ExpandedData(props: {
         }
       >
         <td colSpan={9}>
-          <div className="Expandable-Area">
+          <div className={ editMode ? "Expandable-Area editing" : "Expandable-Area"}>
+            <div className="expandableAreaToolbar">
             <div
-              className={
-                editMode ? "Expandable-Save active" : "Expandable-Save"
-              }
+              className="Expandable-Save"
               onClick={handleSave}
             >
               <SaveIcon></SaveIcon>
+            </div>
+            <div 
+            className="Expandable-Delete"
+            onClick={handleDelete}>
+              <DeleteIcon></DeleteIcon>
+            </div>
             </div>
 
             <div className="Expandable-Left">
