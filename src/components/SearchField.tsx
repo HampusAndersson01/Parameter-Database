@@ -120,6 +120,7 @@ function SearchField(props: {
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
+          autoComplete="off"
         ></input>
         <div className={searchValue !== "" ? "clearIcon show" : "clearIcon"}>
           <ClearIcon onClick={handleClear}></ClearIcon>
