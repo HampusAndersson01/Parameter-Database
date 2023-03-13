@@ -189,6 +189,8 @@ function ExpandedData(props: {
                 onChange={(value: any) => {
                   handleValueChange(value, "rigfamily_name");
                 }}
+                
+                iterable={true}
               ></StyledBoxWLabel>
               <StyledBoxWLabel
                 id={props.row.id}

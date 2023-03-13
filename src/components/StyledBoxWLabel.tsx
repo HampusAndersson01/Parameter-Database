@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style/StyledBoxWLabel.css";
 import { EditModeContext } from "../context/EditModeContext";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
 
 function StyledBoxWLabel(props: {
   id: number;
@@ -10,9 +15,11 @@ function StyledBoxWLabel(props: {
   editable?: boolean;
   options?: string[];
   onChange: any;
+  iterable?: boolean;
 }) {
   const { editMode } = useContext(EditModeContext);
   const [value, setValue] = useState(props.data);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (props.data !== undefined && props.data !== null) {
@@ -44,6 +51,36 @@ function StyledBoxWLabel(props: {
     }
   };
 
+  const handleNextOption = () => {
+    if (currentIndex < value.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  }
+  const handlePreviousOption = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  }
+  const handleAddOption = () => {
+    if (Array.isArray(value)) {
+      let temp = value;
+      temp.push("");
+      setValue(temp);
+      setCurrentIndex(temp.length - 1);
+    }
+  }
+
+  const handleRemoveOption = () => {
+    if (Array.isArray(value)) {
+      let temp = value;
+      temp.splice(currentIndex, 1);
+      setValue(temp);
+      if (currentIndex > 0) {
+        setCurrentIndex(currentIndex - 1);
+      }
+    }
+  }
+
   return (
     <>
       <div
@@ -56,6 +93,14 @@ function StyledBoxWLabel(props: {
             <>{props.html ? props.html : <></>}</>
           ) : (
             <>
+              {props.iterable ? (
+                <div className="controlContainer">
+                <legend className={editMode ? "controls" : "controls hidden"} onClick={handleRemoveOption}><RemoveIcon></RemoveIcon></legend>
+                <legend className={editMode ? "controls" : "controls hidden"} onClick={handleAddOption}><AddIcon></AddIcon></legend>
+                <legend className="controls" onClick={handlePreviousOption}><ArrowBackIcon></ArrowBackIcon></legend>
+                <legend className="controls" onClick={handleNextOption}><ArrowForwardIcon></ArrowForwardIcon></legend>
+                </div>
+                ) : <></>}
               {props.options ? (
                 // Render a select element if the options prop exists
                 <>
@@ -63,12 +108,14 @@ function StyledBoxWLabel(props: {
                     // If in edit mode, render the select element with options
                     // if value is array, render multiple select elements
                     Array.isArray(value) && value.length > 0 ? (
+                      
+
                       value.map((val, index) => {
                         return (
                           <select
                             defaultValue={val}
                             className={
-                              index === 0
+                              index === currentIndex
                                 ? "styledBoxWLabelData active"
                                 : "styledBoxWLabelData"
                             }
@@ -89,7 +136,7 @@ function StyledBoxWLabel(props: {
                     ) : (
                       <select
                         defaultValue={value}
-                        className="styledBoxWLabelData"
+                        className="styledBoxWLabelData active"
                         onChange={handleSelect}
                       >
                         {/* Map over the options prop to create the select options */}
@@ -105,11 +152,11 @@ function StyledBoxWLabel(props: {
                     value.map((val, index) => {
                       return (
                         <input
-                          className={
-                            index === 0
-                              ? "styledBoxWLabelData active"
-                              : "styledBoxWLabelData"
-                          }
+                        className={
+                          index === currentIndex
+                            ? "styledBoxWLabelData active"
+                            : "styledBoxWLabelData"
+                        }
                           value={val}
                           readOnly
                         ></input>
@@ -118,7 +165,7 @@ function StyledBoxWLabel(props: {
                   ) : (
                     <>
                       <input
-                        className="styledBoxWLabelData"
+                        className="styledBoxWLabelData active"
                         value={value}
                         readOnly
                       ></input>
@@ -130,7 +177,7 @@ function StyledBoxWLabel(props: {
               ) : (
                 // If the options prop doesn't exist, render a regular input element
                 <input
-                  className="styledBoxWLabelData"
+                  className="styledBoxWLabelData active"
                   value={value}
                   readOnly={props.editable ? !editMode : true}
                   onChange={handleChange}
