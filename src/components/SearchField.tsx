@@ -12,7 +12,7 @@ function SearchField(props: {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
   useEffect(() => {
     props.onChange(searchValue);
