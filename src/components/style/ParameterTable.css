@@ -87,11 +87,18 @@ tbody tr {
   width: 100%;
   display: grid;
   grid-template-columns: 20% 80%;
-  grid-template-rows: 1fr;
+  grid-template-rows: 8fr;
   gap: 0px 0px;
   grid-template-areas: "Expandable-Left Expandable-Right";
   position: relative;
 }
+.Expandable-Area.editing{
+  height: calc(var(--Row-Height) * 10 + 2rem);
+  grid-template-rows: 2rem 8fr;
+  grid-template-areas: "toolbar toolbar"
+  "Expandable-Left Expandable-Right";
+}
+
 .Expandable-Left {
   display: flex;
   flex-grow: 1;
@@ -137,6 +144,7 @@ tbody tr {
     "ParameterType ParameterComment ParameterPossibleValues Images";
   grid-area: Expandable-Right;
 }
+
 .Images-Container {
   height: 100%;
   width: 20vw;
@@ -227,26 +235,39 @@ tbody tr {
 .Images {
   grid-area: Images;
 }
-
-.Expandable-Save {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-
+.expandableAreaToolbar {
   display: none;
-  width: 2.5rem;
-  height: 2.5rem;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  grid-area: toolbar;
+  background-color: var(--Dark_Blue);
+  border-radius: 0 0 0.5rem 0.5rem;
+  padding: 0 1rem;
 }
-.Expandable-Save svg {
-  height: 2.5rem;
-  width: 2.5rem;
+.Expandable-Area.editing .expandableAreaToolbar {
+  display: flex;
+}
+
+.Expandable-Save,.Expandable-Delete {
+  z-index: 1;
+  display: block;
+  height: 100%;
+  width: min-content;
+  margin: 0 0.5rem;
+}
+.Expandable-Save svg,.Expandable-Delete svg {
+  height: 100%;
+  width: min-content;
   cursor: pointer;
-  fill: var(--Highlight-Default);
+  fill: var(--White);
 }
 .Expandable-Save svg:hover {
   fill: var(--Highlight-Hover);
 }
-.Expandable-Save.active {
-  display: block;
+.Expandable-Delete svg:hover{
+  fill: var(--Error-Default);
 }
+
+
