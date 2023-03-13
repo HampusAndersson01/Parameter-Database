@@ -56,19 +56,20 @@ tbody tr {
 #TableRig {
   width: 10ch;
 }
-.Table-Arrow {
+.tableArrow {
   transition: transform 0.2s ease-in-out;
   padding: 0;
 }
-.Table-Arrow:hover {
+.tableArrow:hover {
   cursor: pointer;
 }
-.Table-Arrow svg {
+.tableArrow svg {
   height: 30px;
   width: 30px;
   fill: var(--Grey600);
+  
 }
-tr.Active-Row .Table-Arrow {
+.tableArrow.expanded{
   transform: scale(1, -1);
   transition: transform 0.2s ease-in-out;
 }

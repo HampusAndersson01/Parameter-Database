@@ -37,8 +37,6 @@ function ParameterTable(props: {
   rigFamilies: string[];
 }) {
   const { debugMode } = useContext(DebugContext);
-  const { editMode } = useContext(EditModeContext);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [allDataLoaded, setAllDataLoaded] = useState(false);
@@ -108,7 +106,7 @@ function ParameterTable(props: {
                 key={row.id}
                 onClick={(event) => HandleClickParameter(event, row.id)}
               >
-                <td className="Table-Arrow">
+                <td className={expandedRows.includes(row.id) ? "tableArrow expanded" : "tableArrow"}>
                   <ExpandMoreIcon></ExpandMoreIcon>
                 </td>
                 <td>
