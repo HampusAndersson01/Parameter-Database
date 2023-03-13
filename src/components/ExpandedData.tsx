@@ -6,6 +6,7 @@ import StyledBoxWLabel from "./StyledBoxWLabel";
 import { TableRowProps } from "./ParameterTable";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
+import { RigFamiliesContext } from "../context/RigFamiliesContext";
 
 interface UpdateParameter {
   name: string;
@@ -34,9 +35,10 @@ interface UpdateParameter {
   };
 }
 
+
+
 function ExpandedData(props: {
   row: TableRowProps;
-  rigFamilies: string[];
   isExpanded: boolean;
 }) {
   const [currentImage, setCurrentImage] = useState<number>(0);
@@ -60,6 +62,8 @@ function ExpandedData(props: {
     comment: props.row.comment,
   });
   const { editMode } = useContext(EditModeContext);
+  const { rigFamilies } = useContext(RigFamiliesContext);
+  const [currentRigFamily, setCurrentRigFamily] = useState<string>("");
 
   const HandlePrevButton = (event: any, id: number) => {
     // decrease this id currentImage
@@ -80,6 +84,32 @@ function ExpandedData(props: {
       return { ...prevState, [key]: value };
     });
   };
+
+  const handleRigFamilyChange = (value: any) => {
+    //Set rigfamily description based on rigfamily name
+    console.log("handleRigFamilyChange", value);
+    if (value < 0 || parameter.rigfamily_name[value] === "") {
+      setCurrentRigFamily("");
+      return;
+    }else if (rigFamilies) {
+      parameter.rigfamily_name.forEach((rigFamilyName: string, index: number) => {
+        rigFamilies.forEach((rigFamily: any) => {
+          if (rigFamily.name === rigFamilyName && index === value) {
+            setCurrentRigFamily(rigFamily.description);
+          }
+          }
+        );
+        });
+      }
+    };
+
+
+  useEffect(() => {
+    //Set rigfamily description based on rigfamily name
+    handleRigFamilyChange(0);
+  }, [parameter.rigfamily_name]);
+
+ 
 
   const handleSave = () => {
     const result = window.confirm("Are you sure you want to save?");
@@ -141,6 +171,7 @@ function ExpandedData(props: {
     }
   };
 
+
   return (
     <>
       <tr
@@ -185,19 +216,33 @@ function ExpandedData(props: {
                 label="Rig Family"
                 data={props.row.rigfamily_name}
                 editable={true}
-                options={props.rigFamilies}
+                // add rig family names to rigFamilyModel
+                options={rigFamilies.map((rigFamily) => {rigFamily.name})}
                 onChange={(value: any) => {
                   handleValueChange(value, "rigfamily_name");
                 }}
+                
+                currentIndexOut={(currentIndex: number) => {
+                  handleRigFamilyChange(currentIndex);
+                }}
+                iterable={true}
               ></StyledBoxWLabel>
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Rig Family Description"
-                data={props.row.rigfamily_description}
+                html={<>
+                  
+                      <input
+                  className="styledBoxWLabelData active"
+                  value={currentRigFamily}
+                  readOnly={true}
+                />
+                  </>}
                 editable={false}
                 onChange={(value: any) => {
                   handleValueChange(value, "rigfamily_description");
                 }}
+
               ></StyledBoxWLabel>
             </div>
             <div className="Expandable-Right">
