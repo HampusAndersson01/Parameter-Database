@@ -1,9 +1,10 @@
 .toolbarContainer {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: min-content;
+  z-index: 2;
 }
 
 .toolbar {
@@ -12,7 +13,7 @@
   justify-content: flex-start;
   width: 100%;
   height: var(--Toolbar-Height);
-  position: absolute;
+  position: fixed;
   top: calc(5px - var(--Toolbar-Height));
   left: 0;
   background-color: var(--Dark_Blue);
