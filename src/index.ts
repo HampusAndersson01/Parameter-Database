@@ -2,6 +2,7 @@ import express from "express";
 import mysql from "mysql2/promise";
 import parameterRoutes from "./routes/parameters";
 import rigfamiliesRoutes from "./routes/rigfamilies";
+import unitsRoutes from "./routes/units";
 
 const bodyParser = require("body-parser");
 
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/parameters", parameterRoutes);
 app.use("/rigfamilies", rigfamiliesRoutes);
+app.use("/units", unitsRoutes);
 
 // Start the server
 app.listen(3000, () => {
