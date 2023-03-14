@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./App.css";
 import SearchField from "./components/SearchField";
 import ParameterTable, { TableRowProps } from "./components/ParameterTable";
@@ -7,6 +7,7 @@ import { DebugContext } from "./context/DebugContext";
 import { EditModeContext } from "./context/EditModeContext";
 import { RigFamiliesContext } from "./context/RigFamiliesContext";
 import { rigFamilyModel } from "./models/RigFamily";
+import { APIContext } from "./context/APIContext";
 
 type dataModel = {
   id: number;
@@ -37,6 +38,8 @@ function App() {
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
+  const { hostname } = useContext(APIContext);
+
 
   // variable to store the search strings for the different fields
   const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
@@ -44,12 +47,12 @@ function App() {
   );
 
   useEffect(() => {
-    fetch("http://localhost:3000/parameters")
+    fetch(hostname+"parameters")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.log(error))
       .finally(() => console.log("data loaded"));
-    fetch("http://localhost:3000/rigfamilies")
+    fetch(hostname+"rigfamilies")
       .then((response) => response.json())
       .then((data) => setRigFamilies(data))
       .catch((error) => console.log(error))

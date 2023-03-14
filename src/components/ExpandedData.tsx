@@ -8,6 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { RigFamiliesContext } from "../context/RigFamiliesContext";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { APIContext } from "../context/APIContext";
 
 interface UpdateParameter {
   name: string;
@@ -27,7 +28,6 @@ interface UpdateParameter {
   };
   rigfamily: {
     name: string | null;
-    description: string | null;
   };
   images: {
     name: string | null;
@@ -65,6 +65,7 @@ function ExpandedData(props: {
   const { editMode } = useContext(EditModeContext);
   const { rigFamilies } = useContext(RigFamiliesContext);
   const [currentRigFamily, setCurrentRigFamily] = useState<string>("");
+  const { hostname } = useContext(APIContext);
 
   const HandlePrevButton = (event: any, id: number) => {
     // decrease this id currentImage
@@ -116,6 +117,8 @@ function ExpandedData(props: {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
       // TODO: Save to database
+      console.log(parameter)
+      console.log(parameter.rigfamily_description)
 
       let updatedParameter: UpdateParameter = {
         name: parameter.name,
@@ -135,7 +138,7 @@ function ExpandedData(props: {
         },
         rigfamily: {
           name: parameter.rigfamily_name.join(";"),
-          description: parameter.rigfamily_description.join(";"),
+          
         },
         images: {
           name: parameter.images
@@ -151,33 +154,43 @@ function ExpandedData(props: {
       };
       console.log(updatedParameter, props.row.id);
       // put request to update parameter
-      const fetchData = async () => {
+      const setData = async () => {
         try {
-          await fetch(`http://localhost:3000/parameters/${props.row.id}`, {
+          await fetch(hostname+`parameters/${props.row.id}`, {
             method: "PUT",
             headers: {
-              //Allowing CORS
               "Content-Type": "application/json",
             },
             body: JSON.stringify(updatedParameter),
           })
             .catch((error) => console.log(error))
-            .finally(() => console.log("data loaded"));
+            .finally(() => console.log(props.row.id + " Updated"));
           console.log(result);
         } catch (error) {
           console.error(error);
         }
       };
-      fetchData();
+      setData();
     }
   };
 
   const handleDelete = () => {
     const result = window.confirm("Are you sure you want to delete?");
     if (result) {
-      //TODO: Delete from database
-      // delete request to delete parameter
+      const deleteData = async () => {
+        try {
+          await fetch(hostname+`parameters/${props.row.id}`, {
+            method: "DELETE"})
+            .catch((error) => console.log(error))
+            .finally(() => console.log(props.row.id + " Deleted"));
+
+    } catch (error) {
+      console.error(error);
     }
+  };
+    deleteData();
+    
+  };
   };
 
   return (
