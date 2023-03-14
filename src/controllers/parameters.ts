@@ -389,8 +389,20 @@ export const deleteParameter = async (
   next: NextFunction
 ) => {
   try {
+    //FIXME: Cannot delete or update a parent row: a foreign key constraint fails (`parameter db`.`images`, CONSTRAINT `fk_images_parameters` FOREIGN KEY (`parameter_id`) REFERENCES `parameters` (`id`))
+    
+    // Delete images
+    await pool.query(`DELETE FROM images WHERE parameter_id = ?`, [
+      req.params.id,
+    ]);
+    // Delete parameter_rigfamily
+    await pool.query(`DELETE FROM parameter_rigfamily WHERE parameter_id = ?`, [
+      req.params.id,
+    ]);
+    // Delete parameter
+
     const [rows, fields] = await pool.query(
-      "DELETE FROM parameter WHERE id = ?",
+      "DELETE FROM parameters WHERE id = ?",
       [req.params.id]
     );
     res.json(rows);
