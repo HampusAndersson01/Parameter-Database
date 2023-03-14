@@ -3,11 +3,15 @@ import "./App.css";
 import SearchField from "./components/SearchField";
 import ParameterTable, { TableRowProps } from "./components/ParameterTable";
 import Toolbar from "./components/Toolbar";
+import ParameterForm from "./components/ParameterForm";
+
 import { DebugContext } from "./context/DebugContext";
 import { EditModeContext } from "./context/EditModeContext";
 import { RigFamiliesContext } from "./context/RigFamiliesContext";
 import { rigFamilyModel } from "./models/RigFamily";
-import { APIContext } from "./context/APIContext";
+import { APIContext } from "./context/ApiContext";
+import { CreatingParameterContext } from "./context/CreatingParameterContext";
+
 
 type dataModel = {
   id: number;
@@ -39,6 +43,7 @@ function App() {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
   const { hostname } = useContext(APIContext);
+  const [creatingParameter, setCreatingParameter] = useState<boolean>(true);
 
 
   // variable to store the search strings for the different fields
@@ -156,6 +161,8 @@ function App() {
     <DebugContext.Provider value={{ debugMode, setDebugMode}}>
       <EditModeContext.Provider value={{ editMode, setEditMode}}>
         <RigFamiliesContext.Provider value={{ rigFamilies, setRigFamilies}}>
+          <APIContext.Provider value={{ hostname}}>
+            <CreatingParameterContext.Provider value={{ creatingParameter, setCreatingParameter}}>
       <div className="App">
         <header className="App-header">
           {/* Toolbar */}
@@ -212,7 +219,10 @@ function App() {
           </button>
         </header>
         <ParameterTable rows={updateRows(filteredData)} />
+        <ParameterForm data={updateRows(filteredData)}></ParameterForm>
       </div>
+      </CreatingParameterContext.Provider>
+      </APIContext.Provider>
       </RigFamiliesContext.Provider>
       </EditModeContext.Provider>
     </DebugContext.Provider>

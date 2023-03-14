@@ -8,7 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { RigFamiliesContext } from "../context/RigFamiliesContext";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { APIContext } from "../context/APIContext";
+import { APIContext } from "../context/ApiContext";
 
 interface UpdateParameter {
   name: string;
