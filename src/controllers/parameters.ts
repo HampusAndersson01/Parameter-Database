@@ -96,8 +96,8 @@ interface NewParameter {
     description?: string;
     url: string;
   } | null;
-  created_by?: number | null;
-  modified_by?: number | null;
+  created_by?: string | null;
+  modified_by?: string | null;
   creation_date?: Date | null;
   modified_date?: Date | null;
 }
@@ -356,8 +356,8 @@ export const updateParameter = async (
         parameter.decimals || null,
         parameter.min || null,
         parameter.max || null,
-        parameter.creation_date || null,
-        parameter.modified_date || null,
+        new Date(parameter.creation_date) || null,
+        new Date(parameter.modified_date) || null,
         parameter.comment || null,
         parameter.created_by || null,
         parameter.modified_by || null,
@@ -389,8 +389,20 @@ export const deleteParameter = async (
   next: NextFunction
 ) => {
   try {
+    //FIXME: Cannot delete or update a parent row: a foreign key constraint fails (`parameter db`.`images`, CONSTRAINT `fk_images_parameters` FOREIGN KEY (`parameter_id`) REFERENCES `parameters` (`id`))
+    
+    // Delete images
+    await pool.query(`DELETE FROM images WHERE parameter_id = ?`, [
+      req.params.id,
+    ]);
+    // Delete parameter_rigfamily
+    await pool.query(`DELETE FROM parameter_rigfamily WHERE parameter_id = ?`, [
+      req.params.id,
+    ]);
+    // Delete parameter
+
     const [rows, fields] = await pool.query(
-      "DELETE FROM parameter WHERE id = ?",
+      "DELETE FROM parameters WHERE id = ?",
       [req.params.id]
     );
     res.json(rows);
