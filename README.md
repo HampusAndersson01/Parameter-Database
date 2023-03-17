@@ -1,3 +1,12 @@
+# Development
+
+### Run server in development mode
+
+```bash
+npm run dev
+```
+
+
 # Endpoints
 
 <!-- router.get('/', controller.getParameters);
