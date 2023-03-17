@@ -5,6 +5,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
+import { CreatingParameterContext } from "../context/CreatingParameterContext";
 
 function Toolbar(props: any) {
   const [isToolbarExpanded, setIsToolbarExpanded] = useState<boolean>(false);
@@ -14,6 +15,7 @@ function Toolbar(props: any) {
   const ref = useRef<HTMLDivElement>(null);
   const { debugMode, setDebugMode } = useContext(DebugContext);
   const { editMode, setEditMode } = useContext(EditModeContext);
+  const { creatingParameter, setCreatingParameter } = useContext(CreatingParameterContext);
 
   const handleClickButton = () => {
     setIsToolbarExpanded(!isToolbarExpanded);
@@ -65,7 +67,13 @@ function Toolbar(props: any) {
     useState<string>("");
 
   const handleItemClick = (value: string) => {
-    setSelectedToolbarButton(value);
+    if (value === "create new parameter") {
+      setCreatingParameter(true);
+    } else{
+      setSelectedToolbarButton(value);
+      return;
+    }
+    
   };
 
   return (
@@ -172,15 +180,6 @@ function Toolbar(props: any) {
               <li onClick={() => handleItemClick("importparameters")}>
                 Import new parameter(s) from Excel
               </li>
-            </ul>
-            <ul
-              className={
-                selectedToolbarButton === "create new parameter"
-                  ? "itemsSecondary open"
-                  : "itemsSecondary"
-              }
-            >
-              <li onClick={() => handleItemClick("")}>Back</li>
             </ul>
             <ul
               className={
