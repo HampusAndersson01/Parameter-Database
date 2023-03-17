@@ -68,5 +68,55 @@
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+
+
+.parameterFormBody fieldset{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: auto;
+}
+.parameterFormBody input{
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    border: inset 2px var(--Grey200) ;
+}
+
+.unitContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    border: inset 2px var(--Grey200) ;
+    background-color: var(--Highlight-Default);
+}
+
+.unitContainer select{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.unitContainer select:focus-visible{
+    outline: none;
+}
+.addUnit{
+    color: var(--White);
+    cursor: pointer;
+}
+.unitContainer:not(:last-child) .addUnit{
+    visibility: hidden;
+}
+.addUnit:hover > .unitContainer {
+    background-color: var(--Highlight-Hover);
+
+}
+
+.unitsContainer{
 }

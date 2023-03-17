@@ -96,15 +96,15 @@ function ParameterForm(props: {
               <legend>Description</legend>
               <input type="text" {...register("description")} />
             </fieldset>
-            <fieldset>
+            <fieldset className="unitsContainer">
               <legend>Unit</legend>
-              {selectedUnits.map((row,index) => (<>
+              {selectedUnits.map((row,index) => (<div className="unitContainer">
               <select {...register("unit.name", { required: true })} onChange={() => (handleUnitChange(event,index)) }>
                 <option value=""></option>
                 {Units ? Units.map((row) => (row.name ? <option value={row.name}>{row.name}</option> : null)): null}
               </select>
               <AddIcon className="addUnit" onClick={handleAddUnit}></AddIcon>
-            </>))}
+            </div>))}
             </fieldset>
 
 
