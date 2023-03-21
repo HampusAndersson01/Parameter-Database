@@ -56,6 +56,35 @@ tbody tr {
 #TableRig {
   width: 10ch;
 }
+.reloadButton{
+  cursor: pointer;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.reloadButton path{
+  
+}
+.reloadButton:hover path, .reloadButton.reloading path{
+  color: var(--Highlight-Hover);
+  animation-name: spin;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+  
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 .tableArrow {
   transition: transform 0.2s ease-in-out;
   padding: 0;

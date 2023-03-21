@@ -13,6 +13,7 @@ import { APIContext } from "./context/ApiContext";
 import { CreatingParameterContext } from "./context/CreatingParameterContext";
 import { unitModel } from "./models/Unit";
 import { datatypeModel } from "./models/Datatype";
+import { PendingReloadContext } from "./context/PendingReloadContext";
 
 
 type dataModel = {
@@ -48,6 +49,8 @@ function App() {
   const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);
   const [creatingParameter, setCreatingParameter] = useState<boolean>(false);
+  
+  const [pendingReload, setPendingReload] = useState<boolean>(true);
 
 
   // variable to store the search strings for the different fields
@@ -56,6 +59,7 @@ function App() {
   );
 
   useEffect(() => {
+    if(pendingReload){
     fetch(hostname+"parameters")
       .then((response) => response.json())
       .then((data) => setData(data))
@@ -73,7 +77,12 @@ function App() {
       .then((data) => setUnits(data))
       .catch((error) => console.log(error))
       .finally(() => console.log("units loaded"));
-  }, []);
+    // wait 1s
+    setTimeout(() => {
+      setPendingReload(false);
+    }, 1000);
+    }
+  }, [pendingReload]);
 
   useEffect(() => {
     // Set the data types from the data unique values
@@ -179,6 +188,7 @@ function App() {
   return (
     <DebugContext.Provider value={{ debugMode, setDebugMode}}>
       <EditModeContext.Provider value={{ editMode, setEditMode}}>
+        <PendingReloadContext.Provider value={{ pendingReload, setPendingReload}}>
         <DataContext.Provider value={{ rigFamilies, setRigFamilies , units, setUnits, dataTypes, setDataTypes}}>
           <APIContext.Provider value={{ hostname}}>
             <CreatingParameterContext.Provider value={{ creatingParameter, setCreatingParameter}}>
@@ -243,6 +253,7 @@ function App() {
       </CreatingParameterContext.Provider>
       </APIContext.Provider>
       </DataContext.Provider>
+      </PendingReloadContext.Provider>
       </EditModeContext.Provider>
     </DebugContext.Provider>
   );

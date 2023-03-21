@@ -9,6 +9,7 @@ import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { APIContext } from "../context/ApiContext";
+import { PendingReloadContext } from "../context/PendingReloadContext";
 
 interface UpdateParameter {
   name: string;
@@ -66,6 +67,7 @@ function ExpandedData(props: {
   const { rigFamilies } = useContext(DataContext);
   const [currentRigFamily, setCurrentRigFamily] = useState<string>("");
   const { hostname } = useContext(APIContext);
+  const { setPendingReload } = useContext(PendingReloadContext);
 
   const HandlePrevButton = (event: any, id: number) => {
     // decrease this id currentImage
@@ -183,7 +185,7 @@ function ExpandedData(props: {
             method: "DELETE"})
             .catch((error) => console.log(error))
             .finally(() => console.log(props.row.id + " Deleted"));
-
+          setPendingReload(true);
     } catch (error) {
       console.error(error);
     }
