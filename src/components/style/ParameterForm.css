@@ -22,11 +22,13 @@
     justify-content: flex-start;
     align-items: center;
     width: 80%;
-    height: 80%;
+    height: 90%;
     background-color: var(--Grey100);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    overflow-y:visible;
+    overflow-x:hidden;
 }
 
 .parameterFormHeader {
@@ -68,55 +70,135 @@
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: visible;
+    overflow-x:hidden;
 }
 
 
-.parameterFormBody fieldset{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-y: auto;
-}
-.parameterFormBody input{
+
+
+
+/* Form fieldsets */
+fieldset {
+    margin-bottom: 1rem;
+    border:none;
+    max-height: 200px;
+  }
+  
+  legend {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  /* Form inputs */
+  input[type="text"]:not(.imagesUrl, .imagesName, .imagesDescription),
+  input[type="number"],
+  select {
     width: 100%;
-    height: 50px;
-    margin-bottom: 10px;
-    border: inset 2px var(--Grey200) ;
-}
-
-.unitContainer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 50px;
-    margin-bottom: 10px;
-    border: inset 2px var(--Grey200) ;
-    background-color: var(--Highlight-Default);
-}
-
-.unitContainer select{
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-.unitContainer select:focus-visible{
-    outline: none;
-}
-.addUnit{
-    color: var(--White);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .imagesName, .imagesUrl, .imagesDescription{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Add icon */
+  .addSelect {
     cursor: pointer;
-}
-.unitContainer:not(:last-child) .addUnit{
-    visibility: hidden;
-}
-.addUnit:hover > .unitContainer {
+    font-size: 20px;
+    color: var(--Highlight-Default);
+  }
+  .addSelect:hover {
+    color: var(--Highlight-Hover);
+  }
+  /* Submit button */
+  .submitContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .submitBtn {
+    cursor: pointer;
+    background-color: var(--Highlight-Default);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .submitBtn:hover {
     background-color: var(--Highlight-Hover);
+  }
+  .scroll{
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
 
-}
+  .imagesUrl{
+    width: 70%;
+   
+    
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left: none;
+  }
+  .imagesName{
+    width: 30%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-right: 1px solid #ccc;
 
-.unitsContainer{
+  }
+  .selectWrapper{
+    position:relative;
+    margin-bottom: 0.5rem;
+  }
+  .imagesDescription{
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    width: 100%;
+  }
+  .deleteSelect{
+    cursor: pointer;
+    color: var(--Error-Default);
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    right: 0;
+  }
+  .deleteSelect.hidden{
+    display: none;
+  }
+
+@media screen and (min-width: 768px) {
+    /* Form inputs */
+    fieldset {
+        width: 100%;
+    }
+    .parameterFormBody form{
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-flow: row dense;
+    }
+    .submitBtn {
+        width: 50%;
+    }
+    .submitContainer {
+        grid-column: 1/-1;
+        display: flex;
+        justify-content: center;
+    }
 }
+    
+
+    
