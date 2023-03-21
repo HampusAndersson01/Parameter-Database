@@ -1,2 +1,0 @@
-- name: Parent Issue updater
-  uses: ribtoks/parent-issue-update@v0.4-beta
