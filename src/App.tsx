@@ -179,7 +179,7 @@ function App() {
   }
 
   function handleValueChange(value: string, field: string) {
-    setSearchStrings({ ...searchStrings, [field]: value });
+    setSearchStrings({ ...searchStrings, [field]: value.trim() });
   }
   function handleSearch() {
     setFilteredData(filterData(data));
