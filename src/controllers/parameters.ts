@@ -98,8 +98,8 @@ interface NewParameter {
   } | null;
   created_by?: string | null;
   modified_by?: string | null;
-  creation_date?: Date | null;
-  modified_date?: Date | null;
+  creation_date?: string | null;
+  modified_date?: string | null;
 }
 
 export const createParameters = async (req: Request, res: Response) => {
