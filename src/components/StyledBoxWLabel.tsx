@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { RigFamiliesContext } from "../context/RigFamiliesContext";
+import { DataContext } from "../context/DataContext";
 
 
 
@@ -23,7 +23,7 @@ function StyledBoxWLabel(props: {
   const { editMode } = useContext(EditModeContext);
   const [value, setValue] = useState(props.data);
   const [currentIdx, setCurrentIdx] = useState<number>(0);
-  const { rigFamilies } = useContext(RigFamiliesContext);
+  const { rigFamilies } = useContext(DataContext);
 
   useEffect(() => {
     if (props.data !== undefined && props.data !== null) {

@@ -6,7 +6,7 @@ import StyledBoxWLabel from "./StyledBoxWLabel";
 import { TableRowProps } from "./ParameterTable";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
-import { RigFamiliesContext } from "../context/RigFamiliesContext";
+import { DataContext } from "../context/DataContext";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { APIContext } from "../context/ApiContext";
 
@@ -63,7 +63,7 @@ function ExpandedData(props: {
     comment: props.row.comment,
   });
   const { editMode } = useContext(EditModeContext);
-  const { rigFamilies } = useContext(RigFamiliesContext);
+  const { rigFamilies } = useContext(DataContext);
   const [currentRigFamily, setCurrentRigFamily] = useState<string>("");
   const { hostname } = useContext(APIContext);
 

@@ -7,10 +7,12 @@ import ParameterForm from "./components/ParameterForm";
 
 import { DebugContext } from "./context/DebugContext";
 import { EditModeContext } from "./context/EditModeContext";
-import { RigFamiliesContext } from "./context/RigFamiliesContext";
+import { DataContext } from "./context/DataContext";
 import { rigFamilyModel } from "./models/RigFamily";
 import { APIContext } from "./context/ApiContext";
 import { CreatingParameterContext } from "./context/CreatingParameterContext";
+import { unitModel } from "./models/Unit";
+import { datatypeModel } from "./models/Datatype";
 
 
 type dataModel = {
@@ -42,6 +44,8 @@ function App() {
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
+  const [units, setUnits] = useState<unitModel>([]);
+  const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);
   const [creatingParameter, setCreatingParameter] = useState<boolean>(true);
 
@@ -56,15 +60,30 @@ function App() {
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.log(error))
-      .finally(() => console.log("data loaded"));
+      .finally(() => console.log("parameters loaded"));
+
     fetch(hostname+"rigfamilies")
       .then((response) => response.json())
       .then((data) => setRigFamilies(data))
       .catch((error) => console.log(error))
       .finally(() => console.log("rigfamilies loaded"));
+
+    fetch(hostname+"units")
+      .then((response) => response.json())
+      .then((data) => setUnits(data))
+      .catch((error) => console.log(error))
+      .finally(() => console.log("units loaded"));
   }, []);
 
   useEffect(() => {
+    // Set the data types from the data unique values
+    const dataTypes = data
+      .map((row) => row.datatype)
+      .filter((value, index, self) => self.indexOf(value) === index);
+    setDataTypes(dataTypes);
+
+
+    // Update the filtered data when the data changes
     setFilteredData(filterData((data)));
   }, [data]);
 
@@ -160,7 +179,7 @@ function App() {
   return (
     <DebugContext.Provider value={{ debugMode, setDebugMode}}>
       <EditModeContext.Provider value={{ editMode, setEditMode}}>
-        <RigFamiliesContext.Provider value={{ rigFamilies, setRigFamilies}}>
+        <DataContext.Provider value={{ rigFamilies, setRigFamilies , units, setUnits, dataTypes, setDataTypes}}>
           <APIContext.Provider value={{ hostname}}>
             <CreatingParameterContext.Provider value={{ creatingParameter, setCreatingParameter}}>
       <div className="App">
@@ -223,7 +242,7 @@ function App() {
       </div>
       </CreatingParameterContext.Provider>
       </APIContext.Provider>
-      </RigFamiliesContext.Provider>
+      </DataContext.Provider>
       </EditModeContext.Provider>
     </DebugContext.Provider>
   );
