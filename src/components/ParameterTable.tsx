@@ -4,6 +4,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
+import CachedIcon from '@mui/icons-material/Cached';
+import { PendingReloadContext } from "../context/PendingReloadContext";
 
 interface Image {
   image_url: string;
@@ -43,6 +45,8 @@ function ParameterTable(props: {
   const [isSticky, setIsSticky] = useState(false);
 
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
+
 
   // Load more data when the current page changes
   useEffect(() => {
@@ -81,12 +85,19 @@ function ParameterTable(props: {
     }
   };
 
+  const handleReload = () => {
+    //TODO: Reload data/table
+    if(!pendingReload){
+      setPendingReload(true);
+    }
+  }
+
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
         <thead className={isSticky ? "sticky" : ""}>
           <tr>
-            <th id="TableIndex">{props.rows.length.toLocaleString()}</th>
+            <th id="TableIndex"><CachedIcon className={pendingReload ? "reloadButton reloading" : "reloadButton"} onClick={handleReload}></CachedIcon></th>
             <th id="TableName">Name</th>
             <th id="TableDescription">Description</th>
             <th id="TableUnit">Unit</th>
