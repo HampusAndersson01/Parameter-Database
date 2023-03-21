@@ -29,7 +29,7 @@ router.delete('/:id', controller.deleteParameter); -->
         "name": "Test rig",
         "description": "Test rigfamily parameter",
         "datatype": "str",
-        "modified_date": "2023-01-28T22:00:00.000Z",
+        "modified_date": "2023-01-28",
         "comment": "Test Comment",
         "min": 0,
         "max": 9999,
@@ -49,7 +49,7 @@ router.delete('/:id', controller.deleteParameter); -->
         "name": "Test",
         "description": "Test parameter",
         "datatype": "str",
-        "modified_date": "2023-01-28T22:00:00.000Z",
+        "modified_date": "2023-01-28",
         "comment": "Test Comment",
         "unit": {
             "name": "°"
