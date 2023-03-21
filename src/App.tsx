@@ -47,7 +47,7 @@ function App() {
   const [units, setUnits] = useState<unitModel>([]);
   const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);
-  const [creatingParameter, setCreatingParameter] = useState<boolean>(true);
+  const [creatingParameter, setCreatingParameter] = useState<boolean>(false);
 
 
   // variable to store the search strings for the different fields

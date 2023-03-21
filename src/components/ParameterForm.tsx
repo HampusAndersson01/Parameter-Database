@@ -132,7 +132,7 @@ function ParameterForm(props: {
     //if rigfamily is option, get value
     
     const rigFamilies = data.rigfamily.map((item: { value: any; }) => item.value).join(";");
-    
+
     let newParameter: NewParameter[] = [{
       name: data.name,
       description: data.description,
@@ -169,6 +169,7 @@ function ParameterForm(props: {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
+        setCreatingParameter(false);
       }
       )
       .catch((error) => {
@@ -177,6 +178,22 @@ function ParameterForm(props: {
       );
       
 }
+
+//reset form
+useEffect(() => {
+  if(!creatingParameter){
+    setValue("name", "");
+    setValue("description", "");
+    setValue("unit", "");
+    setValue("rigfamily", "");
+    setValue("datatype", "");
+    setValue("decimals", 0);
+    setValue("min", 0);
+    setValue("max", 0);
+    setValue("comment", "");
+    setValue("images", [{name: "" ,url: "" ,description: ""}]);
+  }
+}, [creatingParameter])
 
 
   const handleAddImage = () => {
