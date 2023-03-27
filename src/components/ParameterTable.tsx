@@ -12,6 +12,10 @@ interface Image {
   image_name: string | null;
   image_description: string | null;
 }
+interface Possible_value {
+  possible_value: string;
+  possible_value_description: string | null;
+}
 export interface TableRowProps {
   id: number;
   name: string;
@@ -31,6 +35,7 @@ export interface TableRowProps {
   active?: boolean;
   images?: Image[] | null;
   comment: string | null;
+  possible_values?: Possible_value[] | null;
 }
 
 function ParameterTable(props: {
