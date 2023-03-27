@@ -109,8 +109,8 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
         <table className="possibleValues">
             <thead>
                 <tr>
-                <th>Value</th>
-                <th>Description</th>
+                <th className="value">Value</th>
+                <th className="desc">Description</th>
                 </tr>
             </thead>
             <tbody>
@@ -118,8 +118,8 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
                 return (
                     <tr>
                     {/* If editmode replace row with input */}
-                    <td>{editMode ? <input type="text" value={value.value} onChange={(event) => handleValueChange(event, index)}/> : value.value}</td>
-                    <td>{editMode ? <input type="text" value={value.description} onChange={(event) => handleDescriptionChange(event, index)}/> : value.description}</td>
+                    <td className="value">{editMode ? <input type="text" value={value.value} onChange={(event) => handleValueChange(event, index)}/> : value.value}</td>
+                    <td className="desc">{editMode ? <input type="text" value={value.description} onChange={(event) => handleDescriptionChange(event, index)}/> : value.description}</td>
                     </tr>
                 )
                 }) : null
