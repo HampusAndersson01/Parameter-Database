@@ -13,8 +13,8 @@ interface Image {
   image_description: string | null;
 }
 interface Possible_value {
-  possible_value: string;
-  possible_value_description: string | null;
+  value: string;
+  description: string | null;
 }
 export interface TableRowProps {
   id: number;

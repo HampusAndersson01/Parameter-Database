@@ -133,6 +133,7 @@ function App() {
             : Array(values.length).fill(null);
 
         for (let i = 0; i < values.length; i++) {
+          console.log(values[i], descriptions[i]);
           possibleValuesArray.push({
             value: values[i],
             description: descriptions[i],
@@ -153,6 +154,7 @@ function App() {
         rigfamily_name,
         rigfamily_description,
         images: imageArray,
+        possible_values: possibleValuesArray,
       };
     });
   }
