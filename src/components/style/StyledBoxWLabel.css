@@ -78,3 +78,7 @@
 .controls.hidden{
   display: none;
 }
+.controls.disabled{
+  color: var(--Grey300);
+  cursor: not-allowed;
+}
