@@ -1,26 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { pool } from "..";
 import { OkPacket, RowDataPacket } from "mysql2";
+import {Parameters} from "../models/parameters";
 
-interface Parameter {
-  name: string;
-  description?: string | null;
-  unit_id?: number | null;
-  unit_name?: string | null;
-  unit_description?: string | null;
-  datatype?: string | null;
-  decimals?: number | null;
-  min?: number | null;
-  max?: number | null;
-  creation_date?: Date | null;
-  modified_date?: Date | null;
-  rigfamily_id?: number[] | null;
-  rigfamily_name?: string[] | null;
-  rigfamily_description?: string[] | null;
-  comment?: string | null;
-  created_by?: number | null;
-  modified_by?: number | null;
-}
+
 
 // Get all parameters
 export const getParameters = async (
@@ -32,10 +15,12 @@ export const getParameters = async (
     const [rows, fields] = await pool.query(
       `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
       u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
-      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls
+      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
+      GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
       LEFT JOIN images img ON p.id = img.parameter_id 
+      LEFT JOIN possible_values pv ON p.id = pv.parameter_id
       LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
       LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
       GROUP BY p.id`
@@ -56,10 +41,12 @@ export const getParameter = async (
     const [rows, fields] = await pool.query(
       `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
       u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
-      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls
+      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
+      GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
       LEFT JOIN images img ON p.id = img.parameter_id 
+      LEFT JOIN possible_values pv ON p.id = pv.parameter_id
       LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
       LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
       WHERE p.id = ?;
@@ -75,36 +62,11 @@ export const getParameter = async (
   }
 };
 
-interface NewParameter {
-  name: string;
-  description?: string | null;
-  unit?: {
-    name: string;
-    description?: string;
-  } | null;
-  rigfamily?: {
-    name: string;
-    description?: string;
-  } | null;
-  datatype?: string | null;
-  decimals?: number | null;
-  min?: number | null;
-  max?: number | null;
-  comment?: string | null;
-  images?: {
-    name?: string;
-    description?: string;
-    url: string;
-  } | null;
-  created_by?: string | null;
-  modified_by?: string | null;
-  creation_date?: string | null;
-  modified_date?: string | null;
-}
+
 
 export const createParameters = async (req: Request, res: Response) => {
   const conn = await pool.getConnection();
-  const newParameters: NewParameter[] = req.body;
+  const newParameters: Parameters[] = req.body;
   console.log(newParameters);
 
   try {
@@ -219,6 +181,33 @@ export const createParameters = async (req: Request, res: Response) => {
           )}`
         );
       }
+
+      // Insert new possible values if any
+      if (newParameter.possible_values) {
+        const values = newParameter.possible_values.value
+          .split(";")
+          .map((value) => value.trim());
+        const descriptions = newParameter.possible_values.description
+          ? newParameter.possible_values.description
+              .split(";")
+              .map((desc) => desc.trim())
+          : Array(values.length).fill(null);
+
+        const possibleValues = values.map((name, index) => ({
+          value: name,
+          description: descriptions[index],
+        }));
+        const possibleValuesNames = possibleValues.map(
+          (possibleValue) =>
+            `(${parameterId}, '${possibleValue.value}', '${possibleValue.description ||
+              ""}')`
+        );
+        await conn.query(
+          `INSERT INTO possible_values (parameter_id, value, description) VALUES ${possibleValuesNames.join(
+            ","
+          )}`
+        );
+      }
     }
 
     await conn.commit();
@@ -239,7 +228,7 @@ export const updateParameter = async (
   next: NextFunction
 ) => {
   try {
-    const parameter: NewParameter = req.body;
+    const parameter: Parameters = req.body;
     console.log(parameter);
 
     // Update unit if exists else insert new unit
@@ -304,12 +293,12 @@ export const updateParameter = async (
     // Update Images if any else insert new images
     if (parameter.images) {
       var urls = [];
-      var names = [];
+      var values = [];
       var descriptions = [];
       //check if ; is present in the url string
       if (parameter.images.url.includes(";")) {
         urls = parameter.images.url.split(";").map((url) => url.trim());
-        names = parameter.images.name
+        values = parameter.images.name
           ? parameter.images.name.split(";").map((name) => name.trim())
           : Array(urls.length).fill(null);
         descriptions = parameter.images.description
@@ -317,13 +306,13 @@ export const updateParameter = async (
           : Array(urls.length).fill(null);
       } else {
         urls.push(parameter.images.url);
-        names.push(parameter.images.name);
+        values.push(parameter.images.name);
         descriptions.push(parameter.images.description);
       }
 
       const images = urls.map((url, index) => ({
         url,
-        name: names[index],
+        name: values[index],
         description: descriptions[index],
       }));
       console.log("images:", images);
@@ -341,6 +330,43 @@ export const updateParameter = async (
             images[i].description || null,
             images[i].url,
           ]
+        );
+      }
+    }
+
+    // Update possible_values if any else insert new possible_values
+    if (parameter.possible_values) {
+      var values = [];
+      var descriptions = [];
+      //check if ; is present in the url string
+      if (parameter.possible_values.value.includes(";")) {
+        values = parameter.possible_values.value
+          .split(";")
+          .map((value) => value.trim());
+        descriptions = parameter.possible_values.description
+          ? parameter.possible_values.description
+              .split(";")
+              .map((desc) => desc.trim())
+          : Array(values.length).fill(null);
+      } else {
+        values.push(parameter.possible_values.value);
+        descriptions.push(parameter.possible_values.description);
+      }
+
+      const possible_values = values.map((value, index) => ({
+        value,
+        description: descriptions[index],
+      }));
+      console.log("possible_values:", possible_values);
+      //Delete existing possible_values for the parameter and insert new possible_values
+      await pool.query(`DELETE FROM possible_values WHERE parameter_id = ?`, [
+        req.params.id,
+      ]);
+      // Loop through possible_values array and insert into possible_values table
+      for (let i = 0; i < possible_values.length; i++) {
+        await pool.query(
+          `INSERT INTO possible_values (parameter_id, value, description) VALUES (?, ?, ?)`,
+          [req.params.id, possible_values[i].value, possible_values[i].description]
         );
       }
     }
@@ -395,16 +421,30 @@ export const deleteParameter = async (
     await pool.query(`DELETE FROM images WHERE parameter_id = ?`, [
       req.params.id,
     ]);
+    // Delete possible_values
+    await pool.query(`DELETE FROM possible_values WHERE parameter_id = ?`, [
+      req.params.id,
+    ]);
     // Delete parameter_rigfamily
     await pool.query(`DELETE FROM parameter_rigfamily WHERE parameter_id = ?`, [
       req.params.id,
     ]);
-    // Delete parameter
+    // Delete parameter from parameter_rigfamily
+    await pool.query(
+      "DELETE FROM parameter_rigfamily WHERE parameter_id = ?",
+      [req.params.id]
+    );
+    // Delete rigfamily if no parameter is associated with it
+    await pool.query(
+      "DELETE FROM rigfamily WHERE id NOT IN (SELECT rigfamily_id FROM parameter_rigfamily)"
+    );
 
+    // Delete parameter
     const [rows, fields] = await pool.query(
       "DELETE FROM parameters WHERE id = ?",
       [req.params.id]
     );
+    
     res.json(rows);
   } catch (err) {
     next(err);

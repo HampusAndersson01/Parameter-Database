@@ -43,6 +43,10 @@ router.delete('/:id', controller.deleteParameter); -->
         "images": {
             "name": "lorem picsum;lorem picsum",
             "url": "https://picsum.photos/200;https://picsum.photos/200/300"
+        },
+        "possible_values":{
+            "value": "testvalue;testvakyes",
+            "description": "testvalues desc;"
         }
     },
     {
@@ -92,6 +96,10 @@ router.delete('/:id', controller.deleteParameter); -->
     "name": "lorem picsum",
     "description": null,
     "url": "https://picsum.photos/400"
+  },
+  "possible_values": {
+    "value": "1;2;3",
+    "description": "testvalue1;testvalue2;testvalue3"
   }
 }
 ```
