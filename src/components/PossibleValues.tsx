@@ -27,8 +27,11 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
                 handleAddRow(newValues);
             }else if(newValue === ""){
                 console.log("remove row")
-                if(handleIfRemoveRow(newValues)){
+                var remove = handleIfRemoveRow(newValues,index)
+                if(remove && index === newValues.length - 2){
                     newValues.pop();
+                } else if(remove){ 
+                    newValues.splice(index,1);
                 }
             }
             props.onChange(newValues);
@@ -62,36 +65,69 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
             });
         }
     };
+    useEffect(() => {
+        handleEditToggle();
+    }, [editMode]);
+
     
-    const handleIfRemoveRow = (values: any) => {
+    const handleIfRemoveRow = (values: any, index: number) => {
         // Remove a row from the table if values[values.length - 2].value and .description is empty
-        if (values[values.length - 2].value === "" || values[values.length - 2].value === null && values[values.length - 2].description === "" || values[values.length - 2].description === null) {
+        console.log(values)
+        if (values[index].value === "" || values[index].value === null && values[index].description === "" || values[index].description === null) {
             return true;
+        }
+
+        return false;
+    };
+    const handleEditToggle = () => {
+        // When editmode is toggled, add a new row if the last row is not empty
+        if (editMode) {
+            setPossibleValues((prevValues) => {
+                const newValues = [...prevValues];
+                newValues.push({
+                    value: "",
+                    description: "",
+                });
+                return newValues;
+            });
+        }else{
+            // When editmode is toggled, remove the last row if it is empty
+            if (possibleValues.length > 0){
+                if (possibleValues[possibleValues.length - 1].value === "" && possibleValues[possibleValues.length - 1].description === "") {
+                    setPossibleValues((prevValues) => {
+                        const newValues = [...prevValues];
+                        newValues.pop();
+                        return newValues;
+                    });
+                }
+            }
         }
     };
 
+
     return (
-        <table>
+        <table className="possibleValues">
             <thead>
                 <tr>
-                <th>Value</th>
-                <th>Description</th>
+                <th className="value">Value</th>
+                <th className="desc">Description</th>
                 </tr>
             </thead>
             <tbody>
-                {Array.isArray(possibleValues) ? possibleValues.map((value: any,index) => {
+                {possibleValues.length > 0 ? possibleValues.map((value: any,index) => {
                 return (
                     <tr>
                     {/* If editmode replace row with input */}
-                    <td>{editMode ? <input type="text" value={value.value} onChange={(event) => handleValueChange(event, index)}/> : value.value}</td>
-                    <td>{editMode ? <input type="text" value={value.description} onChange={(event) => handleDescriptionChange(event, index)}/> : value.description}</td>
+                    <td className="value">{editMode ? <input type="text" value={value.value} onChange={(event) => handleValueChange(event, index)}/> : value.value}</td>
+                    <td className="desc">{editMode ? <input type="text" value={value.description} onChange={(event) => handleDescriptionChange(event, index)}/> : value.description}</td>
                     </tr>
                 )
-                }) :
-                <tr>
-                    <td>{editMode ? <input type="text" onChange={(event) => handleValueChange(event, 0)}/> : <></>}</td>
-                    <td>{editMode ? <input type="text" onChange={(event) => handleDescriptionChange(event, 0)}/> : <></>}</td>
-                </tr>}
+                }) : null
+                // <tr>
+                //     <td>{editMode ? <input type="text" onChange={(event) => handleValueChange(event, 0)}/> : <></>}</td>
+                //     <td>{editMode ? <input type="text" onChange={(event) => handleDescriptionChange(event, 0)}/> : <></>}</td>
+                // </tr>
+            }
             </tbody>
         </table>
     )
