@@ -128,6 +128,47 @@ function StyledBoxWLabel(props: {
     }
   }
 
+  const checkNextArrow = () => {
+    // Disable next arrow if there is no next option
+    if (Array.isArray(value)) {
+      if (value.length > 0) {
+        if (value[currentIdx] !== "" && value[currentIdx] !== undefined && value[currentIdx] !== null) {
+          if (currentIdx < value.length - 1) {
+            return true;
+          } else {
+            return false;
+          }
+        }else{
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+  const checkPreviousArrow = () => {
+    // Disable previous arrow if there is no previous option
+    if (Array.isArray(value)) {
+      if (value.length > 0) {
+        if (value[currentIdx] !== "" && value[currentIdx] !== undefined && value[currentIdx] !== null) {
+          if (currentIdx > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        }else{
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   return (
     <>
       <div
@@ -144,8 +185,8 @@ function StyledBoxWLabel(props: {
                 <div className="controlContainer">
                 <legend className={editMode ? "controls" : "controls hidden"} onClick={handleRemoveOption}><RemoveIcon></RemoveIcon></legend>
                 <legend className={editMode ? "controls" : "controls hidden"} onClick={handleAddOption}><AddIcon></AddIcon></legend>
-                <legend className="controls" onClick={handlePreviousOption}><ArrowBackIcon></ArrowBackIcon></legend>
-                <legend className="controls" onClick={handleNextOption}><ArrowForwardIcon></ArrowForwardIcon></legend>
+                <legend className={checkPreviousArrow() ? "controls" : "controls disabled"} onClick={handlePreviousOption}><ArrowBackIcon></ArrowBackIcon></legend>
+                <legend className={checkNextArrow() ? "controls" : "controls disabled"} onClick={handleNextOption}><ArrowForwardIcon></ArrowForwardIcon></legend>
                 </div>
                 ) : <></>}
               {props.options ? (
