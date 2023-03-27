@@ -1,0 +1,22 @@
+.possibleValues {
+  overflow-y: auto;
+  max-height: 100%;
+  table-layout: auto;
+
+}
+.possibleValues th {
+  background-color: var(--Grey100);
+  color: var(--Black);
+  font-size: 0.9rem;
+  text-align: start;
+}
+.possibleValues td {
+  text-align: start;
+  font-size: 0.8rem;
+}
+.possibleValues tr:nth-child(even) {
+  background-color: var(--Grey200);
+}
+.possibleValues td:not(:last-child) {
+    border-right: 1px solid var(--Grey300);
+}

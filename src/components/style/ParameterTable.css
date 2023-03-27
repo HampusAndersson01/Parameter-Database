@@ -161,8 +161,9 @@ tbody tr {
 .Expandable-Right {
   display: grid;
   height: calc(var(--Row-Height) * 10);
+  max-height: 100%;
   grid-template-columns: 1fr 2.5fr 4fr 2.5fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -172,6 +173,8 @@ tbody tr {
     "ParameterMax ParameterLastModifiedBy ParameterPossibleValues Images"
     "ParameterType ParameterComment ParameterPossibleValues Images";
   grid-area: Expandable-Right;
+  overflow-y: auto;
+
 }
 
 .Images-Container {
@@ -226,6 +229,10 @@ tbody tr {
 
 .PossibleValues {
   grid-area: PossibleValues;
+}
+.Possible_Values fieldset{
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .Unit {

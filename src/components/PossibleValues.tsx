@@ -77,7 +77,7 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
     };
 
     return (
-        <table>
+        <table className="possibleValues">
             <thead>
                 <tr>
                 <th>Value</th>
