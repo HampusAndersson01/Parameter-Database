@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style/SearchField.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import { EditModeContext } from "../context/EditModeContext";
 
 function SearchField(props: {
   onChange: any;
@@ -13,10 +14,20 @@ function SearchField(props: {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const { clearAll,setClearAll } = useContext(EditModeContext);
+
 
   useEffect(() => {
     props.onChange(searchValue);
   }, [searchValue]);
+
+  useEffect(() => {
+    if (clearAll) {
+      setSearchValue("");
+      setShowLabel(false);
+      setClearAll(false);
+    }
+  }, [clearAll]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
