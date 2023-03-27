@@ -7,7 +7,7 @@ interface Possible_value {
     description: string | null;
   } 
 
-function possibleValues(props: { possibleValues: Possible_value[] }) {
+function possibleValues(props: { possibleValues: Possible_value[], onChange: any;}) {
     const [possibleValues, setPossibleValues] = useState<Possible_value[]>(
       props.possibleValues || [] // add a null check here
     );
@@ -31,6 +31,7 @@ function possibleValues(props: { possibleValues: Possible_value[] }) {
                     newValues.pop();
                 }
             }
+            props.onChange(newValues);
             return newValues;
         });
     };
@@ -43,6 +44,7 @@ function possibleValues(props: { possibleValues: Possible_value[] }) {
             ...newValues[index],
             description: newDescription,
             };
+            props.onChange(newValues);
             return newValues;
         });        
     };
@@ -77,7 +79,7 @@ function possibleValues(props: { possibleValues: Possible_value[] }) {
                 </tr>
             </thead>
             <tbody>
-                {possibleValues.length > 0 ? possibleValues.map((value: any,index) => {
+                {Array.isArray(possibleValues) ? possibleValues.map((value: any,index) => {
                 return (
                     <tr>
                     {/* If editmode replace row with input */}

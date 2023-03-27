@@ -36,9 +36,9 @@ interface UpdateParameter {
     description: string | null;
     url: string | null;
   };
-  possible_values?: {
-    value: string;
-    name?: string;
+  possible_values: {
+    value: string | null;
+    description?: string | null;
   }
 }
 
@@ -90,6 +90,7 @@ function ExpandedData(props: {
   };
 
   const handleValueChange = (value: any, key: string) => {
+    console.log("handleValueChange", value, key);
     setParameter((prevState) => {
       return { ...prevState, [key]: value };
     });
@@ -157,6 +158,14 @@ function ExpandedData(props: {
             : null,
           url: parameter.images
             ? parameter.images.map((image) => image.image_url).join(";")
+            : null,
+        },
+        possible_values: {
+          value: parameter.possible_values
+            ? parameter.possible_values.map((value) => value.value).join(";")
+            : null,
+          description: parameter.possible_values
+            ? parameter.possible_values.map((value) => value.description).join(";")
             : null,
         },
       };
@@ -379,7 +388,12 @@ function ExpandedData(props: {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Possible Values"
-                html={<PossibleValues possibleValues={props.row.possible_values}></PossibleValues>}
+                html={
+                <PossibleValues onChange={(value: any) => {
+                  handleValueChange(value, "possible_values");
+                }} possibleValues={props.row.possible_values}>
+
+                </PossibleValues>}
                 editable={false}
                 onChange={(value: any) => {
                   handleValueChange(value, "possible_values");
