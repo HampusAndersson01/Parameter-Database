@@ -51,6 +51,8 @@ function App() {
   const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);
   const [creatingParameter, setCreatingParameter] = useState<boolean>(false);
+
+  const [clearAll, setClearAll] = useState<boolean>(false);
   
   const [pendingReload, setPendingReload] = useState<boolean>(true);
 
@@ -210,9 +212,18 @@ function App() {
     setFilteredData(filterData(data));
   }
 
+  // When clearAll is set to false search for the new data
+  useEffect(() => {
+    if (!clearAll) {
+      setFilteredData(data)
+      setPendingReload(true);
+    }
+  }, [clearAll]);
+
+
   return (
     <DebugContext.Provider value={{ debugMode, setDebugMode}}>
-      <EditModeContext.Provider value={{ editMode, setEditMode}}>
+      <EditModeContext.Provider value={{ editMode, setEditMode, clearAll, setClearAll}}>
         <PendingReloadContext.Provider value={{ pendingReload, setPendingReload}}>
         <DataContext.Provider value={{ rigFamilies, setRigFamilies , units, setUnits, dataTypes, setDataTypes}}>
           <APIContext.Provider value={{ hostname}}>
@@ -268,7 +279,8 @@ function App() {
               handleValueChange(value, "comment");
             }}
           />
-          <button id="searchButton" onClick={handleSearch}>
+          <button className="searchClearButton" onClick={() => setClearAll(true)}>Clear</button>
+          <button className="searchClearButton" onClick={handleSearch}>
             Search
           </button>
         </header>

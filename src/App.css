@@ -42,7 +42,7 @@
 #DescriptionSearch {
   margin-right: 0;
 }
-#searchButton {
+.searchClearButton {
   margin-top: 1rem;
   color: var(--White);
   background-color: var(--Dark_Blue);
@@ -54,7 +54,11 @@
   min-height: 22px;
   cursor: pointer;
 }
-#searchButton:hover {
+
+.searchClearButton:last-child{
+  flex: 1 1 100%;
+}
+.searchClearButton:hover {
   background-color: var(--Highlight-Active);
 }
 
