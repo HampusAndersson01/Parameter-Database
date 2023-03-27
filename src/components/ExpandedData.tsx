@@ -10,6 +10,7 @@ import { DataContext } from "../context/DataContext";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { APIContext } from "../context/ApiContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
+import PossibleValues from "./PossibleValues";
 
 interface UpdateParameter {
   name: string;
@@ -35,6 +36,10 @@ interface UpdateParameter {
     description: string | null;
     url: string | null;
   };
+  possible_values?: {
+    value: string;
+    name?: string;
+  }
 }
 
 
@@ -62,6 +67,7 @@ function ExpandedData(props: {
     modified_date: props.row.modified_date,
     images: props.row.images,
     comment: props.row.comment,
+    possible_values: props.row.possible_values,
   });
   const { editMode } = useContext(EditModeContext);
   const { rigFamilies } = useContext(DataContext);
@@ -373,7 +379,7 @@ function ExpandedData(props: {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Possible Values"
-                html={<></>}
+                html={<PossibleValues possibleValues={props.row.possible_values}></PossibleValues>}
                 editable={false}
                 onChange={(value: any) => {
                   handleValueChange(value, "possible_values");

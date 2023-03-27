@@ -10,6 +10,7 @@ import {DataContext} from "../context/DataContext";
 import { APIContext } from "../context/ApiContext";
 import Creatable from 'react-select/creatable';
 import CreatableSelect from 'react-select/creatable';
+import { GroupBase } from "react-select";
 
 
 
@@ -116,12 +117,10 @@ function ParameterForm(props: {
 
   const onSubmit = (data: any) => {
     console.log(data);
-    // if(data.images.length > 1){
-    //   data.images.forEach((image: any) => {
-    //     if(image.url !== ""){
-
     const filteredData = data.images.filter((item: {url: String;}) => item.url !== "");
 
+
+    // Images
     const imageUrls = filteredData.map((item: { url: any;}) => item.url).join(";");
       
     const imageNames = filteredData.map((item: { name: any;}) => item.name).join(";");
@@ -207,19 +206,19 @@ useEffect(() => {
   const handleCreateUnit = (inputValue: string) => {
     const newOption = createOption(inputValue);
     setUnitOptions([...unitOptions, newOption]);
-    setValue("unit", newOption);
+    setValue("unit", newOption.label);
   };
 
   const handleCreateRigFamily = (inputValue: string) => {
     const newOption = createOption(inputValue.toLocaleUpperCase());
     setRigFamilyOptions([...rigFamilyOptions, newOption]);
-    setValue("rigfamily", newOption);
+    setValue("rigfamily", newOption.label);
   };
 
   const handleCreateDataType = (inputValue: string) => {
     const newOption = createOption(inputValue);
     setDataTypeOptions([...dataTypeOptions, newOption]);
-    setValue("datatype", newOption);
+    setValue("datatype", newOption.label);
   };
 
   return (

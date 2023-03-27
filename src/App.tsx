@@ -36,6 +36,8 @@ type dataModel = {
   image_name: string | null;
   image_description: string | null;
   image_urls: string | null;
+  possible_values: string | null;
+  possible_values_description: string | null
 }[];
 
 
@@ -99,8 +101,10 @@ function App() {
   function updateRows(data: dataModel): TableRowProps[] {
     return data.map((row) => {
       const imageArray = [];
+      const possibleValuesArray = [];
       var rigfamily_name: string[] = [];
       var rigfamily_description: string[] = []
+      // Split the image urls and names into an array of objects
       if (row.image_urls) {
         const urls = row.image_urls.split(";");
         const names = row.image_name
@@ -119,6 +123,25 @@ function App() {
           });
         }
       }
+      // Split the possible values and descriptions into an array of objects
+      if (row.possible_values) {
+        const values = row.possible_values.split(";");
+        const descriptions =
+          row.possible_values_description !== undefined &&
+          row.possible_values_description !== null
+            ? row.possible_values_description.split(";")
+            : Array(values.length).fill(null);
+
+        for (let i = 0; i < values.length; i++) {
+          possibleValuesArray.push({
+            value: values[i],
+            description: descriptions[i],
+          });
+        }
+      } 
+
+
+      // Split the rig family names and descriptions into an array of objects
       if(row.rigfamily_name){
         rigfamily_name = row.rigfamily_name.split(";");
         rigfamily_description = row.rigfamily_description
