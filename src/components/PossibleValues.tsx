@@ -65,6 +65,10 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
             });
         }
     };
+    useEffect(() => {
+        handleEditToggle();
+    }, [editMode]);
+
     
     const handleIfRemoveRow = (values: any, index: number) => {
         // Remove a row from the table if values[values.length - 2].value and .description is empty
@@ -75,6 +79,31 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
 
         return false;
     };
+    const handleEditToggle = () => {
+        // When editmode is toggled, add a new row if the last row is not empty
+        if (editMode) {
+            setPossibleValues((prevValues) => {
+                const newValues = [...prevValues];
+                newValues.push({
+                    value: "",
+                    description: "",
+                });
+                return newValues;
+            });
+        }else{
+            // When editmode is toggled, remove the last row if it is empty
+            if (possibleValues.length > 0){
+                if (possibleValues[possibleValues.length - 1].value === "" && possibleValues[possibleValues.length - 1].description === "") {
+                    setPossibleValues((prevValues) => {
+                        const newValues = [...prevValues];
+                        newValues.pop();
+                        return newValues;
+                    });
+                }
+            }
+        }
+    };
+
 
     return (
         <table className="possibleValues">
@@ -93,11 +122,12 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
                     <td>{editMode ? <input type="text" value={value.description} onChange={(event) => handleDescriptionChange(event, index)}/> : value.description}</td>
                     </tr>
                 )
-                }) :
-                <tr>
-                    <td>{editMode ? <input type="text" onChange={(event) => handleValueChange(event, 0)}/> : <></>}</td>
-                    <td>{editMode ? <input type="text" onChange={(event) => handleDescriptionChange(event, 0)}/> : <></>}</td>
-                </tr>}
+                }) : null
+                // <tr>
+                //     <td>{editMode ? <input type="text" onChange={(event) => handleValueChange(event, 0)}/> : <></>}</td>
+                //     <td>{editMode ? <input type="text" onChange={(event) => handleDescriptionChange(event, 0)}/> : <></>}</td>
+                // </tr>
+            }
             </tbody>
         </table>
     )

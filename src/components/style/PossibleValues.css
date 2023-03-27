@@ -2,7 +2,7 @@
   overflow-y: auto;
   max-height: 100%;
   table-layout: auto;
-
+  border-collapse: collapse;
 }
 .possibleValues th {
   background-color: var(--Grey100);
