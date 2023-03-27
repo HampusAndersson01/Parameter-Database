@@ -27,8 +27,11 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
                 handleAddRow(newValues);
             }else if(newValue === ""){
                 console.log("remove row")
-                if(handleIfRemoveRow(newValues)){
+                var remove = handleIfRemoveRow(newValues,index)
+                if(remove && index === newValues.length - 2){
                     newValues.pop();
+                } else if(remove){ 
+                    newValues.splice(index,1);
                 }
             }
             props.onChange(newValues);
@@ -63,11 +66,14 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
         }
     };
     
-    const handleIfRemoveRow = (values: any) => {
+    const handleIfRemoveRow = (values: any, index: number) => {
         // Remove a row from the table if values[values.length - 2].value and .description is empty
-        if (values[values.length - 2].value === "" || values[values.length - 2].value === null && values[values.length - 2].description === "" || values[values.length - 2].description === null) {
+        console.log(values)
+        if (values[index].value === "" || values[index].value === null && values[index].description === "" || values[index].description === null) {
             return true;
         }
+
+        return false;
     };
 
     return (
@@ -79,7 +85,7 @@ function possibleValues(props: { possibleValues: Possible_value[], onChange: any
                 </tr>
             </thead>
             <tbody>
-                {Array.isArray(possibleValues) ? possibleValues.map((value: any,index) => {
+                {possibleValues.length > 0 ? possibleValues.map((value: any,index) => {
                 return (
                     <tr>
                     {/* If editmode replace row with input */}
