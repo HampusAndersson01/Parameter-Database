@@ -55,7 +55,7 @@
   cursor: pointer;
 }
 
-.searchClearButton:last-child{
+.searchClearButton:last-child {
   flex: 1 1 100%;
 }
 .searchClearButton:hover {

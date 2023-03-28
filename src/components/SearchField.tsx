@@ -14,8 +14,7 @@ function SearchField(props: {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  const { clearAll,setClearAll } = useContext(EditModeContext);
-
+  const { clearAll, setClearAll } = useContext(EditModeContext);
 
   useEffect(() => {
     props.onChange(searchValue);

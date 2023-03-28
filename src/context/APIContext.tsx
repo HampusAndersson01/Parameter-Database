@@ -5,5 +5,5 @@ interface APIContextType {
 }
 
 export const APIContext = React.createContext<APIContextType>({
-  hostname : "http://localhost:3000/"
+  hostname: "http://localhost:3000/",
 });

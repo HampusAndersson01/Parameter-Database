@@ -4,7 +4,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
-import CachedIcon from '@mui/icons-material/Cached';
+import CachedIcon from "@mui/icons-material/Cached";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 
 interface Image {
@@ -38,9 +38,7 @@ export interface TableRowProps {
   possible_values?: Possible_value[] | null;
 }
 
-function ParameterTable(props: {
-  rows: TableRowProps[];
-}) {
+function ParameterTable(props: { rows: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -51,7 +49,6 @@ function ParameterTable(props: {
 
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
-
 
   // Load more data when the current page changes
   useEffect(() => {
@@ -92,17 +89,24 @@ function ParameterTable(props: {
 
   const handleReload = () => {
     //TODO: Reload data/table
-    if(!pendingReload){
+    if (!pendingReload) {
       setPendingReload(true);
     }
-  }
+  };
 
   return (
     <div className="Table-Container">
       <table ref={tableRef}>
         <thead className={isSticky ? "sticky" : ""}>
           <tr>
-            <th id="TableIndex"><CachedIcon className={pendingReload ? "reloadButton reloading" : "reloadButton"} onClick={handleReload}></CachedIcon></th>
+            <th id="TableIndex">
+              <CachedIcon
+                className={
+                  pendingReload ? "reloadButton reloading" : "reloadButton"
+                }
+                onClick={handleReload}
+              ></CachedIcon>
+            </th>
             <th id="TableName">Name</th>
             <th id="TableDescription">Description</th>
             <th id="TableUnit">Unit</th>
@@ -120,7 +124,13 @@ function ParameterTable(props: {
                 key={row.id}
                 onClick={(event) => HandleClickParameter(event, row.id)}
               >
-                <td className={expandedRows.includes(row.id) ? "tableArrow expanded" : "tableArrow"}>
+                <td
+                  className={
+                    expandedRows.includes(row.id)
+                      ? "tableArrow expanded"
+                      : "tableArrow"
+                  }
+                >
                   <ExpandMoreIcon></ExpandMoreIcon>
                 </td>
                 <td>

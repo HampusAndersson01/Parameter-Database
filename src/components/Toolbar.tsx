@@ -15,7 +15,9 @@ function Toolbar(props: any) {
   const ref = useRef<HTMLDivElement>(null);
   const { debugMode, setDebugMode } = useContext(DebugContext);
   const { editMode, setEditMode } = useContext(EditModeContext);
-  const { creatingParameter, setCreatingParameter } = useContext(CreatingParameterContext);
+  const { creatingParameter, setCreatingParameter } = useContext(
+    CreatingParameterContext
+  );
 
   const handleClickButton = () => {
     setIsToolbarExpanded(!isToolbarExpanded);
@@ -69,11 +71,10 @@ function Toolbar(props: any) {
   const handleItemClick = (value: string) => {
     if (value === "create new parameter") {
       setCreatingParameter(true);
-    } else{
+    } else {
       setSelectedToolbarButton(value);
       return;
     }
-    
   };
 
   return (
@@ -95,8 +96,14 @@ function Toolbar(props: any) {
               >
                 Add parameter(s)
               </li>
-              <li className={editMode ? "toolbarButton editActive" : "toolbarButton"}
-              onClick={handleEditMode}>Edit mode</li>
+              <li
+                className={
+                  editMode ? "toolbarButton editActive" : "toolbarButton"
+                }
+                onClick={handleEditMode}
+              >
+                Edit mode
+              </li>
             </ul>
           </div>
           <button
