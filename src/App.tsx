@@ -15,7 +15,6 @@ import { unitModel } from "./models/Unit";
 import { datatypeModel } from "./models/Datatype";
 import { PendingReloadContext } from "./context/PendingReloadContext";
 
-
 type dataModel = {
   id: number;
   name: string;
@@ -37,9 +36,8 @@ type dataModel = {
   image_description: string | null;
   image_urls: string | null;
   possible_values: string | null;
-  possible_values_description: string | null
+  possible_values_description: string | null;
 }[];
-
 
 function App() {
   const [data, setData] = useState<dataModel>([]);
@@ -53,9 +51,8 @@ function App() {
   const [creatingParameter, setCreatingParameter] = useState<boolean>(false);
 
   const [clearAll, setClearAll] = useState<boolean>(false);
-  
-  const [pendingReload, setPendingReload] = useState<boolean>(true);
 
+  const [pendingReload, setPendingReload] = useState<boolean>(true);
 
   // variable to store the search strings for the different fields
   const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
@@ -63,28 +60,28 @@ function App() {
   );
 
   useEffect(() => {
-    if(pendingReload){
-    fetch(hostname+"parameters")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.log(error))
-      .finally(() => console.log("parameters loaded"));
+    if (pendingReload) {
+      fetch(hostname + "parameters")
+        .then((response) => response.json())
+        .then((data) => setData(data))
+        .catch((error) => console.log(error))
+        .finally(() => console.log("parameters loaded"));
 
-    fetch(hostname+"rigfamilies")
-      .then((response) => response.json())
-      .then((data) => setRigFamilies(data))
-      .catch((error) => console.log(error))
-      .finally(() => console.log("rigfamilies loaded"));
+      fetch(hostname + "rigfamilies")
+        .then((response) => response.json())
+        .then((data) => setRigFamilies(data))
+        .catch((error) => console.log(error))
+        .finally(() => console.log("rigfamilies loaded"));
 
-    fetch(hostname+"units")
-      .then((response) => response.json())
-      .then((data) => setUnits(data))
-      .catch((error) => console.log(error))
-      .finally(() => console.log("units loaded"));
-    // wait 1s
-    setTimeout(() => {
-      setPendingReload(false);
-    }, 1000);
+      fetch(hostname + "units")
+        .then((response) => response.json())
+        .then((data) => setUnits(data))
+        .catch((error) => console.log(error))
+        .finally(() => console.log("units loaded"));
+      // wait 1s
+      setTimeout(() => {
+        setPendingReload(false);
+      }, 1000);
     }
   }, [pendingReload]);
 
@@ -95,9 +92,8 @@ function App() {
       .filter((value, index, self) => self.indexOf(value) === index);
     setDataTypes(dataTypes);
 
-
     // Update the filtered data when the data changes
-    setFilteredData(filterData((data)));
+    setFilteredData(filterData(data));
   }, [data]);
 
   function updateRows(data: dataModel): TableRowProps[] {
@@ -105,7 +101,7 @@ function App() {
       const imageArray = [];
       const possibleValuesArray = [];
       var rigfamily_name: string[] = [];
-      var rigfamily_description: string[] = []
+      var rigfamily_description: string[] = [];
       // Split the image urls and names into an array of objects
       if (row.image_urls) {
         const urls = row.image_urls.split(";");
@@ -141,11 +137,10 @@ function App() {
             description: descriptions[i],
           });
         }
-      } 
-
+      }
 
       // Split the rig family names and descriptions into an array of objects
-      if(row.rigfamily_name){
+      if (row.rigfamily_name) {
         rigfamily_name = row.rigfamily_name.split(";");
         rigfamily_description = row.rigfamily_description
           ? row.rigfamily_description.split(";")
@@ -160,8 +155,6 @@ function App() {
       };
     });
   }
-
-  
 
   function filterData(data: dataModel) {
     return data.filter((row) => {
@@ -215,82 +208,112 @@ function App() {
   // When clearAll is set to false search for the new data
   useEffect(() => {
     if (!clearAll) {
-      setFilteredData(data)
+      setFilteredData(data);
       setPendingReload(true);
     }
   }, [clearAll]);
 
-
   return (
-    <DebugContext.Provider value={{ debugMode, setDebugMode}}>
-      <EditModeContext.Provider value={{ editMode, setEditMode, clearAll, setClearAll}}>
-        <PendingReloadContext.Provider value={{ pendingReload, setPendingReload}}>
-        <DataContext.Provider value={{ rigFamilies, setRigFamilies , units, setUnits, dataTypes, setDataTypes}}>
-          <APIContext.Provider value={{ hostname}}>
-            <CreatingParameterContext.Provider value={{ creatingParameter, setCreatingParameter}}>
-      <div className="App">
-        <header className="App-header">
-          {/* Toolbar */}
-          <Toolbar></Toolbar>
+    <DebugContext.Provider value={{ debugMode, setDebugMode }}>
+      <EditModeContext.Provider
+        value={{ editMode, setEditMode, clearAll, setClearAll }}
+      >
+        <PendingReloadContext.Provider
+          value={{ pendingReload, setPendingReload }}
+        >
+          <DataContext.Provider
+            value={{
+              rigFamilies,
+              setRigFamilies,
+              units,
+              setUnits,
+              dataTypes,
+              setDataTypes,
+            }}
+          >
+            <APIContext.Provider value={{ hostname }}>
+              <CreatingParameterContext.Provider
+                value={{ creatingParameter, setCreatingParameter }}
+              >
+                <div className="App">
+                  <header className="App-header">
+                    {/* Toolbar */}
+                    <Toolbar></Toolbar>
 
-          <SearchField
-            id="ParameterSearch"
-            data={Array.from(new Set(data.map((row) => row.name)))}
-            placeholder="Parameter"
-            onChange={(value: any) => {
-              handleValueChange(value, "parameter");
-            }}
-          />
-          <SearchField
-            id="DescriptionSearch"
-            data={Array.from(new Set(data.map((row) => row.description)))}
-            placeholder="Description"
-            onChange={(value: any) => {
-              handleValueChange(value, "description");
-            }}
-          />
-          <SearchField
-            id="UnitSearch"
-            data={Array.from(new Set(data.map((row) => row.unit_name)))}
-            placeholder="Unit"
-            onChange={(value: any) => {
-              handleValueChange(value, "unit");
-            }}
-          />
-          <SearchField
-            id="RigFamSearch"
-            data={rigFamilies.map((row) => row.name)}
-            placeholder="RIG_FAM"
-            onChange={(value: any) => {
-              handleValueChange(value, "RIG_FAM");
-            }}
-          />
-          <SearchField
-            id="CommentSearch"
-            data={
-              Array.from(
-                new Set(
-                  data.map((row) => row.comment).filter((name) => name != null)
-                )
-              ) as unknown as string[]
-            }
-            placeholder="Comment"
-            onChange={(value: any) => {
-              handleValueChange(value, "comment");
-            }}
-          />
-          <button className="searchClearButton" onClick={() => setClearAll(true)}>Clear</button>
-          <button className="searchClearButton" onClick={handleSearch}>
-            Search
-          </button>
-        </header>
-        <ParameterTable rows={updateRows(filteredData)} />
-        <ParameterForm data={updateRows(filteredData)}></ParameterForm>
-      </div>
-      </CreatingParameterContext.Provider>
-      </APIContext.Provider>
-      </DataContext.Provider>
-      </PendingReloadContext.Provider>
+                    <SearchField
+                      id="ParameterSearch"
+                      data={Array.from(new Set(data.map((row) => row.name)))}
+                      placeholder="Parameter"
+                      onChange={(value: any) => {
+                        handleValueChange(value, "parameter");
+                      }}
+                    />
+                    <SearchField
+                      id="DescriptionSearch"
+                      data={Array.from(
+                        new Set(data.map((row) => row.description))
+                      )}
+                      placeholder="Description"
+                      onChange={(value: any) => {
+                        handleValueChange(value, "description");
+                      }}
+                    />
+                    <SearchField
+                      id="UnitSearch"
+                      data={Array.from(
+                        new Set(data.map((row) => row.unit_name))
+                      )}
+                      placeholder="Unit"
+                      onChange={(value: any) => {
+                        handleValueChange(value, "unit");
+                      }}
+                    />
+                    <SearchField
+                      id="RigFamSearch"
+                      data={rigFamilies.map((row) => row.name)}
+                      placeholder="RIG_FAM"
+                      onChange={(value: any) => {
+                        handleValueChange(value, "RIG_FAM");
+                      }}
+                    />
+                    <SearchField
+                      id="CommentSearch"
+                      data={
+                        Array.from(
+                          new Set(
+                            data
+                              .map((row) => row.comment)
+                              .filter((name) => name != null)
+                          )
+                        ) as unknown as string[]
+                      }
+                      placeholder="Comment"
+                      onChange={(value: any) => {
+                        handleValueChange(value, "comment");
+                      }}
+                    />
+                    <button
+                      className="searchClearButton"
+                      onClick={() => setClearAll(true)}
+                    >
+                      Clear
+                    </button>
+                    <button
+                      className="searchClearButton"
+                      onClick={handleSearch}
+                    >
+                      Search
+                    </button>
+                  </header>
+                  <ParameterTable rows={updateRows(filteredData)} />
+                  <ParameterForm
+                    data={updateRows(filteredData)}
+                  ></ParameterForm>
+                </div>
+              </CreatingParameterContext.Provider>
+            </APIContext.Provider>
+          </DataContext.Provider>
+        </PendingReloadContext.Provider>
       </EditModeContext.Provider>
     </DebugContext.Provider>
   );

@@ -12,7 +12,7 @@
   height: 100%;
   border-radius: 4px;
   width: 100%;
-  
+
   min-width: 0;
 }
 .styledBoxWLabelContainer {
@@ -40,7 +40,7 @@
 .styledBoxWLabelData:focus-visible {
   outline: none;
 }
-.styledBoxWLabelData.active{
+.styledBoxWLabelData.active {
   display: flex;
 }
 .styledBoxWLabel select {
@@ -51,9 +51,8 @@
 .styledBoxWLabel select:disabled {
   color: var(--Black);
   appearance: none;
-  
 }
-.controlContainer{
+.controlContainer {
   position: absolute;
   top: 0;
   right: 0.25rem;
@@ -66,7 +65,7 @@
   border-radius: 4px;
   border: groove 2px rgb(192, 192, 192);
 }
-.controls{
+.controls {
   width: 1.5rem;
   height: 1.5rem;
   display: flex;
@@ -75,10 +74,10 @@
   color: var(--Black);
   cursor: pointer;
 }
-.controls.hidden{
+.controls.hidden {
   display: none;
 }
-.controls.disabled{
+.controls.disabled {
   color: var(--Grey300);
   cursor: not-allowed;
 }

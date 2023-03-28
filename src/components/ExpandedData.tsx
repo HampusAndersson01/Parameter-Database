@@ -7,7 +7,7 @@ import { TableRowProps } from "./ParameterTable";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { APIContext } from "../context/ApiContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import PossibleValues from "./PossibleValues";
@@ -39,15 +39,10 @@ interface UpdateParameter {
   possible_values: {
     value: string | null;
     description?: string | null;
-  }
+  };
 }
 
-
-
-function ExpandedData(props: {
-  row: TableRowProps;
-  isExpanded: boolean;
-}) {
+function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   const [currentImage, setCurrentImage] = useState<number>(0);
   const [parameter, setParameter] = useState<TableRowProps>({
     id: props.row.id,
@@ -102,32 +97,30 @@ function ExpandedData(props: {
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
-    }else if (rigFamilies) {
-      parameter.rigfamily_name.forEach((rigFamilyName: string, index: number) => {
-        rigFamilies.forEach((rigFamily: any) => {
-          if (rigFamily.name === rigFamilyName && index === value) {
-            setCurrentRigFamily(rigFamily.description);
-          }
-          }
-        );
-        });
-      }
-    };
-
+    } else if (rigFamilies) {
+      parameter.rigfamily_name.forEach(
+        (rigFamilyName: string, index: number) => {
+          rigFamilies.forEach((rigFamily: any) => {
+            if (rigFamily.name === rigFamilyName && index === value) {
+              setCurrentRigFamily(rigFamily.description);
+            }
+          });
+        }
+      );
+    }
+  };
 
   useEffect(() => {
     //Set rigfamily description based on rigfamily name
     handleRigFamilyChange(0);
   }, [parameter.rigfamily_name]);
 
- 
-
   const handleSave = () => {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
       // TODO: Save to database
-      console.log(parameter)
-      console.log(parameter.rigfamily_description)
+      console.log(parameter);
+      console.log(parameter.rigfamily_description);
 
       let updatedParameter: UpdateParameter = {
         name: parameter.name,
@@ -147,7 +140,6 @@ function ExpandedData(props: {
         },
         rigfamily: {
           name: parameter.rigfamily_name.join(";"),
-          
         },
         images: {
           name: parameter.images
@@ -165,7 +157,9 @@ function ExpandedData(props: {
             ? parameter.possible_values.map((value) => value.value).join(";")
             : null,
           description: parameter.possible_values
-            ? parameter.possible_values.map((value) => value.description).join(";")
+            ? parameter.possible_values
+                .map((value) => value.description)
+                .join(";")
             : null,
         },
       };
@@ -173,7 +167,7 @@ function ExpandedData(props: {
       // put request to update parameter
       const setData = async () => {
         try {
-          await fetch(hostname+`parameters/${props.row.id}`, {
+          await fetch(hostname + `parameters/${props.row.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -196,18 +190,18 @@ function ExpandedData(props: {
     if (result) {
       const deleteData = async () => {
         try {
-          await fetch(hostname+`parameters/${props.row.id}`, {
-            method: "DELETE"})
+          await fetch(hostname + `parameters/${props.row.id}`, {
+            method: "DELETE",
+          })
             .catch((error) => console.log(error))
             .finally(() => console.log(props.row.id + " Deleted"));
           setPendingReload(true);
-    } catch (error) {
-      console.error(error);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      deleteData();
     }
-  };
-    deleteData();
-    
-  };
   };
 
   return (
@@ -219,19 +213,16 @@ function ExpandedData(props: {
         }
       >
         <td colSpan={9}>
-          <div className={ editMode ? "Expandable-Area editing" : "Expandable-Area"}>
+          <div
+            className={editMode ? "Expandable-Area editing" : "Expandable-Area"}
+          >
             <div className="expandableAreaToolbar">
-            <div
-              className="Expandable-Save"
-              onClick={handleSave}
-            >
-              <SaveIcon></SaveIcon>
-            </div>
-            <div 
-            className="Expandable-Delete"
-            onClick={handleDelete}>
-              <DeleteIcon></DeleteIcon>
-            </div>
+              <div className="Expandable-Save" onClick={handleSave}>
+                <SaveIcon></SaveIcon>
+              </div>
+              <div className="Expandable-Delete" onClick={handleDelete}>
+                <DeleteIcon></DeleteIcon>
+              </div>
             </div>
 
             <div className="Expandable-Left">
@@ -260,11 +251,12 @@ function ExpandedData(props: {
                 data={props.row.rigfamily_name}
                 editable={true}
                 // add rig family names to rigFamilyModel
-                options={rigFamilies.map((rigFamily) => {rigFamily.name})}
+                options={rigFamilies.map((rigFamily) => {
+                  rigFamily.name;
+                })}
                 onChange={(value: any) => {
                   handleValueChange(value, "rigfamily_name");
                 }}
-                
                 currentIndexOut={(currentIndex: number) => {
                   handleRigFamilyChange(currentIndex);
                 }}
@@ -273,19 +265,19 @@ function ExpandedData(props: {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Rig Family Description"
-                html={<>
-                  
-                      <input
-                  className="styledBoxWLabelData active"
-                  value={currentRigFamily}
-                  readOnly={true}
-                />
-                  </>}
+                html={
+                  <>
+                    <input
+                      className="styledBoxWLabelData active"
+                      value={currentRigFamily}
+                      readOnly={true}
+                    />
+                  </>
+                }
                 editable={false}
                 onChange={(value: any) => {
                   handleValueChange(value, "rigfamily_description");
                 }}
-
               ></StyledBoxWLabel>
             </div>
             <div className="Expandable-Right">
@@ -389,15 +381,15 @@ function ExpandedData(props: {
                 id={props.row.id}
                 label="Possible Values"
                 html={
-                <PossibleValues onChange={(value: any) => {
-                  handleValueChange(value, "possible_values");
-                }} possibleValues={props.row.possible_values}>
-
-                </PossibleValues>}
+                  <PossibleValues
+                    onChange={(value: any) => {
+                      handleValueChange(value, "possible_values");
+                    }}
+                    row={props.row}
+                  ></PossibleValues>
+                }
                 editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "possible_values");
-                }}
+                onChange={(value: any) => {}}
               ></StyledBoxWLabel>
 
               {/* Column 5 */}

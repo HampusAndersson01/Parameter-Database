@@ -18,22 +18,21 @@
   background-color: var(--Grey200);
 }
 .possibleValues td:not(:last-child) {
-    border-right: 1px solid var(--Grey300);
+  border-right: 1px solid var(--Grey300);
 }
 .possibleValues input {
-    border: none !important;
-    background-color: transparent;
-    font-size: 0.8rem;
-    text-align: start;
-    padding: 0 !important;
-
+  border: none !important;
+  background-color: transparent;
+  font-size: 0.8rem;
+  text-align: start;
+  padding: 0 !important;
 }
 .possibleValues input:focus-visible {
-    outline: none !important;
+  outline: none !important;
 }
 .possibleValues .value {
-    width: 30%;
+  width: 30%;
 }
 .possibleValues .description {
-    width: 70%;
+  width: 70%;
 }

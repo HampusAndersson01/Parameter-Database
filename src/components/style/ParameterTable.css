@@ -56,24 +56,23 @@ tbody tr {
 #TableRig {
   width: 10ch;
 }
-.reloadButton{
+.reloadButton {
   cursor: pointer;
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.reloadButton path{
-  
+.reloadButton path {
 }
-.reloadButton:hover path, .reloadButton.reloading path{
+.reloadButton:hover path,
+.reloadButton.reloading path {
   color: var(--Highlight-Hover);
   animation-name: spin;
   animation-duration: 1.5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   transform-origin: center;
-  
 }
 
 @keyframes spin {
@@ -96,9 +95,8 @@ tbody tr {
   height: 30px;
   width: 30px;
   fill: var(--Grey600);
-  
 }
-.tableArrow.expanded{
+.tableArrow.expanded {
   transform: scale(1, -1);
   transition: transform 0.2s ease-in-out;
 }
@@ -121,11 +119,12 @@ tbody tr {
   grid-template-areas: "Expandable-Left Expandable-Right";
   position: relative;
 }
-.Expandable-Area.editing{
+.Expandable-Area.editing {
   height: calc(var(--Row-Height) * 10 + 2rem);
   grid-template-rows: 2rem 8fr;
-  grid-template-areas: "toolbar toolbar"
-  "Expandable-Left Expandable-Right";
+  grid-template-areas:
+    "toolbar toolbar"
+    "Expandable-Left Expandable-Right";
 }
 
 .Expandable-Left {
@@ -174,7 +173,6 @@ tbody tr {
     "ParameterType ParameterComment ParameterPossibleValues Images";
   grid-area: Expandable-Right;
   overflow-y: auto;
-
 }
 
 .Images-Container {
@@ -230,7 +228,7 @@ tbody tr {
 .PossibleValues {
   grid-area: PossibleValues;
 }
-.Possible_Values fieldset{
+.Possible_Values fieldset {
   max-height: 100%;
   overflow-y: auto;
 }
@@ -286,14 +284,16 @@ tbody tr {
   display: flex;
 }
 
-.Expandable-Save,.Expandable-Delete {
+.Expandable-Save,
+.Expandable-Delete {
   z-index: 1;
   display: block;
   height: 100%;
   width: min-content;
   margin: 0 0.5rem;
 }
-.Expandable-Save svg,.Expandable-Delete svg {
+.Expandable-Save svg,
+.Expandable-Delete svg {
   height: 100%;
   width: min-content;
   cursor: pointer;
@@ -302,8 +302,6 @@ tbody tr {
 .Expandable-Save svg:hover {
   fill: var(--Highlight-Hover);
 }
-.Expandable-Delete svg:hover{
+.Expandable-Delete svg:hover {
   fill: var(--Error-Default);
 }
-
-

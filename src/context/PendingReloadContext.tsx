@@ -5,7 +5,8 @@ interface PendingReloadContextType {
   setPendingReload: Dispatch<SetStateAction<boolean>>;
 }
 
-export const PendingReloadContext = React.createContext<PendingReloadContextType>({
-  pendingReload: false,
-  setPendingReload: () => {},
-});
+export const PendingReloadContext =
+  React.createContext<PendingReloadContextType>({
+    pendingReload: false,
+    setPendingReload: () => {},
+  });
