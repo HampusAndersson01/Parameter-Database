@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style/ExpandedData.css";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StyledBoxWLabel from "./StyledBoxWLabel";
 import { TableRowProps } from "./ParameterTable";
 import SaveIcon from "@mui/icons-material/Save";
@@ -11,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { APIContext } from "../context/APIContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import PossibleValues from "./PossibleValues";
+import Images from "./Images";
 
 interface UpdateParameter {
   name: string;
@@ -43,7 +42,6 @@ interface UpdateParameter {
 }
 
 function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
-  const [currentImage, setCurrentImage] = useState<number>(0);
   const [parameter, setParameter] = useState<TableRowProps>({
     id: props.row.id,
     name: props.row.name,
@@ -70,19 +68,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   const { hostname } = useContext(APIContext);
   const { setPendingReload } = useContext(PendingReloadContext);
 
-  const HandlePrevButton = (event: any, id: number) => {
-    // decrease this id currentImage
-    if (currentImage != 0) {
-      setCurrentImage((prevState) => prevState - 1);
-    }
-  };
-
-  const HandleNextButton = (event: any, id: number, length: number) => {
-    // increase this id currentImage
-    if (currentImage != length - 1) {
-      setCurrentImage((prevState) => prevState + 1);
-    }
-  };
+  
 
   const handleValueChange = (value: any, key: string) => {
     // console.log("handleValueChange", value, key);
@@ -398,55 +384,12 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
                 label="Images"
                 data={props.row.images}
                 html={
-                  <div className="Images-Container">
-                    {props.row.images && props.row.images.length > 0 && (
-                      <img
-                        src={
-                          props.row.images[currentImage]
-                            ? props.row.images[currentImage].image_url
-                            : ""
-                        }
-                        alt={
-                          props.row.images[currentImage]
-                            ? (props.row.images[currentImage]
-                                .image_name as string)
-                            : ""
-                        }
-                      />
-                    )}
-                    {props.row.images && props.row.images.length > 1 && (
-                      <div className="Image-Nav">
-                        <ArrowBackIcon
-                          className={
-                            currentImage === 0
-                              ? "Image-Nav-Button Disabled"
-                              : "Image-Nav-Button"
-                          }
-                          onClick={(event) =>
-                            HandlePrevButton(event, props.row.id)
-                          }
-                        />
-
-                        <p>
-                          {currentImage + 1}/{props.row.images.length}
-                        </p>
-                        <ArrowForwardIcon
-                          className={
-                            currentImage === props.row.images.length - 1
-                              ? "Image-Nav-Button Disabled"
-                              : "Image-Nav-Button"
-                          }
-                          onClick={(event) =>
-                            HandleNextButton(
-                              event,
-                              props.row.id,
-                              props.row.images ? props.row.images.length : 0
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </div>
+                  <Images
+                    onChange={(value: any) => {
+                      handleValueChange(value, "images");
+                    }}
+                   row={props.row}
+                  ></Images>
                 }
                 editable={false}
                 onChange={(value: any) => {

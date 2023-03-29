@@ -1,0 +1,71 @@
+.Images-Container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.Images-Container img {
+  height: calc(100% - 2rem);
+  max-height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.Image.Active {
+  display: block;
+}
+.Image-Nav {
+  position: absolute !important;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 2rem;
+  position: relative;
+}
+.Image-Nav svg {
+  stroke-width: 0.5px;
+  height: 100%;
+  display: block;
+}
+.Image-Nav svg:hover {
+  cursor: pointer;
+  stroke: var(--Grey600);
+  border-radius: 2px;
+}
+.Image-Nav svg.Disabled {
+  display: none;
+}
+.Image-Nav p {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--Black);
+  margin-top: auto;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+.next {
+  position: absolute;
+  right: 0;
+  border-radius: 0 2px 2px 0;
+}
+.prev {
+  position: absolute;
+  left: 0;
+  border-radius: 2px 0 0 2px;
+}
+
+.add {
+  position: absolute;
+  left: 10%;
+  border-radius: 0 2px 2px 0;
+}
+.delete {
+  position: absolute;
+  right: 10%;
+  border-radius: 2px 0 0 2px;
+}
