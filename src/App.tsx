@@ -9,7 +9,7 @@ import { DebugContext } from "./context/DebugContext";
 import { EditModeContext } from "./context/EditModeContext";
 import { DataContext } from "./context/DataContext";
 import { rigFamilyModel } from "./models/RigFamily";
-import { APIContext } from "./context/ApiContext";
+import { APIContext } from "./context/APIContext";
 import { CreatingParameterContext } from "./context/CreatingParameterContext";
 import { unitModel } from "./models/Unit";
 import { datatypeModel } from "./models/Datatype";
