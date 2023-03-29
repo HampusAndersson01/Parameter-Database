@@ -21,7 +21,7 @@ jobs:
 
       - name: Generate issue or pull request title and description
         id: autoissue
-        uses: HampusAndersson01/AutoIssueDescription@v1.0.1
+        uses: HampusAndersson01/AutoIssueDescription@v1.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           chatgpt-accessToken: ${{ secrets.CHAT_GPT_TOKEN }}
