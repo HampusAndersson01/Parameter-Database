@@ -8,7 +8,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { APIContext } from "../context/ApiContext";
+import { APIContext } from "../context/APIContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import PossibleValues from "./PossibleValues";
 

@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { TableRowProps } from "./ParameterTable";
 import { DataContext } from "../context/DataContext";
-import { APIContext } from "../context/ApiContext";
+import { APIContext } from "../context/APIContext";
 import Creatable from "react-select/creatable";
 import CreatableSelect from "react-select/creatable";
 import { GroupBase } from "react-select";
