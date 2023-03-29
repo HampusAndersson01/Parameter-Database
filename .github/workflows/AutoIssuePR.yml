@@ -10,12 +10,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
       - name: Generate issue or pull request title and description
         id: autoissue
         uses: HampusAndersson01/AutoIssueDescription@Release
