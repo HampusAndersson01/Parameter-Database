@@ -42,15 +42,15 @@ function StyledBoxWLabel(props: {
     event: React.ChangeEvent<HTMLSelectElement> | undefined,
     index?: number
   ) => {
-    console.log("handleSelect");
-    console.log("index: " + index);
+    // console.log("handleSelect");
+    // console.log("index: " + index);
     if (index !== undefined && event !== undefined) {
       if (Array.isArray(value)) {
         let temp = value;
-        console.log("before: " + temp);
+        // console.log("before: " + temp);
         temp[index] = event.target.value;
         setValue(temp);
-        console.log("after: " + temp);
+        // console.log("after: " + temp);
       } else {
         setValue(event.target.value);
       }
@@ -62,8 +62,8 @@ function StyledBoxWLabel(props: {
   };
 
   const handleSetCurrentIndex = (index: number) => {
-    console.log("handleSetCurrentIndex");
-    console.log("index: " + index);
+    // console.log("handleSetCurrentIndex");
+    // console.log("index: " + index);
     if (props.currentIndexOut) {
       props.currentIndexOut(index);
     }
@@ -110,9 +110,9 @@ function StyledBoxWLabel(props: {
   const handleRemoveOption = () => {
     if (Array.isArray(value)) {
       let temp = value;
-      console.log("Before: " + value);
+      // console.log("Before: " + value);
       temp.splice(currentIdx, 1);
-      console.log("After: " + temp);
+      // console.log("After: " + temp);
       setValue(temp);
       if (currentIdx === 0) {
         setCurrentIdx(0);

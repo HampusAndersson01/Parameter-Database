@@ -85,7 +85,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   };
 
   const handleValueChange = (value: any, key: string) => {
-    console.log("handleValueChange", value, key);
+    // console.log("handleValueChange", value, key);
     setParameter((prevState) => {
       return { ...prevState, [key]: value };
     });
@@ -93,7 +93,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
 
   const handleRigFamilyChange = (value: any) => {
     //Set rigfamily description based on rigfamily name
-    console.log("handleRigFamilyChange", value);
+    // console.log("handleRigFamilyChange", value);
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
@@ -119,8 +119,8 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
       // TODO: Save to database
-      console.log(parameter);
-      console.log(parameter.rigfamily_description);
+      // console.log(parameter);
+      // console.log(parameter.rigfamily_description);
 
       let updatedParameter: UpdateParameter = {
         name: parameter.name,
@@ -163,7 +163,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
             : null,
         },
       };
-      console.log(updatedParameter, props.row.id);
+      // console.log(updatedParameter, props.row.id);
       // put request to update parameter
       const setData = async () => {
         try {
