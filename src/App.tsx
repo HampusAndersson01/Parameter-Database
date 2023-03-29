@@ -59,6 +59,25 @@ function App() {
     {}
   );
 
+  // Get the search parameters from the url
+  const queryParameters = new URLSearchParams(window.location.search);
+  const parameter = queryParameters.get("parameter");
+  const description = queryParameters.get("description");
+  const unit = queryParameters.get("unit");
+  const RIG_FAM = queryParameters.get("RIG_FAM");
+  const comment = queryParameters.get("comment");
+
+  useEffect(() => {
+    // Set the search strings from the url parameters
+    setSearchStrings({
+      parameter: parameter ? parameter : "",
+      description: description ? description : "",
+      unit: unit ? unit : "",
+      RIG_FAM: RIG_FAM ? RIG_FAM : "",
+      comment: comment ? comment : "",
+    });
+  }, []);
+
   useEffect(() => {
     if (pendingReload) {
       fetch(hostname + "parameters")
@@ -131,7 +150,7 @@ function App() {
             : Array(values.length).fill(null);
 
         for (let i = 0; i < values.length; i++) {
-          console.log(values[i], descriptions[i]);
+          // console.log(values[i], descriptions[i]);
           possibleValuesArray.push({
             value: values[i],
             description: descriptions[i],
@@ -197,6 +216,60 @@ function App() {
       });
     });
   }
+  useEffect(() => {
+    console.log("searchStrings", searchStrings);
+    // Update the url with the search parameters if searchstrings[key] is not empty
+    if (
+      searchStrings["parameter"] !== "" &&
+      searchStrings["parameter"] !== null &&
+      searchStrings["parameter"] !== undefined
+    ) {
+      queryParameters.set("parameter", searchStrings["parameter"]);
+    } else {
+      queryParameters.delete("parameter");
+    }
+    if (
+      searchStrings["description"] !== "" &&
+      searchStrings["description"] !== null &&
+      searchStrings["description"] !== undefined
+    ) {
+      queryParameters.set("description", searchStrings["description"]);
+    } else {
+      queryParameters.delete("description");
+    }
+    if (
+      searchStrings["unit"] !== "" &&
+      searchStrings["unit"] !== null &&
+      searchStrings["unit"] !== undefined
+    ) {
+      queryParameters.set("unit", searchStrings["unit"]);
+    } else {
+      queryParameters.delete("unit");
+    }
+    if (
+      searchStrings["RIG_FAM"] !== "" &&
+      searchStrings["RIG_FAM"] !== null &&
+      searchStrings["RIG_FAM"] !== undefined
+    ) {
+      queryParameters.set("RIG_FAM", searchStrings["RIG_FAM"]);
+    } else {
+      queryParameters.delete("RIG_FAM");
+    }
+    if (
+      searchStrings["comment"] !== "" &&
+      searchStrings["comment"] !== null &&
+      searchStrings["comment"] !== undefined
+    ) {
+      queryParameters.set("comment", searchStrings["comment"]);
+    } else {
+      queryParameters.delete("comment");
+    }
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${queryParameters.toString()}`
+    );
+  }, [searchStrings]);
 
   function handleValueChange(value: string, field: string) {
     setSearchStrings({ ...searchStrings, [field]: value.trim() });
@@ -247,6 +320,7 @@ function App() {
                       onChange={(value: any) => {
                         handleValueChange(value, "parameter");
                       }}
+                      defaultValue={queryParameters.get("parameter")}
                     />
                     <SearchField
                       id="DescriptionSearch"
@@ -257,6 +331,7 @@ function App() {
                       onChange={(value: any) => {
                         handleValueChange(value, "description");
                       }}
+                      defaultValue={queryParameters.get("description")}
                     />
                     <SearchField
                       id="UnitSearch"
@@ -267,6 +342,7 @@ function App() {
                       onChange={(value: any) => {
                         handleValueChange(value, "unit");
                       }}
+                      defaultValue={queryParameters.get("unit")}
                     />
                     <SearchField
                       id="RigFamSearch"
@@ -275,6 +351,7 @@ function App() {
                       onChange={(value: any) => {
                         handleValueChange(value, "RIG_FAM");
                       }}
+                      defaultValue={queryParameters.get("rigfamily")}
                     />
                     <SearchField
                       id="CommentSearch"
@@ -291,6 +368,7 @@ function App() {
                       onChange={(value: any) => {
                         handleValueChange(value, "comment");
                       }}
+                      defaultValue={queryParameters.get("comment")}
                     />
                     <button
                       className="searchClearButton"

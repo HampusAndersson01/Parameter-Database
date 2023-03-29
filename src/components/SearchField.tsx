@@ -9,8 +9,9 @@ function SearchField(props: {
   data: (string | null)[];
   placeholder: string;
   id?: string;
+  defaultValue?: string | null;
 }) {
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>(props.defaultValue || "");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [showLabel, setShowLabel] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
@@ -131,6 +132,7 @@ function SearchField(props: {
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           autoComplete="off"
+          
         ></input>
         <div className={searchValue !== "" ? "clearIcon show" : "clearIcon"}>
           <ClearIcon onClick={handleClear}></ClearIcon>
