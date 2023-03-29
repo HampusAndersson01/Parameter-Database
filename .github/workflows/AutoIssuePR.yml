@@ -18,7 +18,7 @@ jobs:
         run: npm install
       - name: Generate issue or pull request title and description
         id: autoissue
-        uses: HampusAndersson01/AutoIssueDescription/AutoIssueDescription@v1.0
+        uses: HampusAndersson01/AutoIssueDescription@Release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           chatgpt-accessToken: ${{ secrets.CHAT_GPT_TOKEN }}
