@@ -68,18 +68,18 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   const { hostname } = useContext(APIContext);
   const { setPendingReload } = useContext(PendingReloadContext);
 
-  
-
+  // Function to handle changes in input fields
+  // Usage: <input onChange={(e) => handleValueChange(e.target.value, "name")} />
   const handleValueChange = (value: any, key: string) => {
-    // console.log("handleValueChange", value, key);
     setParameter((prevState) => {
       return { ...prevState, [key]: value };
     });
   };
 
+  // Function to handle changes in rigfamily dropdown
+  // Usage: <select onChange={(e) => handleRigFamilyChange(e.target.value)} />
   const handleRigFamilyChange = (value: any) => {
     //Set rigfamily description based on rigfamily name
-    // console.log("handleRigFamilyChange", value);
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
@@ -96,11 +96,13 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
     }
   };
 
+  // Set rigfamily description based on rigfamily name
   useEffect(() => {
-    //Set rigfamily description based on rigfamily name
     handleRigFamilyChange(0);
   }, [parameter.rigfamily_name]);
 
+  // Function to handle save button
+  // Usage: <button onClick={handleSave}>Save</button>
   const handleSave = () => {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
@@ -171,6 +173,8 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
     }
   };
 
+  // Function to handle delete button
+  // Usage: <button onClick={handleDelete}>Delete</button>
   const handleDelete = () => {
     const result = window.confirm("Are you sure you want to delete?");
     if (result) {
@@ -388,7 +392,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
                     onChange={(value: any) => {
                       handleValueChange(value, "images");
                     }}
-                   row={props.row}
+                    row={props.row}
                   ></Images>
                 }
                 editable={false}
