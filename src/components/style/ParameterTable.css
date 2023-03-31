@@ -172,55 +172,19 @@ tbody tr {
     "ParameterMax ParameterLastModifiedBy ParameterPossibleValues Images"
     "ParameterType ParameterComment ParameterPossibleValues Images";
   grid-area: Expandable-Right;
-
 }
-
-.Images-Container {
-  height: 100%;
-  width: 20vw;
-  overflow: hidden;
+.Images {
   grid-area: Images;
-  position: relative;
-}
-.Images-Container img {
+
   height: 100%;
   width: 100%;
-  object-fit: contain;
-  display: block;
+  overflow: hidden;
 }
-.Image.Active {
-  display: block;
+.Images fieldset {
+  max-height: none !important;
 }
-.Image-Nav {
-  position: absolute;
-  bottom: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-}
-.Image-Nav svg {
-  stroke: var(--Grey300);
-  stroke-width: 0.5px;
-  height: 100%;
-}
-.Image-Nav svg:hover {
-  cursor: pointer;
-  stroke: var(--Grey600);
-  background-color: rgba(0, 0, 0, 0.24);
-  border-radius: 2px;
-}
-.Image-Nav svg.Disabled {
-  opacity: 0;
-}
-.Image-Nav p {
-  color: white;
-  margin-top: auto;
-  margin-bottom: 0;
-  font-size: 1.25rem;
-  text-shadow: -1px -1px 0 black;
-}
+
+
 .Comment-Container {
   grid-area: Comment;
 }
