@@ -194,6 +194,10 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
     }
   };
 
+  // useEffect(() => {
+  //   console.log(parameter);
+  // }, [parameter]);
+
   return (
     <>
       <tr

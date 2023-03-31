@@ -5,7 +5,6 @@ import { TableRowProps } from "./ParameterTable";
 import "./style/Images.css";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { EditModeContext } from "../context/EditModeContext";
 
 interface Image {
@@ -79,6 +78,7 @@ export default function Images(props: { row: TableRowProps; onChange: any }) {
     }
   }, [editMode]);
 
+
   const onFormChange = (value: string, type: string) => {
     setImages((prevValues) => {
       const newValues = [...prevValues];
@@ -102,7 +102,9 @@ export default function Images(props: { row: TableRowProps; onChange: any }) {
     });
   };
   return (
-    <div className="Images-Container">
+    <div
+      className={editMode ? "Images-Container editMode" : "Images-Container"}
+    >
       {props.row.images && props.row.images.length > 0 && (
         <>
           <img
@@ -117,7 +119,6 @@ export default function Images(props: { row: TableRowProps; onChange: any }) {
             }
           />
           <div className={editMode ? "imageForm" : "imageForm disabled"}>
-            <VisibilityIcon className="view" />
             <label>Image Name</label>
             <input
               type="text"
