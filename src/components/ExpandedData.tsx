@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style/ExpandedData.css";
 import StyledBoxWLabel from "./StyledBoxWLabel";
-import { TableRowProps } from "./ParameterTable";
+import { TableRowProps } from "../models/Parameters";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
@@ -41,12 +41,13 @@ interface UpdateParameter {
   };
 }
 
-function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
+function ExpandedData(props: { row: TableRowProps;}) {
   const [parameter, setParameter] = useState<TableRowProps>({
     id: props.row.id,
     name: props.row.name,
     description: props.row.description,
-    rigfamily_name: props.row.rigfamily_name,
+    // Convert rigfamily_name from "rig, rig, rig" to ["rig", "rig", "rig"]
+    rigfamily_name: props.row.rigfamily_name.split(", "),
     rigfamily_description: props.row.rigfamily_description,
     unit_name: props.row.unit_name,
     unit_description: props.row.unit_description,
@@ -68,6 +69,10 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   const { hostname } = useContext(APIContext);
   const { setPendingReload } = useContext(PendingReloadContext);
 
+  useEffect(() => {
+    console.log("parameter", parameter);
+  }, []);
+
   // Function to handle changes in input fields
   // Usage: <input onChange={(e) => handleValueChange(e.target.value, "name")} />
   const handleValueChange = (value: any, key: string) => {
@@ -84,6 +89,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
       setCurrentRigFamily("");
       return;
     } else if (rigFamilies) {
+      
       parameter.rigfamily_name.forEach(
         (rigFamilyName: string, index: number) => {
           rigFamilies.forEach((rigFamily: any) => {
@@ -200,24 +206,19 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
 
   return (
     <>
-      <tr
-        key={props.row.id + "expandable"}
-        className={
-          props.isExpanded ? "Expandable-Row Active-Row" : "Expandable-Row"
-        }
-      >
-        <td colSpan={9}>
+      
+       
           <div
             className={editMode ? "Expandable-Area editing" : "Expandable-Area"}
           >
-            <div className="expandableAreaToolbar">
+            {/* <div className="expandableAreaToolbar">
               <div className="Expandable-Save" onClick={handleSave}>
                 <SaveIcon></SaveIcon>
               </div>
               <div className="Expandable-Delete" onClick={handleDelete}>
                 <DeleteIcon></DeleteIcon>
               </div>
-            </div>
+            </div> */}
 
             <div className="Expandable-Left">
               {/* Column 1 */}
@@ -406,8 +407,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
               ></StyledBoxWLabel>
             </div>
           </div>
-        </td>
-      </tr>
+       
     </>
   );
 }

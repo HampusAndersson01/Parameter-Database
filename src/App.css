@@ -1,14 +1,13 @@
 .App-header {
-  min-height: var(--Header-Default);
-  height: fit-content;
-  padding: 1rem;
+  height: 0px;
   color: white;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  background-color: var(--Grey100);
+  background-color: white;
   align-items: center;
   padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .App-search {
