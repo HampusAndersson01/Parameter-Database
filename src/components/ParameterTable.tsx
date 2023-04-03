@@ -73,6 +73,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   }, [rowSelection]);
 
   const handleDeleteRows = () =>  {
+    if (Object.keys(rowSelection).length === 0) {
+      alert("No rows selected");
+      return;
+    }
     if (
       !confirm("Are you sure you want to delete selected row(s)? This cannot be undone.")
     ) {
