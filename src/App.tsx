@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./App.css";
 import SearchField from "./components/SearchField";
-import ParameterTable, { TableRowProps } from "./components/ParameterTable";
+import ParameterTable from "./components/ParameterTable";
+import { TableRowProps } from "./models/Parameters";
 import Toolbar from "./components/Toolbar";
 import ParameterForm from "./components/ParameterForm";
 
