@@ -22,6 +22,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [expandedRows, setExpandedRows] = useState({});
   const [data, setData] = useState<TableRowProps[]>();
+  const [filter, setFilter] = useState();
 
   const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
 
@@ -57,6 +58,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         header: 'Max',
       },
       {
+        accessorKey: 'comment',
+        header: 'Comment',
+      },
+      {
         accessorKey: 'datatype', 
         header: 'Datatype',
       },
@@ -75,6 +80,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       }
     }
   }, [rowSelection]);
+
+  useEffect(() => {
+    console.log("Filter: ", filter);
+  }, [filter]);
 
   return (
     <div className="Table-Container">
@@ -101,9 +110,19 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
           row={row.original}
           ></ExpandedData>
       )}
-      state={{ isLoading: pendingReload, rowSelection }}
+      state={{ isLoading: pendingReload, rowSelection}}
+      defaultColumnFilter={{
+        openOnLoad: true,
+      }}
       onRowSelectionChange={setRowSelection}
-
+      autoResetPageIndex={false}
+      autoResetSelectedRows={false}
+      autoResetSortBy={false}
+      autoResetExpanded={false}
+      autoResetFilters={false}
+      enableMultiRemove={true}
+      
+      
     />
     </div>
   );
