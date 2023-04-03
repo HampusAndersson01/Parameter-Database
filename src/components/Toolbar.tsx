@@ -128,16 +128,7 @@ function Toolbar(props: any) {
               : "expandingToolbar"
           }
         >
-          <button
-            className={
-              isSecondToolbarExpanded
-                ? "toggleButton second open"
-                : "toggleButton second"
-            }
-            onClick={handleClickSecondButton}
-          >
-            <ExpandLessIcon></ExpandLessIcon>
-          </button>
+          
           <div
             className={
               secondToolbarValue === "user"

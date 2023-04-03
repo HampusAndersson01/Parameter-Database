@@ -4,6 +4,7 @@
 
 .Table-Container {
   overflow-y: auto;
+  z-index: 0;
 }
 
 table {
@@ -22,39 +23,6 @@ thead.sticky {
   top: 0;
   z-index: 1;
   width: 100vw;
-}
-thead th {
-  padding: 0.5rem;
-}
-tbody td {
-  border-bottom: 1px solid var(--Grey300);
-  overflow: hidden;
-  padding: 0 0.5rem;
-}
-td,
-th {
-  height: var(--Row-Height);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-tbody tr {
-  overflow: hidden;
-}
-/* TODO Fix min width on table */
-#TableIndex {
-  width: 7ch;
-}
-#TableName {
-  width: 40ch;
-}
-#TableDescription {
-  width: 30ch;
-}
-#TableUnit {
-  width: 15ch;
-}
-#TableRig {
-  width: 10ch;
 }
 .reloadButton {
   cursor: pointer;
@@ -109,7 +77,7 @@ tbody tr {
   display: table-row;
 }
 .Expandable-Area {
-  background-color: var(--Grey100);
+  background-color: white;
   height: calc(var(--Row-Height) * 10);
   width: 100%;
   display: grid;

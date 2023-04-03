@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style/ExpandedData.css";
 import StyledBoxWLabel from "./StyledBoxWLabel";
-import { TableRowProps } from "./ParameterTable";
+import { TableRowProps } from "../models/Parameters";
 import SaveIcon from "@mui/icons-material/Save";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
@@ -41,7 +41,7 @@ interface UpdateParameter {
   };
 }
 
-function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
+function ExpandedData(props: { row: TableRowProps;}) {
   const [parameter, setParameter] = useState<TableRowProps>({
     id: props.row.id,
     name: props.row.name,
@@ -83,8 +83,8 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
-    } else if (rigFamilies) {
-      parameter.rigfamily_name.forEach(
+    } else if (rigFamilies ) {
+      Array.from(parameter.rigfamily_name.toString().split(", ")).forEach(
         (rigFamilyName: string, index: number) => {
           rigFamilies.forEach((rigFamily: any) => {
             if (rigFamily.name === rigFamilyName && index === value) {
@@ -106,7 +106,6 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
   const handleSave = () => {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
-      // TODO: Save to database
       // console.log(parameter);
       // console.log(parameter.rigfamily_description);
 
@@ -200,24 +199,19 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
 
   return (
     <>
-      <tr
-        key={props.row.id + "expandable"}
-        className={
-          props.isExpanded ? "Expandable-Row Active-Row" : "Expandable-Row"
-        }
-      >
-        <td colSpan={9}>
+      
+       
           <div
             className={editMode ? "Expandable-Area editing" : "Expandable-Area"}
           >
-            <div className="expandableAreaToolbar">
+            {/* <div className="expandableAreaToolbar">
               <div className="Expandable-Save" onClick={handleSave}>
                 <SaveIcon></SaveIcon>
               </div>
               <div className="Expandable-Delete" onClick={handleDelete}>
                 <DeleteIcon></DeleteIcon>
               </div>
-            </div>
+            </div> */}
 
             <div className="Expandable-Left">
               {/* Column 1 */}
@@ -242,7 +236,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Rig Family"
-                data={props.row.rigfamily_name}
+                data={parameter.rigfamily_name.toString().split(", ")}
                 editable={true}
                 // add rig family names to rigFamilyModel
                 options={rigFamilies.map((rigFamily) => {
@@ -406,8 +400,7 @@ function ExpandedData(props: { row: TableRowProps; isExpanded: boolean }) {
               ></StyledBoxWLabel>
             </div>
           </div>
-        </td>
-      </tr>
+       
     </>
   );
 }
