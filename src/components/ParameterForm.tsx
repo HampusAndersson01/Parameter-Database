@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { TableRowProps } from "./ParameterTable";
+import { TableRowProps } from "../models/Parameters";
 import { DataContext } from "../context/DataContext";
 import { APIContext } from "../context/APIContext";
 import Creatable from "react-select/creatable";
