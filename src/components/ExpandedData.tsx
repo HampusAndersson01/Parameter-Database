@@ -172,31 +172,6 @@ function ExpandedData(props: { row: TableRowProps;}) {
     }
   };
 
-  // Function to handle delete button
-  // Usage: <button onClick={handleDelete}>Delete</button>
-  const handleDelete = () => {
-    const result = window.confirm("Are you sure you want to delete?");
-    if (result) {
-      const deleteData = async () => {
-        try {
-          await fetch(hostname + `parameters/${props.row.id}`, {
-            method: "DELETE",
-          })
-            .catch((error) => console.log(error))
-            .finally(() => console.log(props.row.id + " Deleted"));
-          setPendingReload(true);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      deleteData();
-    }
-  };
-
-  // useEffect(() => {
-  //   console.log(parameter);
-  // }, [parameter]);
-
   return (
     <>
       
@@ -204,15 +179,6 @@ function ExpandedData(props: { row: TableRowProps;}) {
           <div
             className={editMode ? "Expandable-Area editing" : "Expandable-Area"}
           >
-            {/* <div className="expandableAreaToolbar">
-              <div className="Expandable-Save" onClick={handleSave}>
-                <SaveIcon></SaveIcon>
-              </div>
-              <div className="Expandable-Delete" onClick={handleDelete}>
-                <DeleteIcon></DeleteIcon>
-              </div>
-            </div> */}
-
             <div className="Expandable-Left">
               {/* Column 1 */}
               <StyledBoxWLabel

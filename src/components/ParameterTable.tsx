@@ -1,16 +1,16 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import "./style/ParameterTable.css";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
-import CachedIcon from "@mui/icons-material/Cached";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { Delete, Edit } from '@mui/icons-material';
 import { TableRowProps } from "../models/Parameters";
 
-import MaterialReactTable from 'material-react-table';
+import MaterialReactTable, { MRT_Row } from 'material-react-table';
 import type { MRT_ColumnDef } from 'material-react-table';
+import { Box, Button, Dialog, DialogTitle, IconButton, Tooltip } from "@mui/material";
+import { APIContext } from "../context/APIContext";
 
 
 
@@ -19,10 +19,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [expandedRows, setExpandedRows] = useState({});
-  const [data, setData] = useState<TableRowProps[]>();
-  const [filter, setFilter] = useState();
+  const { hostname } = useContext(APIContext);
+  
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
 
@@ -71,19 +70,35 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
 
   useEffect(() => {
     console.log("Selected rows: ", rowSelection);
-    //Get selected ids from props.rows and log them
-    for (const [key, value] of Object.entries(rowSelection)) {
-      if (value) {
-        //Set selectedIds to the ids of the selected rows
-        setSelectedIds((selectedIds) => [...selectedIds, parseInt(key)]);
-
-      }
-    }
   }, [rowSelection]);
 
-  useEffect(() => {
-    console.log("Filter: ", filter);
-  }, [filter]);
+  const handleDeleteRows = () =>  {
+    if (
+      !confirm("Are you sure you want to delete selected row(s)? This cannot be undone.")
+    ) {
+      return;
+    }
+    console.log("Deleting rows: ", rowSelection);
+    const deleteData = async (id: number) => {
+        try {
+          await fetch(hostname + `parameters/${id}`, {
+            method: "DELETE",
+          })
+            .catch((error) => console.log(error))
+            .finally(() => console.log(id + " Deleted"));
+          setPendingReload(true);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      for (const [key, value] of Object.entries(rowSelection)) {
+        if (value) {
+          var dbID = props.rows[parseInt(key)].id;
+          deleteData(dbID);
+        }
+      }
+  };
+
 
   return (
     <div className="Table-Container">
@@ -121,10 +136,17 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       autoResetExpanded={false}
       autoResetFilters={false}
       enableMultiRemove={true}
+      renderTopToolbarCustomActions={() => (
+        <Button
+          color="primary"
+          onClick={() => { handleDeleteRows()}}
+          variant="outlined"
+        >
+          Delete Selected
+        </Button>
+      )}
       
-      
-    />
-    </div>
-  );
+      ></MaterialReactTable>
+      </div>);
 }
 export default ParameterTable;
