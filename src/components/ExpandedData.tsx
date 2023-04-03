@@ -339,7 +339,7 @@ function ExpandedData(props: { row: TableRowProps;}) {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Last Modified"
-                data={props.row.modified_date}
+                data={props.row.modified_date !== null ? props.row.modified_date.toString().split("T")[0]: null}
                 editable={false}
                 onChange={(value: any) => {
                   handleValueChange(value, "modified_date");
