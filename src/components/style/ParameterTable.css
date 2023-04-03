@@ -129,7 +129,7 @@ thead.sticky {
   display: grid;
   height: calc(var(--Row-Height) * 10);
   max-height: 100%;
-  grid-template-columns: 1fr 2.5fr 4fr 2.5fr;
+  grid-template-columns: 1fr 2fr 3.5fr 3fr;
   grid-template-rows: repeat(5, minmax(0, 1fr));
   gap: 0px 0px;
   grid-auto-flow: row;
