@@ -57,6 +57,10 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         header: 'Max',
       },
       {
+        accessorKey: 'comment',
+        header: 'Comment',
+      },
+      {
         accessorKey: 'datatype', 
         header: 'Datatype',
       },
