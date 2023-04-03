@@ -126,6 +126,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
           ></ExpandedData>
       )}
       state={{ isLoading: pendingReload, rowSelection}}
+      initialState={{density: "compact", pagination:{pageSize: 25, pageIndex:0}, showColumnFilters: true}}
       defaultColumnFilter={{
         openOnLoad: true,
       }}
