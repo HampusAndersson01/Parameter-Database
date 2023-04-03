@@ -46,8 +46,7 @@ function ExpandedData(props: { row: TableRowProps;}) {
     id: props.row.id,
     name: props.row.name,
     description: props.row.description,
-    // Convert rigfamily_name from "rig, rig, rig" to ["rig", "rig", "rig"]
-    rigfamily_name: props.row.rigfamily_name.split(", "),
+    rigfamily_name: props.row.rigfamily_name,
     rigfamily_description: props.row.rigfamily_description,
     unit_name: props.row.unit_name,
     unit_description: props.row.unit_description,
@@ -69,10 +68,6 @@ function ExpandedData(props: { row: TableRowProps;}) {
   const { hostname } = useContext(APIContext);
   const { setPendingReload } = useContext(PendingReloadContext);
 
-  useEffect(() => {
-    console.log("parameter", parameter);
-  }, []);
-
   // Function to handle changes in input fields
   // Usage: <input onChange={(e) => handleValueChange(e.target.value, "name")} />
   const handleValueChange = (value: any, key: string) => {
@@ -88,9 +83,8 @@ function ExpandedData(props: { row: TableRowProps;}) {
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
-    } else if (rigFamilies) {
-      
-      parameter.rigfamily_name.forEach(
+    } else if (rigFamilies ) {
+      Array.from(parameter.rigfamily_name.toString().split(", ")).forEach(
         (rigFamilyName: string, index: number) => {
           rigFamilies.forEach((rigFamily: any) => {
             if (rigFamily.name === rigFamilyName && index === value) {
@@ -112,7 +106,6 @@ function ExpandedData(props: { row: TableRowProps;}) {
   const handleSave = () => {
     const result = window.confirm("Are you sure you want to save?");
     if (result) {
-      // TODO: Save to database
       // console.log(parameter);
       // console.log(parameter.rigfamily_description);
 
@@ -243,7 +236,7 @@ function ExpandedData(props: { row: TableRowProps;}) {
               <StyledBoxWLabel
                 id={props.row.id}
                 label="Rig Family"
-                data={props.row.rigfamily_name}
+                data={parameter.rigfamily_name.toString().split(", ")}
                 editable={true}
                 // add rig family names to rigFamilyModel
                 options={rigFamilies.map((rigFamily) => {

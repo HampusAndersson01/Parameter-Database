@@ -7,7 +7,7 @@ import { EditModeContext } from "../context/EditModeContext";
 import CachedIcon from "@mui/icons-material/Cached";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { Delete, Edit } from '@mui/icons-material';
-import { TableRowProps } from "../types/TableRowProps";
+import { TableRowProps } from "../models/Parameters";
 
 import MaterialReactTable from 'material-react-table';
 import type { MRT_ColumnDef } from 'material-react-table';
