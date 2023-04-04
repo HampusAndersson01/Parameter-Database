@@ -128,7 +128,6 @@ function Toolbar(props: any) {
               : "expandingToolbar"
           }
         >
-          
           <div
             className={
               secondToolbarValue === "user"
