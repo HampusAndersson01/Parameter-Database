@@ -1,4 +1,4 @@
-.toolbarContainer {
+/* .toolbarContainer {
   position: fixed;
   top: 0;
   left: 0;
@@ -178,4 +178,120 @@
 .expandingToolbar li {
   cursor: pointer;
   padding: 1rem;
+} */
+
+
+.toolbarContainer{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: var(--Toolbar-Height);
+  background-color: var(--Dark_Blue);
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  flex-wrap: nowrap
 }
+
+.toolbar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+  
+.toolbarContainer > div, .toolbarContainer > nav{
+  padding: 0 1rem;
+}
+
+.toolbarTitle{
+  width:auto;
+  white-space: nowrap;
+  text-emphasis: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.toolbarButtons{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: calc(var(--Toolbar-Height) / 2);
+  align-items: center;
+  width: 100%;
+  height: calc(var(100% - 10px));
+  margin: 5px 0;
+  padding: 0;
+  margin-right: 40px;
+}
+.toolbarButtons ul{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+}
+.toolbarAccount{
+  /* Flex to right from parent */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem 0;
+}
+.toolbarAccount svg{
+  height: calc(var(--Toolbar-Height) * 0.8);
+  width: calc(var(--Toolbar-Height) * 0.8);
+  fill: var(--Grey100);
+}
+.toolbarButton ul{
+  display: none;
+}
+.toolbarMenu{
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+
+@media screen and (max-width: 768px) {
+  .toolbarContainer{
+    justify-content: flex-start;
+  }
+  .toolbar{
+    display: none;
+    position: absolute;
+    top: var(--Toolbar-Height);
+    left: 0;
+    z-index: 10;
+    width: 100vw;
+    height: 0;
+    background-color: var(--Dark_Blue);
+    transition: height 1s ease-in-out;
+    overflow: hidden;
+  }
+  .toolbar.open{
+    display: flex;
+    height: calc(100vh - var(--Toolbar-Height));
+    transition: height 1s ease-in-out;
+  }
+  .toolbarMenu{
+    display: block;
+    z-index: 11;
+  }
+  .toolbarTitle{
+    z-index: 11;
+  }
+
+}
+  
