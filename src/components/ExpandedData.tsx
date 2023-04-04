@@ -41,7 +41,7 @@ interface UpdateParameter {
   };
 }
 
-function ExpandedData(props: { row: TableRowProps;}) {
+function ExpandedData(props: { row: TableRowProps }) {
   const [parameter, setParameter] = useState<TableRowProps>({
     id: props.row.id,
     name: props.row.name,
@@ -83,7 +83,7 @@ function ExpandedData(props: { row: TableRowProps;}) {
     if (value < 0 || parameter.rigfamily_name[value] === "") {
       setCurrentRigFamily("");
       return;
-    } else if (rigFamilies ) {
+    } else if (rigFamilies) {
       Array.from(parameter.rigfamily_name.toString().split(", ")).forEach(
         (rigFamilyName: string, index: number) => {
           rigFamilies.forEach((rigFamily: any) => {
@@ -174,199 +174,202 @@ function ExpandedData(props: { row: TableRowProps;}) {
 
   return (
     <>
-      
-       
-          <div
-            className={editMode ? "Expandable-Area editing" : "Expandable-Area"}
-          >
-            <div className="Expandable-Left">
-              {/* Column 1 */}
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Name"
-                data={props.row.name}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "name");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Description"
-                data={props.row.description}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "description");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Rig Family"
-                data={parameter.rigfamily_name.toString().split(", ")}
-                editable={true}
-                // add rig family names to rigFamilyModel
-                options={rigFamilies.map((rigFamily) => {
-                  rigFamily.name;
-                })}
-                onChange={(value: any) => {
-                  handleValueChange(value, "rigfamily_name");
-                }}
-                currentIndexOut={(currentIndex: number) => {
-                  handleRigFamilyChange(currentIndex);
-                }}
-                iterable={true}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Rig Family Description"
-                html={
-                  <>
-                    <input
-                      className="styledBoxWLabelData active"
-                      value={currentRigFamily}
-                      readOnly={true}
-                    />
-                  </>
-                }
-                editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "rigfamily_description");
-                }}
-              ></StyledBoxWLabel>
-            </div>
-            <div className="Expandable-Right">
-              {/* Column 2 */}
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Unit"
-                data={props.row.unit_name}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "unit_name");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Decimals"
-                data={props.row.decimals}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "decimals");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Min"
-                data={props.row.min}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "min");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Max"
-                data={props.row.max}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "max");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Type"
-                data={props.row.datatype}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "datatype");
-                }}
-              ></StyledBoxWLabel>
+      <div className={editMode ? "Expandable-Area editing" : "Expandable-Area"}>
+        <div className="Expandable-Left">
+          {/* Column 1 */}
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Name"
+            data={props.row.name}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "name");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Description"
+            data={props.row.description}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "description");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Rig Family"
+            data={parameter.rigfamily_name.toString().split(", ")}
+            editable={true}
+            // add rig family names to rigFamilyModel
+            options={rigFamilies.map((rigFamily) => {
+              rigFamily.name;
+            })}
+            onChange={(value: any) => {
+              handleValueChange(value, "rigfamily_name");
+            }}
+            currentIndexOut={(currentIndex: number) => {
+              handleRigFamilyChange(currentIndex);
+            }}
+            iterable={true}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Rig Family Description"
+            html={
+              <>
+                <input
+                  className="styledBoxWLabelData active"
+                  value={currentRigFamily}
+                  readOnly={true}
+                />
+              </>
+            }
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "rigfamily_description");
+            }}
+          ></StyledBoxWLabel>
+        </div>
+        <div className="Expandable-Right">
+          {/* Column 2 */}
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Unit"
+            data={props.row.unit_name}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "unit_name");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Decimals"
+            data={props.row.decimals}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "decimals");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Min"
+            data={props.row.min}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "min");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Max"
+            data={props.row.max}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "max");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Type"
+            data={props.row.datatype}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "datatype");
+            }}
+          ></StyledBoxWLabel>
 
-              {/* Column 3 */}
+          {/* Column 3 */}
 
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Created"
-                data={props.row.creation_date !== null ? props.row.creation_date.toString().split("T")[0]: null}
-                editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "creation_date");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Created By"
-                data={props.row.created_by}
-                editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "created_by");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Last Modified"
-                data={props.row.modified_date !== null ? props.row.modified_date.toString().split("T")[0]: null}
-                editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "modified_date");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Modified By"
-                data={props.row.modified_by}
-                editable={false}
-                onChange={(value: any) => {
-                  handleValueChange(value, "modified_by");
-                }}
-              ></StyledBoxWLabel>
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Comment"
-                data={props.row.comment}
-                editable={true}
-                onChange={(value: any) => {
-                  handleValueChange(value, "comment");
-                }}
-              ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Created"
+            data={
+              props.row.creation_date !== null
+                ? props.row.creation_date.toString().split("T")[0]
+                : null
+            }
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "creation_date");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Created By"
+            data={props.row.created_by}
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "created_by");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Last Modified"
+            data={
+              props.row.modified_date !== null
+                ? props.row.modified_date.toString().split("T")[0]
+                : null
+            }
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "modified_date");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Modified By"
+            data={props.row.modified_by}
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "modified_by");
+            }}
+          ></StyledBoxWLabel>
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Comment"
+            data={props.row.comment}
+            editable={true}
+            onChange={(value: any) => {
+              handleValueChange(value, "comment");
+            }}
+          ></StyledBoxWLabel>
 
-              {/* Column 4 */}
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Possible Values"
-                html={
-                  <PossibleValues
-                    onChange={(value: any) => {
-                      handleValueChange(value, "possible_values");
-                    }}
-                    row={props.row}
-                  ></PossibleValues>
-                }
-                editable={false}
-                onChange={(value: any) => {}}
-              ></StyledBoxWLabel>
+          {/* Column 4 */}
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Possible Values"
+            html={
+              <PossibleValues
+                onChange={(value: any) => {
+                  handleValueChange(value, "possible_values");
+                }}
+                row={props.row}
+              ></PossibleValues>
+            }
+            editable={false}
+            onChange={(value: any) => {}}
+          ></StyledBoxWLabel>
 
-              {/* Column 5 */}
-              <StyledBoxWLabel
-                id={props.row.id}
-                label="Images"
-                data={props.row.images}
-                html={
-                  <Images
-                    onChange={(value: any) => {
-                      handleValueChange(value, "images");
-                    }}
-                    row={props.row}
-                  ></Images>
-                }
-                editable={false}
+          {/* Column 5 */}
+          <StyledBoxWLabel
+            id={props.row.id}
+            label="Images"
+            data={props.row.images}
+            html={
+              <Images
                 onChange={(value: any) => {
                   handleValueChange(value, "images");
                 }}
-              ></StyledBoxWLabel>
-            </div>
-          </div>
-       
+                row={props.row}
+              ></Images>
+            }
+            editable={false}
+            onChange={(value: any) => {
+              handleValueChange(value, "images");
+            }}
+          ></StyledBoxWLabel>
+        </div>
+      </div>
     </>
   );
 }

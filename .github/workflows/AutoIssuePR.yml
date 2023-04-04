@@ -14,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: Install dependencies
         run: npm ci
@@ -25,5 +25,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           chatgpt-accessToken: ${{ secrets.CHAT_GPT_TOKEN }}
-          labels: 'bug,enhancement,investigate,performance,question,documentation,tweak'
-        
+          labels: "bug,enhancement,investigate,performance,question,documentation,tweak"

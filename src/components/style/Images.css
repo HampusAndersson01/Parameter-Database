@@ -60,7 +60,6 @@
   border-radius: 2px 0 0 2px;
 }
 
-
 /* Edit mode */
 .add {
   position: absolute;
@@ -82,7 +81,7 @@
 .imageForm.disabled {
   display: none;
 }
-.imageForm{
+.imageForm {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -96,11 +95,11 @@
   z-index: 1;
   opacity: 1;
 }
-.imageForm label{
+.imageForm label {
   text-align: start;
   font-size: 0.7rem;
 }
-.Images-Container.editMode img{
+.Images-Container.editMode img {
   height: 40%;
   transition: all ease-in-out 0.1s;
 }

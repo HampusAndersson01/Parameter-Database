@@ -180,8 +180,7 @@
   padding: 1rem;
 } */
 
-
-.toolbarContainer{
+.toolbarContainer {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -191,10 +190,10 @@
   width: 100%;
   height: 100%;
   position: relative;
-  flex-wrap: nowrap
+  flex-wrap: nowrap;
 }
 
-.toolbar{
+.toolbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -204,20 +203,24 @@
   margin: 0;
   padding: 0;
 }
-  
-.toolbarContainer > div, .toolbarContainer > nav{
+
+.toolbarContainer > div,
+.toolbarContainer > nav {
   padding: 0 1rem;
 }
 
-.toolbarTitle{
-  width:auto;
+.toolbarTitle {
+  width: auto;
   white-space: nowrap;
-  text-emphasis: bold;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
+  font-weight: bold;
+  height: 100%;
+  height: var(--Toolbar-Height);
+  line-height: var(--Toolbar-Height);
 }
 
-.toolbarButtons{
+.toolbarButtons {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -228,19 +231,21 @@
   margin: 5px 0;
   padding: 0;
   margin-right: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
 }
-.toolbarButtons ul{
+.toolbarButtons ul {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   height: 100%;
   margin: 0;
   padding: 0;
   list-style-type: none;
-
+  width: 100%;
 }
-.toolbarAccount{
+.toolbarAccount {
   /* Flex to right from parent */
   display: flex;
   flex-direction: row;
@@ -248,28 +253,27 @@
   align-items: center;
   margin: 1rem 0;
 }
-.toolbarAccount svg{
+.toolbarAccount svg {
   height: calc(var(--Toolbar-Height) * 0.8);
   width: calc(var(--Toolbar-Height) * 0.8);
   fill: var(--Grey100);
 }
-.toolbarButton ul{
+.toolbarButton ul {
   display: none;
 }
-.toolbarMenu{
+.toolbarMenu {
   display: none;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
+  width: var(--Toolbar-Height);
+  height: var(--Toolbar-Height);
 }
 
 @media screen and (max-width: 768px) {
-  .toolbarContainer{
+  .toolbarContainer {
     justify-content: flex-start;
+
+
   }
-  .toolbar{
-    display: none;
+  .toolbar {
     position: absolute;
     top: var(--Toolbar-Height);
     left: 0;
@@ -277,14 +281,51 @@
     width: 100vw;
     height: 0;
     background-color: var(--Dark_Blue);
-    transition: height 1s ease-in-out;
+    transition: height 0.5s cubic-bezier(0, 1, 0.5, 1);
     overflow: hidden;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
   }
-  .toolbar.open{
+  .toolbar.open {
     display: flex;
     height: calc(100vh - var(--Toolbar-Height));
-    transition: height 1s ease-in-out;
+    transition: height 0.5s cubic-bezier(0, 1, 0.5, 1);
   }
+  .toolbarMenu {
+    display: block;
+    z-index: 11;
+    background-color: var(--Dark_Blue);
+    margin: 0;
+    padding: 0 !important;
+  }
+  .toolbarTitle {
+    z-index: 11;
+    background-color: var(--Dark_Blue);
+    width: 85vw;
+    margin: 0;
+  }
+  .toolbarButtons {
+    margin-top: 2rem;
+    flex-direction: column;
+    font-size: 1.5rem;
+    width: fit-content;
+    
+ }
+ .toolbarButtons ul{
+  flex-direction: column;
+  align-items: flex-start;
+  
+ }
+ .toolbarButtons ul li{
+  margin: 1rem;
+  margin-left: 0;
+ }  
+  .toolbarAccount {
+    display: none;
+  }
+
   .toolbarMenu{
     display: block;
     z-index: 11;

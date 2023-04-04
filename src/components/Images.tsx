@@ -78,7 +78,6 @@ export default function Images(props: { row: TableRowProps; onChange: any }) {
     }
   }, [editMode]);
 
-
   const onFormChange = (value: string, type: string) => {
     setImages((prevValues) => {
       const newValues = [...prevValues];
