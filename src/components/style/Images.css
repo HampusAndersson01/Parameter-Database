@@ -104,3 +104,11 @@
   height: 40%;
   transition: all ease-in-out 0.1s;
 }
+.imageForm input {
+  border: 1px solid var(--ornamentalBorder);
+  background-color: transparent;
+}
+.imageForm input:focus-visible {
+  outline: var(--blueAccent) auto 1px;
+  border: 1px solid var(--blueAccent);
+}

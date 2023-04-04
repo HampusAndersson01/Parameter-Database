@@ -8,9 +8,8 @@
   background-color: var(--backgroundSecondary) !important;
 
 }
-.MuiTableRow-root *{
+.MuiTableRow-root *:not(.PrivateSwitchBase-input,.Expandable-Area){
   color: var(--foregroundPrimary) !important;
-  border-color: var(ornamentalDivider) !important;
 }
 
 .Mui-TableBodyCell-DetailPanel{
@@ -29,8 +28,21 @@
   color: var(--foregroundSecondary) !important;
   opacity: 1 !important;
 }
+.MuiTablePagination-root{
+  color: var(--foregroundPrimary) !important;
+}
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root{
+  color: var(--foregroundSecondary) !important;
+}
 
+.MuiTablePagination-root input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 
+}
+
+table, th, td {
+  border-color: var(--ornamentalBorder) !important;
+}
 .Expandable-Area {
   background-color: var(--backgroundSecondary);
   height: calc(var(--Row-Height) * 10);
@@ -148,40 +160,4 @@
 }
 .Images {
   grid-area: Images;
-}
-.expandableAreaToolbar {
-  display: none;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  grid-area: toolbar;
-  background-color: var(--Dark_Blue);
-  border-radius: 0 0 0.5rem 0.5rem;
-  padding: 0 1rem;
-}
-.Expandable-Area.editing .expandableAreaToolbar {
-  display: flex;
-}
-
-.Expandable-Save,
-.Expandable-Delete {
-  z-index: 1;
-  display: block;
-  height: 100%;
-  width: min-content;
-  margin: 0 0.5rem;
-}
-.Expandable-Save svg,
-.Expandable-Delete svg {
-  height: 100%;
-  width: min-content;
-  cursor: pointer;
-  fill: var(--White);
-}
-.Expandable-Save svg:hover {
-  fill: var(--Highlight-Hover);
-}
-.Expandable-Delete svg:hover {
-  fill: var(--Error-Default);
 }
