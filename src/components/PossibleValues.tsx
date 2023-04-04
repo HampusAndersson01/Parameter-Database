@@ -1,7 +1,7 @@
 import { EditModeContext } from "../context/EditModeContext";
 import "./style/PossibleValues.css";
 import React, { useState, useEffect, useContext } from "react";
-import { TableRowProps } from "./ParameterTable";
+import { TableRowProps } from "../models/Parameters";
 
 interface Possible_value {
   value: string;

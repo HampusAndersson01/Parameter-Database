@@ -1,83 +1,38 @@
-:root {
-  --Row-Height: 35px;
-}
-
 .Table-Container {
   overflow-y: auto;
   z-index: 0;
 }
 
-table {
-  min-width: 100%;
-  text-align: center;
-  overflow-x: scroll;
-  table-layout: fixed;
-  border-collapse: collapse;
+/* MUI Table */
+.MuiTableRow-root{
+  background-color: var(--backgroundSecondary) !important;
+
 }
-thead {
-  background-color: var(--Black);
-  color: var(--White);
-}
-thead.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  width: 100vw;
-}
-.reloadButton {
-  cursor: pointer;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.reloadButton path {
-}
-.reloadButton:hover path,
-.reloadButton.reloading path {
-  color: var(--Highlight-Hover);
-  animation-name: spin;
-  animation-duration: 1.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  transform-origin: center;
+.MuiTableRow-root *{
+  color: var(--foregroundPrimary) !important;
+  border-color: var(ornamentalDivider) !important;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
+.Mui-TableBodyCell-DetailPanel{
+  background-color: var(--backgroundSecondary) !important;
+}
+.MuiToolbar-root{
+  background-color: var(--backgroundPrimary) !important;
+}
+.MuiTableContainer-root tr, .MuiTableContainer-root td{
+  background-color: var(--backgroundSecondary) !important;
+}
+.MuiTableContainer-root tr:hover , .MuiTableContainer-root td:hover{
+  background-color: var(--backgroundSecondary) !important;
+}
+.MuiInputBase-input::-webkit-input-placeholder{
+  color: var(--foregroundSecondary) !important;
+  opacity: 1 !important;
 }
 
-.tableArrow {
-  transition: transform 0.2s ease-in-out;
-  padding: 0;
-}
-.tableArrow:hover {
-  cursor: pointer;
-}
-.tableArrow svg {
-  height: 30px;
-  width: 30px;
-  fill: var(--Grey600);
-}
-.tableArrow.expanded {
-  transform: scale(1, -1);
-  transition: transform 0.2s ease-in-out;
-}
 
-.Expandable-Row {
-  display: none;
-  background-color: var(--Grey100);
-}
-.Expandable-Row.Active-Row {
-  display: table-row;
-}
 .Expandable-Area {
-  background-color: white;
+  background-color: var(--backgroundSecondary);
   height: calc(var(--Row-Height) * 10);
   width: 100%;
   display: grid;
@@ -87,13 +42,7 @@ thead.sticky {
   grid-template-areas: "Expandable-Left Expandable-Right";
   position: relative;
 }
-.Expandable-Area.editing {
-  height: calc(var(--Row-Height) * 10 + 2rem);
-  grid-template-rows: 2rem 8fr;
-  grid-template-areas:
-    "toolbar toolbar"
-    "Expandable-Left Expandable-Right";
-}
+
 
 .Expandable-Left {
   display: flex;
@@ -127,7 +76,7 @@ thead.sticky {
 }
 .Expandable-Right {
   display: grid;
-  height: calc(var(--Row-Height) * 10);
+  height: 350px;
   max-height: 100%;
   grid-template-columns: 1fr 2fr 3.5fr 3fr;
   grid-template-rows: repeat(5, minmax(0, 1fr));

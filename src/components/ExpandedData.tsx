@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./style/ExpandedData.css";
 import StyledBoxWLabel from "./StyledBoxWLabel";
 import { TableRowProps } from "../models/Parameters";
 import SaveIcon from "@mui/icons-material/Save";

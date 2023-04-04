@@ -3,6 +3,7 @@
   width: 100%;
   overflow: hidden;
   position: relative;
+  color: var(--foregroundPrimary);
 }
 .Images-Container img {
   height: calc(100% - 2rem);
@@ -31,7 +32,7 @@
 }
 .Image-Nav svg:hover {
   cursor: pointer;
-  stroke: var(--Grey600);
+  stroke: var(--ornamentalBorder);
   border-radius: 2px;
 }
 .Image-Nav svg.Disabled {
@@ -42,7 +43,7 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  color: var(--Black);
+  color: var(--foregroundPrimary);
   margin-top: auto;
   margin-bottom: 0;
   font-size: 1.25rem;
@@ -91,7 +92,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background-color: var(--Grey100);
+  background-color: transparent;
   z-index: 1;
   opacity: 1;
 }
