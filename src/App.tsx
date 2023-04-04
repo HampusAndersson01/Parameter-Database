@@ -275,9 +275,6 @@ function App() {
   function handleValueChange(value: string, field: string) {
     setSearchStrings({ ...searchStrings, [field]: value.trim() });
   }
-  function handleSearch() {
-    setFilteredData(filterData(data));
-  }
 
   // When clearAll is set to false search for the new data
   useEffect(() => {
