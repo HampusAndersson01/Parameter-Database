@@ -8,9 +8,9 @@
   background-color: var(--backgroundSecondary) !important;
 
 }
-.MuiTableRow-root *:not(.PrivateSwitchBase-input,.Expandable-Area){
-  color: var(--foregroundPrimary) !important;
-}
+/* .MuiTableRow-root *:not(.PrivateSwitchBase-input,.Expandable-Area){
+  
+} */
 
 .Mui-TableBodyCell-DetailPanel{
   background-color: var(--backgroundSecondary) !important;
@@ -42,6 +42,7 @@
 
 table, th, td {
   border-color: var(--ornamentalBorder) !important;
+  color: var(--foregroundPrimary) !important;
 }
 .Expandable-Area {
   background-color: var(--backgroundSecondary);

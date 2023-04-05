@@ -122,7 +122,7 @@ select {
 
 .submitBtn {
   cursor: pointer;
-  background-color: var(--Highlight-Default);
+  background-color: var(--bluePrimary);
   color: #fff;
   border: none;
   border-radius: 4px;
