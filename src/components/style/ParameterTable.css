@@ -61,6 +61,10 @@ table svg{
   color: var(--foregroundSecondary) !important;
 }
 
+.deleteIcon svg{
+  color: var(--alerts) !important;
+}
+
 
 .Expandable-Left {
   display: flex;
