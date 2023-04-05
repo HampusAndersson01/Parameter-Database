@@ -1,7 +1,12 @@
 body {
   margin: 0;
   padding: 0;
-  color: var(--foregroundPrimary)
+  color: var(--foregroundPrimary);
+  
+}
+body, #root, .App{
+  max-height: 100vh;
+  overflow-y: hidden
 }
 /* roboto font */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
@@ -38,6 +43,7 @@ body {
   
 } */
 :root {
+  
   --Header-Default: 100px;
   --Header-750: 240px;
   --Header-320: 320px;

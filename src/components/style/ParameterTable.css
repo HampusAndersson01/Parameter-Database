@@ -1,6 +1,7 @@
 .Table-Container {
-  overflow-y: auto;
   z-index: 0;
+  max-height: calc(100vh - var(--Toolbar-Height));
+  height: calc(100vh - var(--Toolbar-Height));
 }
 
 /* MUI Table */
@@ -8,15 +9,17 @@
   background-color: var(--backgroundSecondary) !important;
 
 }
-/* .MuiTableRow-root *:not(.PrivateSwitchBase-input,.Expandable-Area){
-  
-} */
-
 .Mui-TableBodyCell-DetailPanel{
   background-color: var(--backgroundSecondary) !important;
 }
 .MuiToolbar-root{
   background-color: var(--backgroundPrimary) !important;
+}
+.MuiPaper-root{
+  max-height: calc(100vh - var(--Toolbar-Height)) !important;
+}
+.MuiTableContainer-root{
+  max-height: calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px) !important;
 }
 .MuiTableContainer-root tr{
   background-color: var(--backgroundSecondary) !important;

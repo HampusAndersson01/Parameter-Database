@@ -258,7 +258,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         autoResetExpanded={false}
         autoResetFilters={false}
         enableMultiRemove={true}
+        //If rowSelection is empty, hide the delete button
         renderTopToolbarCustomActions={() => (
+          Object.keys(rowSelection).length === 0 ? null :
           <Button
             color="primary"
             onClick={() => {
@@ -267,7 +269,8 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             variant="outlined"
           >
             Delete Selected
-          </Button>
+            </Button> 
+
         )}
         enableRowActions
         displayColumnDefOptions={{
