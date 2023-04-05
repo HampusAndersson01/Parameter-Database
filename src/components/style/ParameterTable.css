@@ -1,83 +1,51 @@
-:root {
-  --Row-Height: 35px;
-}
-
 .Table-Container {
   overflow-y: auto;
   z-index: 0;
 }
 
-table {
-  min-width: 100%;
-  text-align: center;
-  overflow-x: scroll;
-  table-layout: fixed;
-  border-collapse: collapse;
+/* MUI Table */
+.MuiTableRow-root{
+  background-color: var(--backgroundSecondary) !important;
+
 }
-thead {
-  background-color: var(--Black);
-  color: var(--White);
+/* .MuiTableRow-root *:not(.PrivateSwitchBase-input,.Expandable-Area){
+  
+} */
+
+.Mui-TableBodyCell-DetailPanel{
+  background-color: var(--backgroundSecondary) !important;
 }
-thead.sticky {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  width: 100vw;
+.MuiToolbar-root{
+  background-color: var(--backgroundPrimary) !important;
 }
-.reloadButton {
-  cursor: pointer;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.MuiTableContainer-root tr, .MuiTableContainer-root td{
+  background-color: var(--backgroundSecondary) !important;
 }
-.reloadButton path {
+.MuiTableContainer-root tr:hover , .MuiTableContainer-root td:hover{
+  background-color: var(--backgroundSecondary) !important;
 }
-.reloadButton:hover path,
-.reloadButton.reloading path {
-  color: var(--Highlight-Hover);
-  animation-name: spin;
-  animation-duration: 1.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  transform-origin: center;
+.MuiInputBase-input::-webkit-input-placeholder{
+  color: var(--foregroundSecondary) !important;
+  opacity: 1 !important;
+}
+.MuiTablePagination-root{
+  color: var(--foregroundPrimary) !important;
+}
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root{
+  color: var(--foregroundSecondary) !important;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
+.MuiTablePagination-root input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+
 }
 
-.tableArrow {
-  transition: transform 0.2s ease-in-out;
-  padding: 0;
-}
-.tableArrow:hover {
-  cursor: pointer;
-}
-.tableArrow svg {
-  height: 30px;
-  width: 30px;
-  fill: var(--Grey600);
-}
-.tableArrow.expanded {
-  transform: scale(1, -1);
-  transition: transform 0.2s ease-in-out;
-}
-
-.Expandable-Row {
-  display: none;
-  background-color: var(--Grey100);
-}
-.Expandable-Row.Active-Row {
-  display: table-row;
+table, th, td {
+  border-color: var(--ornamentalBorder) !important;
+  color: var(--foregroundPrimary) !important;
 }
 .Expandable-Area {
-  background-color: white;
+  background-color: var(--backgroundSecondary);
   height: calc(var(--Row-Height) * 10);
   width: 100%;
   display: grid;
@@ -87,13 +55,10 @@ thead.sticky {
   grid-template-areas: "Expandable-Left Expandable-Right";
   position: relative;
 }
-.Expandable-Area.editing {
-  height: calc(var(--Row-Height) * 10 + 2rem);
-  grid-template-rows: 2rem 8fr;
-  grid-template-areas:
-    "toolbar toolbar"
-    "Expandable-Left Expandable-Right";
+table svg{
+  color: var(--foregroundSecondary) !important;
 }
+
 
 .Expandable-Left {
   display: flex;
@@ -127,7 +92,7 @@ thead.sticky {
 }
 .Expandable-Right {
   display: grid;
-  height: calc(var(--Row-Height) * 10);
+  height: 350px;
   max-height: 100%;
   grid-template-columns: 1fr 2fr 3.5fr 3fr;
   grid-template-rows: repeat(5, minmax(0, 1fr));
@@ -199,40 +164,4 @@ thead.sticky {
 }
 .Images {
   grid-area: Images;
-}
-.expandableAreaToolbar {
-  display: none;
-  justify-content: flex-start;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  grid-area: toolbar;
-  background-color: var(--Dark_Blue);
-  border-radius: 0 0 0.5rem 0.5rem;
-  padding: 0 1rem;
-}
-.Expandable-Area.editing .expandableAreaToolbar {
-  display: flex;
-}
-
-.Expandable-Save,
-.Expandable-Delete {
-  z-index: 1;
-  display: block;
-  height: 100%;
-  width: min-content;
-  margin: 0 0.5rem;
-}
-.Expandable-Save svg,
-.Expandable-Delete svg {
-  height: 100%;
-  width: min-content;
-  cursor: pointer;
-  fill: var(--White);
-}
-.Expandable-Save svg:hover {
-  fill: var(--Highlight-Hover);
-}
-.Expandable-Delete svg:hover {
-  fill: var(--Error-Default);
 }

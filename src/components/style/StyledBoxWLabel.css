@@ -1,13 +1,13 @@
 .styledBoxWLabelLabel {
   font-size: 0.75rem;
   font-weight: bold;
-  color: var(--Black);
+  color: var(--foregroundPrimary);
   text-align: start;
   width: calc(min-content + 1rem);
 }
 .styledBoxWLabel {
-  filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
-  background-color: var(--Grey100);
+  filter: drop-shadow(0px 8px 4px var(--ornamentalBorder));
+  background-color: var(--backgroundSecondary);
   padding: 5px 5px 5px 5px;
   height: 100%;
   border-radius: 4px;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./style/Toolbar.css";
-import { ExpandMore, ExpandLess, AccountCircle } from "@mui/icons-material";
+import { AccountCircle, LightMode, DarkMode } from "@mui/icons-material";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { CreatingParameterContext } from "../context/CreatingParameterContext";
@@ -13,6 +13,9 @@ function Toolbar() {
   const { creatingParameter, setCreatingParameter } = useContext(
     CreatingParameterContext
   );
+  const { editMode, setEditMode } = useContext(EditModeContext);
+  const { debugMode, setDebugMode } = useContext(DebugContext);
+  const [theme, setTheme] = useState("light");
 
   const handleResize = () => {
     if (window.innerWidth < 768) {
@@ -34,6 +37,17 @@ function Toolbar() {
     }
   }, [isMobile]);
 
+  const handleThemeChange = () => {
+    if (theme === "light") {
+      setTheme("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      setTheme("light");
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  };
+
+
 
   const Main = () => {
     return (
@@ -41,10 +55,10 @@ function Toolbar() {
         <li className="toolbarButton" onClick={() => setCurrentMenu("addParameter")}>
           Add parameter(s)
         </li>
-        <li className="toolbarButton">Edit mode </li>
+        <li className="toolbarButton" onClick={() => setEditMode(!editMode)}>Edit mode </li>
         {isMobile ? <li className="toolbarButton">My Account</li> : null}
         {/* TODO: Only show debug if account is developer */}
-        <li className="toolbarButton">Debug mode</li>
+        <li className="toolbarButton" onClick={() => setDebugMode(!debugMode)}>Debug mode</li>
       </ul>
     )
   }
@@ -52,9 +66,9 @@ function Toolbar() {
   const AddParameter = () => {
     return (
       <ul>
-        <li className="toolbarButton" onClick={() => setCreatingParameter(true)}>Create new parameter</li>
+        <li className="toolbarButton" onClick={() => setCreatingParameter(true)}>Create new</li>
         <li className="toolbarButton">
-          Import new parameter(s) from Excel
+          Import from Excel
         </li>
         <li className="toolbarButton" onClick={() => setCurrentMenu("main")}>Back</li>
       </ul>
@@ -74,6 +88,9 @@ function Toolbar() {
           {currentMenu === "addParameter" ? <AddParameter /> : null}
 
         </div>
+        <div className="toolbarTheme" onClick={handleThemeChange}>
+          {theme === "light" ? (<DarkMode></DarkMode>) : (<LightMode></LightMode>)}
+        </div>
         <div className="toolbarAccount">
           <AccountCircle></AccountCircle>
         </div>
@@ -83,6 +100,7 @@ function Toolbar() {
         <Hamburger
           toggled={isOpen}
           toggle={setOpen}
+          color="var(--backgroundPrimary)"
         ></Hamburger>
       </div>
     </div>

@@ -5,8 +5,8 @@
   border-collapse: collapse;
 }
 .possibleValues th {
-  background-color: var(--Grey100);
-  color: var(--Black);
+  background-color: transparent;
+  color: var(--foregroundPrimary);
   font-size: 0.9rem;
   text-align: start;
 }
@@ -15,10 +15,10 @@
   font-size: 0.8rem;
 }
 .possibleValues tr:nth-child(even) {
-  background-color: var(--Grey200);
+  background-color: var(--backgroundSecondary);
 }
 .possibleValues td:not(:last-child) {
-  border-right: 1px solid var(--Grey300);
+  border-right: 1px solid var(--foregroundSecondary);
 }
 .possibleValues input {
   border: none !important;

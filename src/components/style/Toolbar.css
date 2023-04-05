@@ -1,191 +1,9 @@
-/* .toolbarContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: min-content;
-  z-index: 2;
-}
-
-.toolbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 100%;
-  height: var(--Toolbar-Height);
-  position: fixed;
-  top: calc(5px - var(--Toolbar-Height));
-  left: 0;
-  background-color: var(--Dark_Blue);
-  z-index: 3;
-  margin: 0;
-  transition: all 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-  border-radius: 0 0 calc(var(--Toolbar-Height) / 2)
-    calc(var(--Toolbar-Height) / 2);
-}
-.toolbar.open {
-  top: 0;
-  transition: all 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-}
-.toolbarButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: calc(var(--Toolbar-Height) / 2);
-  align-items: center;
-  width: 100%;
-  height: calc(var(100% - 10px));
-  margin: 5px 0;
-  padding: 0;
-  margin-right: 40px;
-}
-.toolbarButtons ul {
-  display: flex;
-  flex-direction: row;
-  gap: calc(var(--Toolbar-Height) / 2);
-  align-items: center;
-  justify-content: space-evenly;
-  width: 20vw;
-  min-width: 250px;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-.toolbarButtons li {
-  list-style: none;
-  height: 100%;
-  width: min-content;
-  padding: 0.5rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border-radius: 10px;
-  white-space: nowrap;
-}
-.toolbarButtons li:hover {
-  background: #202a44;
-  box-shadow: inset 9px 9px 18px #1b243a, inset -9px -9px 18px #25304e;
-  transition: all 0.2s ease-in-out;
-}
-.toolbarLogo {
-  position: relative;
-  top: 50%;
-  left: calc(var(--Toolbar-Height) * 0.2 / 2);
-  color: var(--Grey100);
-  transform: translate(0%, -50%);
-  height: calc(var(--Toolbar-Height) * 0.8);
-  width: calc(var(--Toolbar-Height) * 0.8);
-  cursor: pointer;
-  border: var(--Highlight-Default) 1px solid;
-  border-radius: 50%;
-}
-.toolbarLogo:hover {
-  border: var(--Highlight-Hover) 1px solid;
-}
-.toolbarLogo:active {
-  border: var(--Highlight-Active) 1px solid;
-}
-.toolbarLogo svg {
-  height: calc(var(--Toolbar-Height) * 0.8);
-  width: calc(var(--Toolbar-Height) * 0.8);
-  fill: var(--Grey100);
-}
-
-.toggleButton {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  height: 20px;
-  width: 40px;
-  border: 0;
-  background-color: var(--Dark_Blue);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  transform: translate(-50%, 0%);
-  border-radius: 0 0 100% 100%;
-  color: var(--Grey100);
-  border-radius: 0px 0px 40px 40px;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-}
-.toggleButton.second {
-  background-color: var(--Grey100);
-  color: var(--Dark_Blue);
-  z-index: 0;
-}
-.toggleButton.secondaryOpen {
-  display: none;
-}
-.expandingToolbar {
-  z-index: 2;
-  position: absolute;
-  top: calc(0px - var(--Toolbar-Height) * 2);
-  left: 0;
-  width: 100%;
-  height: calc(var(--Toolbar-Height) * 2);
-  background-color: var(--Grey100);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  transition: all 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-  border-radius: 0 0 calc(var(--Toolbar-Height) / 2)
-    calc(var(--Toolbar-Height) / 2);
-  box-shadow: 0 0 12px 7px rgba(0, 0, 0, 0.75);
-  padding-top: var(--Toolbar-Height);
-  color: var(--Dark_Blue);
-}
-.expandingToolbar.open {
-  top: 0;
-  transition: all 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8);
-}
-
-.expandingToolbar ul {
-  gap: calc(var(--Toolbar-Height) / 2);
-  align-items: center;
-  width: 80%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  z-index: 1;
-  display: none;
-}
-.expandingToolbarItems {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: none;
-}
-.expandingToolbarItems .itemsPrimary.open,
-.expandingToolbarItems .itemsSecondary.open {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  width: 100%;
-}
-.expandingToolbarItems .itemsPrimary,
-.expandingToolbarItems .itemsSecondary {
-  display: none;
-}
-.expandingToolbarItems.active {
-  display: block;
-}
-.expandingToolbar li {
-  cursor: pointer;
-  padding: 1rem;
-} */
-
 .toolbarContainer {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   height: var(--Toolbar-Height);
-  background-color: var(--Dark_Blue);
+  background-color: var(--bluePrimary);
   margin: 0;
   width: 100%;
   height: 100%;
@@ -218,6 +36,7 @@
   height: 100%;
   height: var(--Toolbar-Height);
   line-height: var(--Toolbar-Height);
+  color: var(--backgroundPrimary);
 }
 
 .toolbarButtons {
@@ -233,6 +52,8 @@
   margin-right: 40px;
   text-transform: uppercase;
   letter-spacing: 0.05rem;
+  color: var(--backgroundPrimary);
+  
 }
 .toolbarButtons ul {
   display: flex;
@@ -245,18 +66,27 @@
   list-style-type: none;
   width: 100%;
 }
+.toolbarButtons li {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 0.7rem;
+}
+.toolbarButtons li:hover {
+  background-color: var(--blueAccent);
+}
 .toolbarAccount {
-  /* Flex to right from parent */
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   margin: 1rem 0;
+  cursor: pointer;
 }
 .toolbarAccount svg {
   height: calc(var(--Toolbar-Height) * 0.8);
   width: calc(var(--Toolbar-Height) * 0.8);
-  fill: var(--Grey100);
+  fill: var(--backgroundPrimary);
+  transition: none !important;
 }
 .toolbarButton ul {
   display: none;
@@ -266,6 +96,20 @@
   width: var(--Toolbar-Height);
   height: var(--Toolbar-Height);
 }
+.toolbarTheme{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+.toolbarTheme svg{
+  height: calc(var(--Toolbar-Height) * 0.8);
+  width: calc(var(--Toolbar-Height) * 0.8);
+  fill: var(--backgroundPrimary);
+}
+
 
 @media screen and (max-width: 768px) {
   .toolbarContainer {
@@ -280,7 +124,7 @@
     z-index: 10;
     width: 100vw;
     height: 0;
-    background-color: var(--Dark_Blue);
+    background-color: var(--bluePrimary);
     transition: height 0.5s cubic-bezier(0, 1, 0.5, 1);
     overflow: hidden;
     flex-direction: column;
@@ -296,13 +140,13 @@
   .toolbarMenu {
     display: block;
     z-index: 11;
-    background-color: var(--Dark_Blue);
+    background-color: var(--bluePrimary);
     margin: 0;
     padding: 0 !important;
   }
   .toolbarTitle {
     z-index: 11;
-    background-color: var(--Dark_Blue);
+    background-color: var(--bluePrimary);
     width: 85vw;
     margin: 0;
   }
