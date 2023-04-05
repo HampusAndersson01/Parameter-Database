@@ -29,7 +29,7 @@ export default function ParameterPage() {
         <div className="App">
             <header className="App-header">
                 {/* Toolbar */}
-                <Toolbar></Toolbar> {/* TODO: Hide new parameter here using props */}
+                <Toolbar singleParameter></Toolbar> {/* TODO: Hide new parameter here using props */}
             </header>
             <main>
                 <h1>Parameter Page</h1>
