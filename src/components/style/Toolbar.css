@@ -23,7 +23,8 @@
 }
 
 .toolbarContainer > div,
-.toolbarContainer > nav {
+.toolbarContainer > nav,
+.toolbarContainer > a {
   padding: 0 1rem;
 }
 
@@ -37,6 +38,7 @@
   height: var(--Toolbar-Height);
   line-height: var(--Toolbar-Height);
   color: var(--backgroundPrimary);
+  text-decoration: none;
 }
 
 .toolbarButtons {

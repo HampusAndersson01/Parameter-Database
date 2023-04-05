@@ -7,14 +7,13 @@ import React, {
   useState,
 } from "react";
 import "./style/ParameterTable.css";
-import ExpandedData from "./ExpandedData";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
-import { Delete, Edit } from "@mui/icons-material";
 import { TableRowProps } from "../models/Parameters";
+import { useNavigate } from "react-router-dom";
 
-import MaterialReactTable, { MRT_Row } from "material-react-table";
+import MaterialReactTable, { MRT_FullScreenToggleButton, MRT_Row, MRT_ShowHideColumnsButton } from "material-react-table";
 import type { MRT_ColumnDef } from "material-react-table";
 import {
   Box,
@@ -22,15 +21,20 @@ import {
   Dialog,
   DialogTitle,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
   Tooltip,
 } from "@mui/material";
 import { APIContext } from "../context/APIContext";
+import { AccountCircle } from "@mui/icons-material";
 
 function ParameterTable(props: { rows: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);
   const [rowSelection, setRowSelection] = useState({});
   const { hostname } = useContext(APIContext);
+  const navigate = useNavigate();
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
@@ -129,21 +133,24 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             };
           })
         }
+
         enableRowSelection
         enableColumnOrdering
+        enableColumnFilterModes
         enableGlobalFilter={false}
         enableStickyHeader
         enableColumnResizing
         enablePinning
         enableHiding
-        renderDetailPanel={({ row }) => (
-          <ExpandedData row={row.original}></ExpandedData>
-        )}
         state={{ isLoading: pendingReload, rowSelection }}
         initialState={{
           density: "compact",
           pagination: { pageSize: 25, pageIndex: 0 },
           showColumnFilters: true,
+          columnVisibility: {
+            comment: false,
+            datatype: false,
+          },
         }}
         defaultColumnFilter={{
           openOnLoad: true,
@@ -166,6 +173,22 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             Delete Selected
           </Button>
         )}
+        muiTableBodyCellProps={({ cell }) => ({
+          onDoubleClick: () => {
+            navigate(`/parameter/${cell.row.original.id}`);
+          },
+          sx: {
+            cursor: 'double-arrow',
+          },
+        })}
+        renderToolbarInternalActions={({ table }) => (
+          <>
+            <p>To open details, double click on a parameter row.</p>
+            <MRT_ShowHideColumnsButton table={table} />
+            <MRT_FullScreenToggleButton table={table} />
+          </>
+        )}
+
       ></MaterialReactTable>
     </div>
   );

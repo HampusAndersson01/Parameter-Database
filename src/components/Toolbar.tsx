@@ -5,6 +5,7 @@ import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { CreatingParameterContext } from "../context/CreatingParameterContext";
 import { Squeeze as Hamburger } from "hamburger-react";
+import { Link } from "react-router-dom";
 
 function Toolbar() {
   const [isOpen, setOpen] = useState(false);
@@ -79,9 +80,9 @@ function Toolbar() {
 
   return (
     <div className="toolbarContainer">
-      <div className="toolbarTitle">
+      <Link to="/" className="toolbarTitle">
         Parameter Database
-      </div>
+      </Link>
       <nav className={isOpen ? "toolbar open" : "toolbar"} >
         <div className="toolbarButtons">
           {currentMenu === "main" ? <Main /> : null}
