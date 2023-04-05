@@ -270,17 +270,21 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
           </Button>
         )}
         enableRowActions
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Open | Delete', //change header text
+            size: 100, //make actions column wider
+          },
+        }}
         renderRowActions={({ row }) => (
           <Box>
             {/* <IconButton className="openIcon" key="open" onClick={() => navigate(`/parameter/${row.original.id}`)}>
               <ArrowForwardIcon />
             </IconButton > */}
             <Link to={`/parameter/${row.original.id}`}>
-              <Tooltip title="Open" placement="bottom-end" followCursor disableInteractive>
-                <IconButton className="openIcon" key="open" >
-                  <ArrowForwardIcon />
-                </IconButton >
-              </Tooltip>
+              <IconButton className="openIcon" key="open" >
+                <ArrowForwardIcon />
+              </IconButton >
             </Link>
 
             <IconButton className="deleteIcon" key="delete" onClick={() => {
