@@ -55,6 +55,9 @@ table, th, td {
   grid-template-areas: "Expandable-Left Expandable-Right";
   position: relative;
 }
+table svg{
+  color: var(--foregroundSecondary) !important;
+}
 
 
 .Expandable-Left {
