@@ -7,9 +7,13 @@ import { CreatingParameterContext } from "../context/CreatingParameterContext";
 import { Squeeze as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
 
-function Toolbar() {
+
+
+function Toolbar(props: {
+  singleParameter: boolean;
+}) {
   const [isOpen, setOpen] = useState(false);
-  const [currentMenu, setCurrentMenu] = useState("main");
+  const [currentMenu, setCurrentMenu] = useState(props.singleParameter ? "mainParameter" : "main");
   const [isMobile, setIsMobile] = useState(false);
   const { creatingParameter, setCreatingParameter } = useContext(
     CreatingParameterContext
@@ -56,13 +60,13 @@ function Toolbar() {
         <li className="toolbarButton" onClick={() => setCurrentMenu("addParameter")}>
           Add parameter(s)
         </li>
-        <li className="toolbarButton" onClick={() => setEditMode(!editMode)}>Edit mode </li>
         {isMobile ? <li className="toolbarButton">My Account</li> : null}
         {/* TODO: Only show debug if account is developer */}
         <li className="toolbarButton" onClick={() => setDebugMode(!debugMode)}>Debug mode</li>
       </ul>
     )
   }
+
 
   const AddParameter = () => {
     return (
@@ -76,6 +80,15 @@ function Toolbar() {
     )
   }
 
+  const MainParameter = () => {
+    return (
+      <ul>
+
+      </ul>
+    )
+  }
+
+
 
 
   return (
@@ -86,6 +99,7 @@ function Toolbar() {
       <nav className={isOpen ? "toolbar open" : "toolbar"} >
         <div className="toolbarButtons">
           {currentMenu === "main" ? <Main /> : null}
+          {currentMenu === "mainParameter" ? <MainParameter /> : null}
           {currentMenu === "addParameter" ? <AddParameter /> : null}
 
         </div>
@@ -106,6 +120,10 @@ function Toolbar() {
       </div>
     </div>
   );
+};
+
+Toolbar.defaultProps = {
+  singleParameter: false,
 };
 
 export default Toolbar;
