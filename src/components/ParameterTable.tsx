@@ -183,7 +183,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         })}
         renderToolbarInternalActions={({ table }) => (
           <>
-            <p>To open details, double click on a parameter row.</p>
+            <p>For details, double click on a parameter row.</p>
             <MRT_ShowHideColumnsButton table={table} />
             <MRT_FullScreenToggleButton table={table} />
           </>

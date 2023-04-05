@@ -18,11 +18,15 @@
 .MuiToolbar-root{
   background-color: var(--backgroundPrimary) !important;
 }
-.MuiTableContainer-root tr, .MuiTableContainer-root td{
+.MuiTableContainer-root tr{
   background-color: var(--backgroundSecondary) !important;
 }
-.MuiTableContainer-root tr:hover , .MuiTableContainer-root td:hover{
-  background-color: var(--backgroundSecondary) !important;
+.MuiTableContainer-root td{
+  background-color: transparent !important;
+}
+
+.MuiTableContainer-root tr:hover td{
+  background-color: var(--ornamentalBorder) !important;
 }
 .MuiInputBase-input::-webkit-input-placeholder{
   color: var(--foregroundSecondary) !important;
@@ -50,18 +54,9 @@
 table, th, td {
   border-color: var(--ornamentalBorder) !important;
   color: var(--foregroundPrimary) !important;
+
 }
-.Expandable-Area {
-  background-color: var(--backgroundSecondary);
-  height: calc(var(--Row-Height) * 10);
-  width: 100%;
-  display: grid;
-  grid-template-columns: 20% 80%;
-  grid-template-rows: 8fr;
-  gap: 0px 0px;
-  grid-template-areas: "Expandable-Left Expandable-Right";
-  position: relative;
-}
+
 table svg{
   color: var(--foregroundSecondary) !important;
 }
