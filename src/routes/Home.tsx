@@ -1,19 +1,28 @@
 import React, { useEffect, useState, useContext } from "react";
-import "./App.css";
-import ParameterTable from "./components/ParameterTable";
-import { TableRowProps } from "./models/Parameters";
-import Toolbar from "./components/Toolbar";
-import ParameterForm from "./components/ParameterForm";
+import "./style/Home.css";
+import ParameterTable from "../components/ParameterTable";
+import { TableRowProps } from "../models/Parameters";
+import Toolbar from "../components/Toolbar";
+import ParameterForm from "../components/ParameterForm";
 
-import { DebugContext } from "./context/DebugContext";
-import { EditModeContext } from "./context/EditModeContext";
-import { DataContext } from "./context/DataContext";
-import { rigFamilyModel } from "./models/RigFamily";
-import { APIContext } from "./context/APIContext";
-import { CreatingParameterContext } from "./context/CreatingParameterContext";
-import { unitModel } from "./models/Unit";
-import { datatypeModel } from "./models/Datatype";
-import { PendingReloadContext } from "./context/PendingReloadContext";
+import { DebugContext } from "../context/DebugContext";
+import { EditModeContext } from "../context/EditModeContext";
+import { DataContext } from "../context/DataContext";
+import { rigFamilyModel } from "../models/RigFamily";
+import { APIContext } from "../context/APIContext";
+import { CreatingParameterContext } from "../context/CreatingParameterContext";
+import { unitModel } from "../models/Unit";
+import { datatypeModel } from "../models/Datatype";
+import { PendingReloadContext } from "../context/PendingReloadContext";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  useParams,
+  Routes,
+  BrowserRouter
+} from "react-router-dom";
+import ParameterPage from "./ParameterPage";
 
 type dataModel = {
   id: number;
@@ -39,7 +48,7 @@ type dataModel = {
   possible_values_description: string | null;
 }[];
 
-function App() {
+function Home() {
   const [data, setData] = useState<dataModel>([]);
   const [filteredData, setFilteredData] = useState<dataModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
@@ -54,29 +63,7 @@ function App() {
 
   const [pendingReload, setPendingReload] = useState<boolean>(true);
 
-  // variable to store the search strings for the different fields
-  const [searchStrings, setSearchStrings] = useState<{ [key: string]: string }>(
-    {}
-  );
 
-  // Get the search parameters from the url
-  const queryParameters = new URLSearchParams(window.location.search);
-  const parameter = queryParameters.get("parameter");
-  const description = queryParameters.get("description");
-  const unit = queryParameters.get("unit");
-  const RIG_FAM = queryParameters.get("RIG_FAM");
-  const comment = queryParameters.get("comment");
-
-  useEffect(() => {
-    // Set the search strings from the url parameters
-    setSearchStrings({
-      parameter: parameter ? parameter : "",
-      description: description ? description : "",
-      unit: unit ? unit : "",
-      RIG_FAM: RIG_FAM ? RIG_FAM : "",
-      comment: comment ? comment : "",
-    });
-  }, []);
 
   useEffect(() => {
     if (pendingReload) {
@@ -84,7 +71,7 @@ function App() {
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.log(error))
-        .finally(() => console.log("parameters loaded"));
+        .finally(() => console.log("parameters loaded", data.length));
 
       fetch(hostname + "rigfamilies")
         .then((response) => response.json())
@@ -97,10 +84,6 @@ function App() {
         .then((data) => setUnits(data))
         .catch((error) => console.log(error))
         .finally(() => console.log("units loaded"));
-      // wait 1s
-      setTimeout(() => {
-        setPendingReload(false);
-      }, 1000);
     }
   }, [pendingReload]);
 
@@ -111,9 +94,11 @@ function App() {
       .filter((value, index, self) => self.indexOf(value) === index);
     setDataTypes(dataTypes);
 
-    // Update the filtered data when the data changes
-    setFilteredData(filterData(data));
+    if (pendingReload) {
+      setPendingReload(false);
+    }
   }, [data]);
+
 
   function updateRows(data: dataModel): TableRowProps[] {
     return data.map((row) => {
@@ -145,7 +130,7 @@ function App() {
         const values = row.possible_values.split(";");
         const descriptions =
           row.possible_values_description !== undefined &&
-          row.possible_values_description !== null
+            row.possible_values_description !== null
             ? row.possible_values_description.split(";")
             : Array(values.length).fill(null);
 
@@ -175,113 +160,6 @@ function App() {
     });
   }
 
-  function filterData(data: dataModel) {
-    return data.filter((row) => {
-      if (Object.keys(searchStrings).length === 0) {
-        return false;
-      }
-      // Iterate over the search strings and check if the row includes all of them
-      return Object.entries(searchStrings).every(([field, value]) => {
-        if (!value) {
-          return true;
-        }
-
-        switch (field) {
-          case "parameter":
-            return row.name.toLowerCase().includes(value.toLowerCase());
-
-          case "description":
-            return row.description
-              ? row.description.toLowerCase().includes(value.toLowerCase())
-              : false;
-
-          case "unit":
-            return row.unit_name
-              ? row.unit_name.toLowerCase().includes(value.toLowerCase())
-              : false;
-
-          case "RIG_FAM":
-            return row.rigfamily_name
-              ? row.rigfamily_name.toLowerCase().includes(value.toLowerCase())
-              : false;
-
-          case "comment":
-            return row.comment
-              ? row.comment.toLowerCase().includes(value.toLowerCase())
-              : false;
-
-          default:
-            return true;
-        }
-      });
-    });
-  }
-  useEffect(() => {
-    console.log("searchStrings", searchStrings);
-    // Update the url with the search parameters if searchstrings[key] is not empty
-    if (
-      searchStrings["parameter"] !== "" &&
-      searchStrings["parameter"] !== null &&
-      searchStrings["parameter"] !== undefined
-    ) {
-      queryParameters.set("parameter", searchStrings["parameter"]);
-    } else {
-      queryParameters.delete("parameter");
-    }
-    if (
-      searchStrings["description"] !== "" &&
-      searchStrings["description"] !== null &&
-      searchStrings["description"] !== undefined
-    ) {
-      queryParameters.set("description", searchStrings["description"]);
-    } else {
-      queryParameters.delete("description");
-    }
-    if (
-      searchStrings["unit"] !== "" &&
-      searchStrings["unit"] !== null &&
-      searchStrings["unit"] !== undefined
-    ) {
-      queryParameters.set("unit", searchStrings["unit"]);
-    } else {
-      queryParameters.delete("unit");
-    }
-    if (
-      searchStrings["RIG_FAM"] !== "" &&
-      searchStrings["RIG_FAM"] !== null &&
-      searchStrings["RIG_FAM"] !== undefined
-    ) {
-      queryParameters.set("RIG_FAM", searchStrings["RIG_FAM"]);
-    } else {
-      queryParameters.delete("RIG_FAM");
-    }
-    if (
-      searchStrings["comment"] !== "" &&
-      searchStrings["comment"] !== null &&
-      searchStrings["comment"] !== undefined
-    ) {
-      queryParameters.set("comment", searchStrings["comment"]);
-    } else {
-      queryParameters.delete("comment");
-    }
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${queryParameters.toString()}`
-    );
-  }, [searchStrings]);
-
-  function handleValueChange(value: string, field: string) {
-    setSearchStrings({ ...searchStrings, [field]: value.trim() });
-  }
-
-  // When clearAll is set to false search for the new data
-  useEffect(() => {
-    if (!clearAll) {
-      setFilteredData(data);
-      setPendingReload(true);
-    }
-  }, [clearAll]);
 
   return (
     <DebugContext.Provider value={{ debugMode, setDebugMode }}>
@@ -310,9 +188,9 @@ function App() {
                     {/* Toolbar */}
                     <Toolbar></Toolbar>
                   </header>
-                  <ParameterTable rows={updateRows(filteredData)} />
+                  <ParameterTable rows={updateRows(data)} />
                   <ParameterForm
-                    data={updateRows(filteredData)}
+                    data={updateRows(data)}
                   ></ParameterForm>
                 </div>
               </CreatingParameterContext.Provider>
@@ -324,4 +202,5 @@ function App() {
   );
 }
 
-export default App;
+
+export default Home;

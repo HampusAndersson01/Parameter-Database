@@ -11,6 +11,7 @@ import { APIContext } from "../context/APIContext";
 import Creatable from "react-select/creatable";
 import CreatableSelect from "react-select/creatable";
 import { GroupBase } from "react-select";
+import { PendingReloadContext } from "../context/PendingReloadContext";
 
 interface NewParameter {
   name: string;
@@ -78,6 +79,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
   const [rigFamilyOptions, setRigFamilyOptions] = useState<Option[]>([]);
   const [dataTypeOptions, setDataTypeOptions] = useState<Option[]>([]);
   const { hostname } = useContext(APIContext);
+  const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
 
   const createOption = (label: string) => ({
     label,
@@ -182,6 +184,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
       .then((data) => {
         console.log("Success:", data);
         setCreatingParameter(false);
+        setPendingReload(true);
       })
       .catch((error) => {
         console.error("Error:", error);
