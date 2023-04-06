@@ -61,8 +61,6 @@ function Toolbar(props: {
           Add parameter(s)
         </li>
         {isMobile ? <li className="toolbarButton">My Account</li> : null}
-        {/* TODO: Only show debug if account is developer */}
-        <li className="toolbarButton" onClick={() => setDebugMode(!debugMode)}>Debug mode</li>
       </ul>
     )
   }
