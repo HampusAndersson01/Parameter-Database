@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { TableRowProps } from "./ParameterTable";
+import { TableRowProps } from "../models/Parameters";
 import "./style/Images.css";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -122,22 +122,14 @@ export default function Images(props: { row: TableRowProps; onChange: any }) {
             <input
               type="text"
               placeholder="Image Name"
-              value={
-                images[currentImage].image_name !== null
-                  ? images[currentImage].image_name
-                  : ""
-              }
+              value={images[currentImage].image_name ?? ""}
               onChange={(e) => onFormChange(e.target.value, "name")}
             />
             <label>Image Description</label>
             <input
               type="text"
               placeholder="Image Description"
-              value={
-                images[currentImage].image_description !== null
-                  ? images[currentImage].image_description
-                  : ""
-              }
+              value={images[currentImage].image_description ?? ""}
               onChange={(e) => onFormChange(e.target.value, "description")}
             />
             <label>Image URL*</label>
