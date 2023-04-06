@@ -3,6 +3,8 @@ import { TableRowProps } from "../models/Parameters";
 import Toolbar from "../components/Toolbar";
 import { useParams } from "react-router-dom";
 import { APIContext } from "../context/APIContext";
+import Images from "../components/Images";
+import "./style/ParameterPage.css";
 
 export default function ParameterPage() {
     //Get parameter id from url
@@ -15,7 +17,7 @@ export default function ParameterPage() {
         fetch(hostname + "parameters/" + id)
             .then((response) => response.json())
             .then((data) => {
-                setParameter(data);
+                setParameter(data[0]);
             });
     }, []);
 
@@ -32,8 +34,16 @@ export default function ParameterPage() {
                 <Toolbar singleParameter></Toolbar> {/* TODO: Hide new parameter here using props */}
             </header>
             <main>
-                <h1>Parameter Page</h1>
-                <p>Parameter ID: {id}</p>
+                <div className="topContainer">
+                    <h2 className="parameterTitle">{parameter ? parameter.name : ""}</h2>
+                    <p className="parameterId">ID: {parameter ? parameter.id : ""}</p>
+                    <p className="parameterDescription">{parameter ? parameter.description : ""}</p>
+                </div>
+                <div className="rightContainer">
+                    <Images images={parameter ? parameter.images : null}></Images>
+                    {/* Possible Values */}
+                </div>
+
 
 
 

@@ -20,12 +20,12 @@ export interface TableRowProps {
   possible_values?: Possible_value[] | null;
 }
 
-interface Image {
+export interface Image {
   image_url: string;
   image_name: string | null;
   image_description: string | null;
 }
-interface Possible_value {
+export interface Possible_value {
   value: string;
   description: string | null;
 }
