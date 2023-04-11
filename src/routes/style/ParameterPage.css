@@ -60,18 +60,35 @@ hr{
 /* Main Container */
 .mainContainer {
     grid-area: left;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr;
+    grid-template-rows: 2fr 2fr 1fr 0.5fr;
+    grid-template-areas: "numbers dates unit" "numbers dates rigFamily" "numbers dates comment" "- - -";
 
 }
+.mainContainer > div{
+    padding: 1rem;
+}
 .rigFamilyContainer{
-    width: 50%;
-    height: 150px;    
+    width: 100%;
+    height: 100%;
+    grid-area: rigFamily;
 }
 .unitContainer{
-    width: 50%;
-    height: 150px;
+    width: 100%;
+    height: 100%;
+    grid-area: unit;
+}
+
+.genericDataRow{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.mainContainer .numbers{
+    grid-area: numbers;
+}
+.mainContainer .dates{
+    grid-area: dates;
 }
 

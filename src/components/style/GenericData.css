@@ -1,0 +1,10 @@
+.genericData h3{
+    color: var(--foregroundPrimary);
+    width: 100%;
+    border-bottom: 1px solid var(--ornamentalBorder);
+}
+.genericDataValue{
+    color: var(--foregroundSecondary);
+    width: 100%;
+    text-align: center;
+}

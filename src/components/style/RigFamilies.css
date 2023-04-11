@@ -43,3 +43,7 @@
 .rigFamilyCenter > div:not(.rigFamilyDescription){
     width: 100%;
 }
+.rigFamilyContainer h3{
+    width: 100%;
+    border-bottom: 1px solid var(--ornamentalBorder);
+}

@@ -9,6 +9,7 @@ import "./style/ParameterPage.css";
 import PossibleValues from "../components/PossibleValues";
 import RigFamilies from "../components/RigFamilies";
 import Units from "../components/Units";
+import GenericData from "../components/GenericData";
 
 export default function ParameterPage() {
     //Get parameter id from url
@@ -79,6 +80,21 @@ export default function ParameterPage() {
                     <div className="mainContainer">
                         <RigFamilies rigFamily={parameter.rigFamily}></RigFamilies>
                         <Units unit={parameter.unit}></Units>
+                        <div className="genericDataRow numbers">
+                            <GenericData data={parameter.decimals} label="Decimals"></GenericData>
+                            <GenericData data={parameter.min} label="Min"></GenericData>
+                            <GenericData data={parameter.max} label="Max"></GenericData>
+                            <GenericData data={parameter.datatype} label="Datatype"></GenericData>
+                        </div>
+                        <div className="genericDataRow dates">
+                            <GenericData data={parameter.created_by} label="Created by"></GenericData>
+                            <GenericData data={parameter.modified_by} label="Modified by"></GenericData>
+                            <GenericData data={parameter.creation_date} label="Creation date"></GenericData>
+                            <GenericData data={parameter.modified_date} label="Modified date"></GenericData>
+                        </div>
+                        <div className="genericDataRow comment">
+                            <GenericData data={parameter.comment} label="Comment"></GenericData>
+                        </div>
                     </div>
 
                 <div className="rightContainer">
@@ -87,10 +103,6 @@ export default function ParameterPage() {
                         handleValueChange(value, "possible_values");
                     }}></PossibleValues>
                     </div></>) : <p>Loading...</p>}
-
-
-
-
             </main>
 
         </div>
