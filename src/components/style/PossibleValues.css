@@ -3,6 +3,7 @@
   max-height: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  width: 100%;
 }
 .possibleValues th {
   background-color: transparent;

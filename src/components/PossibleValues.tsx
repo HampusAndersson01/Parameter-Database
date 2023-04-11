@@ -8,17 +8,21 @@ interface Possible_value {
   description: string | null;
 }
 
-function PossibleValues(props: { row: TableRowProps; onChange: any }) {
+function PossibleValues(props: { data: TableRowProps | null; onChange: any }) {
   const [possibleValues, setPossibleValues] = useState<Possible_value[]>([]);
 
   const { editMode } = useContext(EditModeContext);
 
   useEffect(() => {
+    if (props.data === null) {
+      return;
+    }
     if (
-      props.row.possible_values !== undefined &&
-      props.row.possible_values !== null
+      props.data.possible_values !== null &&
+      props.data.possible_values !== undefined
+
     ) {
-      console.log("possible_values: " + props.row.possible_values);
+      console.log("possible_values: " + props.data.possible_values);
     } else {
       setPossibleValues([]);
     }
@@ -130,6 +134,9 @@ function PossibleValues(props: { row: TableRowProps; onChange: any }) {
   };
 
   return (
+    <>
+      <div className="possibleValuesContainer">
+        <h3>Possible values</h3>
     <table className="possibleValues">
       <thead>
         <tr>
@@ -179,6 +186,8 @@ function PossibleValues(props: { row: TableRowProps; onChange: any }) {
         }
       </tbody>
     </table>
+      </div>
+    </>
   );
 }
 

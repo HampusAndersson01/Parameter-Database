@@ -18,6 +18,11 @@ main > div{
 }
 .rightContainer{
     grid-area: right;
+    border-left: 1px solid var(--ornamentalBorder);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "images" "possibleValues";
 }
 h2,p{
     color: var(--foregroundPrimary);
@@ -34,5 +39,14 @@ h2,p{
 .parameterDescription{
     margin-bottom: 0;
     margin-top: 0.5rem;
+}
+
+/* Right container */
+.imagesContainer {
+    grid-area: images;
+    width: 100%;
+}
+.possibleValuesContainer{
+    grid-area: possibleValues;
 }
 
