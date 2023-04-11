@@ -1,6 +1,17 @@
 import { Image, RigFamily } from '../../models/Parameters'
 
+/**
 
+Converts a string of image URLs separated by semicolons into an array of Image objects.
+
+@param {string} url - A string of image URLs separated by semicolons.
+
+@param {string} name - A string of image names separated by semicolons. Optional.
+
+@param {string} description - A string of image descriptions separated by semicolons. Optional.
+
+@returns {Image[]} An array of Image objects.
+*/
 export function imagesToArray(url: string, name: string, description: string) {
     var images: Image[] = [];
     if (url.includes(";") === false) {
@@ -32,6 +43,21 @@ export function imagesToArray(url: string, name: string, description: string) {
     return images;
 }
 
+/**
+
+Converts an array of Image objects to a string of concatenated image URLs, names and descriptions.
+@param images - An array of Image objects
+@returns An object containing concatenated URL, name and description strings.
+@example
+const images = [
+{ image_url: "https://example.com/image1.jpg", image_name: "Image 1", image_description: "This is image 1" },
+{ image_url: "https://example.com/image2.jpg", image_name: "Image 2", image_description: "This is image 2" }
+];
+const { url, name, description } = imagesToString(images);
+console.log(url); // "https://example.com/image1.jpg;https://example.com/image2.jpg"
+console.log(name); // "Image 1;Image 2"
+console.log(description); // "This is image 1;This is image 2"
+*/
 export function imagesToString(images: Image[]) {
     var url = "";
     var name = "";
@@ -54,6 +80,13 @@ export function imagesToString(images: Image[]) {
     return { url, name, description };
 }
 
+/**
+ * Converts a string containing one or multiple rig family names and descriptions into an array of RigFamily objects.
+ *
+ * @param rigFamilyName - A string containing one or multiple rig family names separated by semicolons (;).
+ * @param rigFamilyDescription - A string containing one or multiple rig family descriptions separated by semicolons (;). Optional.
+ * @returns An array of RigFamily objects, where each object contains a name and an optional description.
+ */
 export function rigFamilyToArray(rigFamilyName: string, rigFamilyDescription: string) {
     var rigFamily: RigFamily[] = [];
     if (rigFamilyName.includes(";") === false) {
