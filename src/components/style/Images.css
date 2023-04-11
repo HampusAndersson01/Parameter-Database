@@ -8,7 +8,7 @@
     height: 100%;
     position: relative;
 }
-button {
+.imagesContainer button {
     border: none;
     background: none;
     font-size: 2rem;
@@ -18,11 +18,11 @@ button {
     border-radius: 0.5rem;
     flex-grow: 1;
   }
-  button:hover {
+  .imagesContainer button:hover {
     color: var(--foregroundPrimary);
   }
   
-  img {
+.imagesContainer img {
     max-width: 100%;
     height: auto;
     border: 1px solid var(--ornamentalBorder);
@@ -30,9 +30,10 @@ button {
     flex: 1;
   }
   
-  p {
+  .imagesContainer p {
     position: absolute;
     top: 0;
     font-size: 1.2rem;
     margin-top: 1rem;
+    color: var(--foregroundPrimary);
   }

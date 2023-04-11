@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { TableRowProps, Image } from "../models/Parameters";
-import { imagesToArray } from "../hooks/ConvertParameters/ConvertParameters";
+import { imagesToArray, rigFamilyToArray } from "../hooks/ConvertParameters/ConvertParameters";
 import Toolbar from "../components/Toolbar";
 import { useParams } from "react-router-dom";
 import { APIContext } from "../context/APIContext";
 import Images from "../components/Images";
 import "./style/ParameterPage.css";
 import PossibleValues from "../components/PossibleValues";
+import RigFamilies from "../components/RigFamilies";
 
 export default function ParameterPage() {
     //Get parameter id from url
     const { id } = useParams();
-    const { hostname } = React.useContext(APIContext);
+    const { hostname } = useContext(APIContext);
     const [parameter, setParameter] = React.useState<TableRowProps>();
+
 
     // Fetch parameter data from API
     useEffect(() => {
@@ -27,8 +29,8 @@ export default function ParameterPage() {
                         description: data[0].description,
                         unit_name: data[0].unit_name,
                         unit_description: data[0].unit_description,
-                        rigfamily_name: data[0].rigfamily_name,
-                        rigfamily_description: data[0].rigfamily_description,
+                        rigFamily: rigFamilyToArray(data[0].rigfamily_name
+                            , data[0].rigfamily_description),
                         decimals: data[0].decimals,
                         min: data[0].min,
                         max: data[0].max,
@@ -44,15 +46,17 @@ export default function ParameterPage() {
 
 
                 );
-            });
+            })
+            .catch((error) => console.log(error))
+            .finally(() => console.log("Loaded parameter data"));
+
+
+
     }, []);
 
+
     const handleValueChange = (value: any, key: string) => {
-        setParameter((prevParameter) => {
-            const newParameter = { ...prevParameter };
-            newParameter[key] = value;
-            return newParameter;
-        });
+
     };
 
 
@@ -65,17 +69,23 @@ export default function ParameterPage() {
                 <Toolbar singleParameter></Toolbar> {/* TODO: Hide new parameter here using props */}
             </header>
             <main>
+                {parameter ? (<>
                 <div className="topContainer">
-                    <h2 className="parameterTitle">{parameter ? parameter.name : ""}</h2>
-                    <p className="parameterId">ID: {parameter ? parameter.id : ""}</p>
-                    <p className="parameterDescription">{parameter ? parameter.description : ""}</p>
+                        <h2 className="parameterTitle">{parameter.name}</h2>
+                        <p className="parameterId">ID: {parameter.id}</p>
+                        <p className="parameterDescription">{parameter.description}</p>
                 </div>
+
+                    <div className="mainContainer">
+                        <RigFamilies rigFamily={parameter.rigFamily}></RigFamilies>
+                    </div>
+
                 <div className="rightContainer">
-                    <Images images={parameter ? parameter.images : null}></Images>
-                    <PossibleValues data={parameter ? parameter : null} onChange={(value: any) => {
+                        <Images images={parameter.images}></Images>
+                        <PossibleValues data={parameter.possible_values} onChange={(value: any) => {
                         handleValueChange(value, "possible_values");
                     }}></PossibleValues>
-                </div>
+                    </div></>) : <p>Loading...</p>}
 
 
 

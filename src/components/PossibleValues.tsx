@@ -2,31 +2,17 @@ import { EditModeContext } from "../context/EditModeContext";
 import "./style/PossibleValues.css";
 import React, { useState, useEffect, useContext } from "react";
 import { TableRowProps } from "../models/Parameters";
+import { Possible_value } from "../models/Parameters";
 
-interface Possible_value {
-  value: string;
-  description: string | null;
-}
-
-function PossibleValues(props: { data: TableRowProps | null; onChange: any }) {
+function PossibleValues(props: { data: Possible_value[] | null; onChange: any }) {
+  const { editMode } = useContext(EditModeContext);
   const [possibleValues, setPossibleValues] = useState<Possible_value[]>([]);
 
-  const { editMode } = useContext(EditModeContext);
-
   useEffect(() => {
-    if (props.data === null) {
-      return;
+    if (props.data !== undefined && props.data !== null) {
+      setPossibleValues(props.data);
     }
-    if (
-      props.data.possible_values !== null &&
-      props.data.possible_values !== undefined
-
-    ) {
-      console.log("possible_values: " + props.data.possible_values);
-    } else {
-      setPossibleValues([]);
-    }
-  }, []);
+  }, [props.data]);
 
   const handleValueChange = (
     event: React.ChangeEvent<HTMLInputElement>,

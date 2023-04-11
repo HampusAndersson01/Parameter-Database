@@ -4,8 +4,7 @@ export interface TableRowProps {
   description: string | null;
   unit_name: string | null;
   unit_description: string | null;
-  rigfamily_name: string[];
-  rigfamily_description: (string | null)[];
+  rigFamily: RigFamily[] | null; 
   decimals: number | null;
   min: number | null;
   max: number | null;
@@ -27,5 +26,9 @@ export interface Image {
 }
 export interface Possible_value {
   value: string;
+  description: string | null;
+}
+export interface RigFamily {
+  name: string;
   description: string | null;
 }

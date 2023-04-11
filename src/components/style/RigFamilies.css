@@ -1,0 +1,45 @@
+.rigFamilyCenter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+}
+.rigFamilyData{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.rigFamilyData > button{
+    border: none;
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--foregroundSecondary);
+    height: 100%;
+    border-radius: 0.5rem;
+    flex-grow: 1;
+}
+.rigFamilyData > button:hover{
+    color: var(--foregroundPrimary);
+}
+.rigFamilyData > button:disabled{
+    color: var(--ornamentalBorder);
+    cursor: default;
+}
+.rigFamilyDescription{
+    margin: 0;
+    text-align: center;
+    color: var(--foregroundPrimary);
+    width: fit-content;
+    white-space: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+}
+.rigFamilyCenter > div:not(.rigFamilyDescription){
+    width: 100%;
+}

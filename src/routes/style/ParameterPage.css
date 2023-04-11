@@ -15,6 +15,7 @@ main > div{
 }
 .topContainer{
     grid-area: top;
+    border-bottom: 1px solid var(--ornamentalBorder);
 }
 .rightContainer{
     grid-area: right;
@@ -24,8 +25,10 @@ main > div{
     grid-template-rows: 1fr 1fr;
     grid-template-areas: "images" "possibleValues";
 }
-h2,p{
+h2,h3,p{
     color: var(--foregroundPrimary);
+}
+.parameterTitle,.parameterId,.parameterDescription{
     text-align: center;
 }
 .parameterTitle{
@@ -35,10 +38,15 @@ h2,p{
     color: var(--foregroundSecondary);
     font-size: smaller;
     margin: 0;
+
 }
 .parameterDescription{
     margin-bottom: 0;
     margin-top: 0.5rem;
+}
+hr{
+    border: 0.5px solid var(--ornamentalBorder);
+    margin: 1rem 0;
 }
 
 /* Right container */
@@ -48,5 +56,18 @@ h2,p{
 }
 .possibleValuesContainer{
     grid-area: possibleValues;
+}
+/* Main Container */
+.mainContainer {
+    grid-area: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+}
+.rigFamilyContainer{
+    width: 50%;
+    
 }
 

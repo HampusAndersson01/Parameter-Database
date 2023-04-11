@@ -1,28 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./style/Home.css";
 import ParameterTable from "../components/ParameterTable";
-import { TableRowProps } from "../models/Parameters";
+import { TableRowProps, RigFamily } from "../models/Parameters";
 import Toolbar from "../components/Toolbar";
 import ParameterForm from "../components/ParameterForm";
 
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
-import { rigFamilyModel } from "../models/RigFamily";
 import { APIContext } from "../context/APIContext";
 import { CreatingParameterContext } from "../context/CreatingParameterContext";
 import { unitModel } from "../models/Unit";
 import { datatypeModel } from "../models/Datatype";
 import { PendingReloadContext } from "../context/PendingReloadContext";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useParams,
-  Routes,
-  BrowserRouter
-} from "react-router-dom";
-import ParameterPage from "./ParameterPage";
 
 type dataModel = {
   id: number;
@@ -50,10 +40,9 @@ type dataModel = {
 
 function Home() {
   const [data, setData] = useState<dataModel>([]);
-  const [filteredData, setFilteredData] = useState<dataModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [rigFamilies, setRigFamilies] = useState<rigFamilyModel>([]);
+  const [rigFamilies, setRigFamilies] = useState<RigFamily[]>([]);
   const [units, setUnits] = useState<unitModel>([]);
   const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);

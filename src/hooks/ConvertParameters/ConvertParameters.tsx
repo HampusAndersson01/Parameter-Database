@@ -1,4 +1,5 @@
-import { Image } from '../../models/Parameters'
+import { Image, RigFamily } from '../../models/Parameters'
+
 
 export function imagesToArray(url: string, name: string, description: string) {
     var images: Image[] = [];
@@ -51,4 +52,28 @@ export function imagesToString(images: Image[]) {
     }
     );
     return { url, name, description };
+}
+
+export function rigFamilyToArray(rigFamilyName: string, rigFamilyDescription: string) {
+    var rigFamily: RigFamily[] = [];
+    if (rigFamilyName.includes(";") === false) {
+        const rigFamilyItem: RigFamily = {
+            name: rigFamilyName,
+            description: rigFamilyDescription
+        };
+        rigFamily.push(rigFamilyItem);
+        return rigFamily;
+    }
+    rigFamilyName.split(";").map((rigFamilyName, index) => {
+        const rigFamilyItem: RigFamily = {
+            name: rigFamilyName,
+            description: null
+        };
+        const descriptions = rigFamilyDescription.split(";");
+        if (descriptions.length > index) {
+            rigFamilyItem.description = descriptions[index];
+        }
+        rigFamily.push(rigFamilyItem);
+    });
+    return rigFamily;
 }
