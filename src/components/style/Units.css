@@ -1,0 +1,22 @@
+.unitData{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.unitData > input {
+    width:fit-content !important;
+    height: 100%;
+    border: none !important;
+    background-color: transparent;
+    color: var(--foregroundPrimary);
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 4px;
+    flex-grow: 1;
+}
+.unitData > div {
+    width: fit-content;
+    flex: 1;
+}

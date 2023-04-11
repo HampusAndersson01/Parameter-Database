@@ -19,6 +19,10 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [value, setValue] = useState<Option | null>();
 
+    /**
+     * useEffect is called when the component is mounted.
+     * It fetches the rig families from the API.
+     */
     useEffect(() => {
         //Fetch rig families from API
         fetch(hostname + "rigfamilies")
@@ -36,6 +40,11 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
             .finally(() => console.log("Loaded rig families"));
     }, []);
 
+    /**
+     * useEffect is called when the rig family props is updated.
+     * It updates the selected rig families.
+     * It also updates the value of the dropdown menu.
+     */
     useEffect(() => {
         if (props.rigFamily !== undefined && props.rigFamily !== null) {
             setSelectedRigFamilies(props.rigFamily);
@@ -44,6 +53,11 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
     }, [props.rigFamily]);
 
 
+    /**
+     * handleCreate is called when the user creates a new rig family.
+     * 
+     * @param inputValue The name of the new rig family.
+     */
     const handleCreate = (inputValue: string) => {
         const newRigFamily: RigFamily = {
             name: inputValue,
@@ -58,6 +72,13 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
         setValue({ value: inputValue, label: inputValue })
     };
 
+    /**
+     * handleValueChange is called when the user changes the value of the dropdown menu.
+     * It updates the selected rig families.
+     * It also updates the value of the dropdown menu.
+     * 
+     * @param newValue The new value of the dropdown menu.
+     */
     const handleValueChange = (newValue: Option | null) => {
         if (newValue !== null) {
             const newRigFamily: RigFamily = {
@@ -79,6 +100,9 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
         }
     };
 
+    /**
+     * handlePrevClick is called when the user clicks the previous button.
+     */
     const handlePrevClick = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
@@ -86,6 +110,9 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
         }
     };
 
+    /**
+     * handleNextClick is called when the user clicks the next button.
+    */
     const handleNextClick = () => {
         if (currentIndex < selectedRigFamilies.length - 1) {
             setCurrentIndex(currentIndex + 1);
@@ -108,6 +135,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
                                 onCreateOption={handleCreate}
                                 value={value}
                                 onChange={(newValue) => handleValueChange(newValue)}
+                                disabled={/*TODO Access control*/ false}
                             />
                             <div className="rigFamilyDescription">
                                 <p>{selectedRigFamilies[currentIndex] ? selectedRigFamilies[currentIndex].description : ""}</p>

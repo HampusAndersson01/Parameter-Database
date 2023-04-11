@@ -2,8 +2,7 @@ export interface TableRowProps {
   id: number;
   name: string;
   description: string | null;
-  unit_name: string | null;
-  unit_description: string | null;
+  unit: Unit | null;
   rigFamily: RigFamily[] | null; 
   decimals: number | null;
   min: number | null;
@@ -29,6 +28,11 @@ export interface Possible_value {
   description: string | null;
 }
 export interface RigFamily {
+  name: string;
+  description: string | null;
+}
+
+export interface Unit {
   name: string;
   description: string | null;
 }

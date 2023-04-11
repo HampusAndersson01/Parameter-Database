@@ -8,6 +8,7 @@ import Images from "../components/Images";
 import "./style/ParameterPage.css";
 import PossibleValues from "../components/PossibleValues";
 import RigFamilies from "../components/RigFamilies";
+import Units from "../components/Units";
 
 export default function ParameterPage() {
     //Get parameter id from url
@@ -27,8 +28,7 @@ export default function ParameterPage() {
                         id: data[0].id,
                         name: data[0].name,
                         description: data[0].description,
-                        unit_name: data[0].unit_name,
-                        unit_description: data[0].unit_description,
+                        unit: { name: data[0].unit_name, description: data[0].unit_description },
                         rigFamily: rigFamilyToArray(data[0].rigfamily_name
                             , data[0].rigfamily_description),
                         decimals: data[0].decimals,
@@ -78,6 +78,7 @@ export default function ParameterPage() {
 
                     <div className="mainContainer">
                         <RigFamilies rigFamily={parameter.rigFamily}></RigFamilies>
+                        <Units unit={parameter.unit}></Units>
                     </div>
 
                 <div className="rightContainer">
