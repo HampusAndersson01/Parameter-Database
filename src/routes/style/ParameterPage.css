@@ -40,9 +40,9 @@ p {
     outline: none;
 }
 .parameterTitle {
-    margin: 0;
     font-size: 2rem;
     font-weight: bold;
+    color: var(--foregroundPrimary);
 }
 .parameterId {
     color: var(--foregroundSecondary);
@@ -51,6 +51,7 @@ p {
 }
 .parameterDescription {
     font-size: 1.2rem;
+    color: var(--foregroundPrimary);
 }
 
 
