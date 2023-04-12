@@ -23,17 +23,14 @@
   }
   
 .imagesContainer img {
-    max-width: 100%;
-    height: auto;
     border: 1px solid var(--ornamentalBorder);
     padding: 1rem;
-    flex: 1;
+    max-width: 60%;
+    max-height: 80%;
+    
   }
   
-  .imagesContainer p {
-    position: absolute;
-    top: 0;
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    color: var(--foregroundPrimary);
-  }
+  .imagesContainer h3{
+    width: 100%;
+    margin: 0;
+}

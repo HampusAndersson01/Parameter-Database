@@ -64,6 +64,8 @@ hr{
     grid-template-columns: 1fr 1fr 1.5fr;
     grid-template-rows: 2fr 2fr 1fr 0.5fr;
     grid-template-areas: "numbers dates unit" "numbers dates rigFamily" "numbers dates comment" "- - -";
+    height: calc((100vh - var(--Toolbar-Height)) * 0.8);
+    overflow: auto;
 
 }
 .mainContainer > div{
@@ -92,3 +94,44 @@ hr{
     grid-area: dates;
 }
 
+@media screen and (max-width: 1000px){
+    main{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 4fr 2fr;
+        grid-template-areas:
+        "top top" 
+        "left left"
+        "right right";
+        overflow: auto;
+    }
+    .rightContainer{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: "images possibleValues";
+    }
+}
+
+@media screen and (max-width: 650px){
+    main{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 4fr 2fr;
+        grid-template-areas:
+        "top" 
+        "left"
+        "right";
+    }
+    .mainContainer{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 3fr 1fr 1fr;
+        grid-template-areas: "numbers dates" "unit unit" "rigFamily rigFamily";
+    }
+    .rightContainer{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: "images" "possibleValues";
+    }
+    main h3{
+        text-align: center;
+    }
+}
+    

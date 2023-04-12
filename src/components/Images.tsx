@@ -28,6 +28,7 @@ export default function Images(props: { images: Image[] | null | undefined }) {
 
   return (
     <div className="imagesContainer">
+      <h3>Image {currentImageIndex + 1}/{images.length}</h3>
       {images.length > 0 && (
         <>
           <button onClick={handlePrevClick}>&lt;</button>
@@ -35,7 +36,7 @@ export default function Images(props: { images: Image[] | null | undefined }) {
           <button onClick={handleNextClick}>&gt;</button>
         </>
       )}
-      <p>{currentImageIndex + 1}/{images.length}</p>
+
     </div>
   );
 }

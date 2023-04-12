@@ -110,3 +110,35 @@ export function rigFamilyToArray(rigFamilyName: string, rigFamilyDescription: st
     });
     return rigFamily;
 }
+
+/**
+ * Converts an date in ISO format to a Date object.
+ * @param dateString - A date in ISO format.
+ * @returns A Date object.
+ * @example
+ * const date = stringToDate("2020-01-01T00:00:00.000Z");
+ * console.log(date); // 2020-01-01T00:00:00.000Z
+ * console.log(date.toISOString()); // 2020-01-01T00:00:00.000Z
+ * console.log(date.toDateString()); // Wed Jan 01 2020
+ * console.log(date.toTimeString()); // 00:00:00 GMT+0100 (Central European Standard Time)
+ * console.log(date.toLocaleDateString()); // 01.01.2020
+ * 
+*/
+export function stringToDate(dateString: string) {
+    const date = new Date(dateString);
+    return date;
+}
+
+/**
+ * Converts a Date object to a string in ISO format.
+ * @param date - A Date object.
+ * @returns A date in ISO format.
+ * @example
+ * const date = new Date("2020-01-01T00:00:00.000Z");
+ * const dateString = dateToString(date);
+ * console.log(dateString); // 2020-01-01T00:00:00.000Z
+*/
+export function dateToString(date: Date) {
+    const dateString = date.toISOString();
+    return dateString;
+}
