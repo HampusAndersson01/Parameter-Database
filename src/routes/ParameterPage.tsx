@@ -45,7 +45,7 @@ export default function ParameterPage() {
                         creation_date: stringToDate(data[0].creation_date),
                         modified_date: stringToDate(data[0].modified_date),
                         comment: data[0].comment,
-                        images: imagesToArray(data[0].image_urls, data[0].image_name, data[0].image_description),
+                        images: data[0].image_urls !== null ? imagesToArray(data[0].image_urls, data[0].image_name, data[0].image_description) : [],
                         possible_values: data[0].possible_values
                     }
 
