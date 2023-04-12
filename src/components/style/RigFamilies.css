@@ -1,4 +1,4 @@
-.rigFamilyCenter{
+.rigFamilyCenter {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,14 +7,13 @@
     height: 100%;
     flex: 1;
 }
-.rigFamilyData{
-
+.rigFamilyData {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-.rigFamilyData > button{
+.rigFamilyData > button {
     border: none;
     background: none;
     font-size: 2rem;
@@ -24,14 +23,14 @@
     border-radius: 0.5rem;
     flex-grow: 1;
 }
-.rigFamilyData > button:hover{
+.rigFamilyData > button:hover {
     color: var(--foregroundPrimary);
 }
-.rigFamilyData > button:disabled{
+.rigFamilyData > button:disabled {
     color: var(--ornamentalBorder);
     cursor: default;
 }
-.rigFamilyDescription{
+.rigFamilyDescription {
     margin: 0;
     text-align: center;
     color: var(--foregroundPrimary);
@@ -40,10 +39,38 @@
     overflow-x: auto;
     max-width: 100%;
 }
-.rigFamilyCenter > div:not(.rigFamilyDescription){
+.rigFamilyDescription > textarea {
+    color: var(--foregroundPrimary);
+    min-width: 14rem;
+    text-align: center;
+    border: none !important;
+    background: none;
+    outline: none;
+    font-size: 1rem;
+    max-width: 600px;
+}
+.rigFamilyCenter > div:not(.rigFamilyDescription) {
     width: 100%;
 }
-.rigFamilyContainer h3{
+.rigFamilyContainer h3 {
     width: 100%;
     border-bottom: 1px solid var(--ornamentalBorder);
+}
+.rigFamilyContainer .deleteButton {
+    margin: 0;
+    padding: 0;
+    border: none;
+    float: right;
+    color: var(--alerts);
+    background: none;
+    cursor: pointer;
+}
+.rigFamilyContainer .deleteButton:active {
+    opacity: 0.75;
+}
+.rigFamilyContainer {
+    position: relative;
+}
+.rigFamilyCenter div {
+    color: var(--foregroundPrimary);
 }

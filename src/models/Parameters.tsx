@@ -3,7 +3,7 @@ export interface TableRowProps {
   name: string;
   description: string | null;
   unit: Unit | null;
-  rigFamily: RigFamily[] | null; 
+  rigFamily: RigFamily[] | null;
   decimals: number | null;
   min: number | null;
   max: number | null;

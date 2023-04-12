@@ -1,18 +1,19 @@
 body {
-  margin: 0;
-  padding: 0;
-  color: var(--foregroundPrimary);
-  
+    margin: 0;
+    padding: 0;
+    color: var(--foregroundPrimary);
 }
-body, #root, .App{
-  max-height: 100vh;
-  overflow-y: hidden
+body,
+#root,
+.App {
+    max-height: 100vh;
+    overflow-y: hidden;
 }
 /* roboto font */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 * {
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif !important;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif !important;
 }
 
 /* :root {
@@ -43,49 +44,43 @@ body, #root, .App{
   
 } */
 :root {
-  
-  --Header-Default: 100px;
-  --Header-750: 240px;
-  --Header-320: 320px;
+    --Header-Default: 100px;
+    --Header-750: 240px;
+    --Header-320: 320px;
 
-  --Toolbar-Height: 50px;
-  --Toolbar-Phone: 60px;
-
-
+    --Toolbar-Height: 50px;
+    --Toolbar-Phone: 60px;
 }
 /* Themes */
 :root {
-  --backgroundPrimary: #ffffff;
-  --backgroundSecondary: #fafafa;
+    --backgroundPrimary: #ffffff;
+    --backgroundSecondary: #fafafa;
 
-  --foregroundPrimary: rgba(0, 0, 0, 0.92);
-  --foregroundSecondary: rgba(0, 0, 0, 0.56);
+    --foregroundPrimary: rgba(0, 0, 0, 0.92);
+    --foregroundSecondary: rgba(0, 0, 0, 0.56);
 
-  --blueBrand: #284E80;
-  --bluePrimary: #2a609d;
-  --blueAccent: #1C6BBA;
+    --blueBrand: #284e80;
+    --bluePrimary: #2a609d;
+    --blueAccent: #1c6bba;
 
-  --alerts: #bf2012;
+    --alerts: #bf2012;
 
-  --ornamentalBorder: #d5d5d5;
-  --ornamentalDivider: #ebebeb;
-
-
+    --ornamentalBorder: #d5d5d5;
+    --ornamentalDivider: #ebebeb;
 }
 
-[data-theme="dark"] {
-  --backgroundPrimary: #000000;
-  --backgroundSecondary: #0a0a0a;
+[data-theme='dark'] {
+    --backgroundPrimary: #000000;
+    --backgroundSecondary: #0a0a0a;
 
-  --foregroundPrimary: #ffffff;
-  --foregroundSecondary: rgba(255, 255, 255, 0.64);
+    --foregroundPrimary: #ffffff;
+    --foregroundSecondary: rgba(255, 255, 255, 0.64);
 
-  --bluePrimary: rgb(35, 135, 235);
-  --blueAccent: #1f78d1;
+    --bluePrimary: rgb(35, 135, 235);
+    --blueAccent: #1f78d1;
 
-  --alerts: rgb(255, 51, 32);
+    --alerts: rgb(255, 51, 32);
 
-  --ornamentalBorder: rgb(31, 31, 31);
-  --ornamentalDivider: rgb(41, 41, 41);
-  
+    --ornamentalBorder: rgb(31, 31, 31);
+    --ornamentalDivider: rgb(41, 41, 41);
 }

@@ -4,6 +4,7 @@ import { RigFamily } from '../models/Parameters';
 import './style/RigFamilies.css';
 import { DataContext } from '../context/DataContext';
 import { APIContext } from '../context/APIContext';
+import { allowEdit } from "../hooks/EditMode/EditMode";
 
 
 interface Option {
@@ -14,10 +15,24 @@ interface Option {
 export default function RigFamilies(props: { rigFamily: RigFamily[] | null | undefined }) {
 
     const { hostname } = useContext(APIContext);
+    /**
+     * rigFamilies is an array of rig families in the database.
+     */
     const [rigFamilies, setRigFamilies] = useState<RigFamily[]>([]);
+    /**
+     * selectedRigFamilies is an array of rig families in current parameter.
+    */
     const [selectedRigFamilies, setSelectedRigFamilies] = useState<RigFamily[]>([]);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [value, setValue] = useState<Option | null>();
+
+
+    const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
+
+    /**
+     * editAllowed is a boolean that determines if the user is allowed to edit the rig family.
+     */
+    const [editAllowed, setEditAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
 
     /**
      * useEffect is called when the component is mounted.
@@ -60,7 +75,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
      */
     const handleCreate = (inputValue: string) => {
         const newRigFamily: RigFamily = {
-            name: inputValue,
+            name: inputValue.toUpperCase(),
             description: ""
         };
         //Replace rig family in selected rig families in current index
@@ -69,7 +84,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
         setSelectedRigFamilies(newSelectedRigFamilies);
         //Add rig family to rig families
         setRigFamilies([...rigFamilies, newRigFamily]);
-        setValue({ value: inputValue, label: inputValue })
+        setValue({ value: inputValue.toUpperCase(), label: inputValue.toUpperCase() })
     };
 
     /**
@@ -120,11 +135,64 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
         }
     };
 
+    /**
+     * handleNewClick is called when the user clicks the new button.
+     * It adds a new rig family to the selected rig families.
+     * It also updates the value of the dropdown menu.
+     */
+    const handleNewClick = () => {
+        const newSelectedRigFamilies = [...selectedRigFamilies];
+        newSelectedRigFamilies.push({ name: "", description: "" });
+        setSelectedRigFamilies(newSelectedRigFamilies);
+        setCurrentIndex(currentIndex + 1);
+        setValue({ value: "", label: "" });
+    };
+
+    /**
+     * handleDescriptionChange is called when the user changes the description of the rig family.
+     * It updates the selected rig families.
+     * 
+     * @param event The event that triggered the function.
+     */
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newSelectedRigFamilies = [...selectedRigFamilies];
+        newSelectedRigFamilies[currentIndex].description = event.target.value;
+        setSelectedRigFamilies(newSelectedRigFamilies);
+    }
+
+    /**
+     * handleDeleteClick is called when the user clicks the delete button.
+     * It deletes the rig family from the selected rig families.
+     * It also updates the value of the dropdown menu.
+     * If the rig family is the only rig family in the selected rig families, it replaces the rig family with an empty rig family.
+     */
+    const handleDeleteClick = () => {
+        if (selectedRigFamilies.length > 1) {
+            const newSelectedRigFamilies = [...selectedRigFamilies];
+            newSelectedRigFamilies.splice(currentIndex, 1);
+            setSelectedRigFamilies(newSelectedRigFamilies);
+            if (currentIndex > 0) {
+                var newIndex = currentIndex - 1;
+                setCurrentIndex(newIndex);
+            } else {
+                var newIndex = currentIndex;
+            }
+            console.log("newIndex: " + newIndex)
+            setValue({ value: newSelectedRigFamilies[newIndex].name, label: newSelectedRigFamilies[newIndex].name });
+        } else {
+            //Replace rig family with empty
+            const newSelectedRigFamilies = [...selectedRigFamilies];
+            newSelectedRigFamilies[currentIndex] = { name: "", description: "" };
+            setSelectedRigFamilies(newSelectedRigFamilies);
+            setValue({ value: "", label: "" });
+        }
+    }
+
     return (
         <div className="rigFamilyContainer">
             {
                 props.rigFamily !== undefined && props.rigFamily !== null ? (<>
-                    <h3>Rig family</h3>
+                    <h3>Rig family ({currentIndex + 1}/{selectedRigFamilies.length}) {editAccess ? (<button className="deleteButton" onClick={handleDeleteClick} disabled={!editAllowed}>Delete</button>) : ""} </h3>
                     <div className="rigFamilyData">
                         <button onClick={handlePrevClick} disabled={currentIndex <= 0}>&lt;</button>
                         <div className="rigFamilyCenter">
@@ -135,16 +203,25 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
                                 onCreateOption={handleCreate}
                                 value={value}
                                 onChange={(newValue) => handleValueChange(newValue)}
-                                disabled={/*TODO Access control*/ false}
+                                isDisabled={!editAllowed}
                             />
                             <div className="rigFamilyDescription">
-                                <p>{selectedRigFamilies[currentIndex] ? selectedRigFamilies[currentIndex].description : ""}</p>
+                                <textarea type="text" value={selectedRigFamilies[currentIndex] ? selectedRigFamilies[currentIndex].description : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></textarea>
                             </div>
                         </div>
-                        <button onClick={handleNextClick} disabled={currentIndex >= selectedRigFamilies.length - 1}>&gt;</button>
+                        {
+                            currentIndex < selectedRigFamilies.length - 1 || !editAccess ? (
+                                <button onClick={handleNextClick} disabled={currentIndex >= (selectedRigFamilies.length - 1)}>&gt;</button>
+                            ) : (
+                                <button onClick={handleNewClick}>+</button>
+                            )
+
+                        }
+
                     </div>
                 </>
                 ) : <p>Loading...</p>}
+
 
 
         </div>

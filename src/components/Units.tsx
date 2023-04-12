@@ -3,6 +3,7 @@ import { Unit } from '../models/Parameters'
 import './style/Units.css'
 import CreatableSelect from 'react-select/creatable';
 import { APIContext } from '../context/APIContext';
+import { allowEdit } from "../hooks/EditMode/EditMode";
 
 interface Option {
     readonly label: string;
@@ -14,6 +15,10 @@ export default function Units(props: { unit: Unit | null | undefined }) {
     const [unit, setUnit] = useState<Unit | null | undefined>(props.unit);
     const [value, setValue] = useState<Option | null>();
     const { hostname } = useContext(APIContext);
+
+    const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
+
+    const [editAllowed, setEditAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
 
     /**
      * useEffect is called when the component is mounted.
@@ -89,8 +94,11 @@ export default function Units(props: { unit: Unit | null | undefined }) {
 
     /**
         handleDescriptionChange is called when the user changes the description of the unit.
+
         The description is stored in the unit state variable.
+
         The description is also updated in the unit options state variable.
+        
         This is done to ensure that the description is updated in the dropdown menu.
 
         @param event The event that triggered the function call.
@@ -124,14 +132,14 @@ export default function Units(props: { unit: Unit | null | undefined }) {
             <div className="unitData">
                 <CreatableSelect
                     options={unitOptions.map((unit) => {
-                        return { value: unit.name, label: unit.name }
+                        return { valude: unit.name, label: unit.name }
                     })}
                     onCreateOption={handleCreate}
                     value={value}
                     onChange={(newValue: Option) => handleValueChange(newValue)}
-                    disabled={/*TODO Access control*/ false}
+                    isDisabled={!editAllowed}
                 />
-                <input type="text" value={unit ? unit.description : ""} onChange={handleDescriptionChange} disabled={/*TODO Access control*/ false}></input>
+                <input type="text" value={unit ? unit.description : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></input>
             </div>
         </div>
     </>)

@@ -10,6 +10,7 @@ import PossibleValues from "../components/PossibleValues";
 import RigFamilies from "../components/RigFamilies";
 import Units from "../components/Units";
 import GenericData from "../components/GenericData";
+import { allowEdit } from "../hooks/EditMode/EditMode";
 
 export default function ParameterPage() {
     //Get parameter id from url
@@ -17,6 +18,9 @@ export default function ParameterPage() {
     const { hostname } = useContext(APIContext);
     const [parameter, setParameter] = React.useState<TableRowProps>();
 
+    const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
+
+    const [editAllowed, setEditAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
 
     // Fetch parameter data from API
     useEffect(() => {
@@ -57,8 +61,6 @@ export default function ParameterPage() {
 
     const handleValueChange = (value: any, key: string) => {
         //TODO Implement this function 
-        console.log("value", value);
-        console.log("key", key);
         if (parameter) {
             setParameter({ ...parameter, [key]: value });
         }
@@ -73,19 +75,22 @@ export default function ParameterPage() {
             <main>
                 {parameter ? (<>
                 <div className="topContainer">
-                        <h2 className="parameterTitle">{parameter.name}</h2>
+                        {/* <h1 className="parameterTitle">{parameter.name}</h1>
                         <p className="parameterId">ID: {parameter.id}</p>
-                        <p className="parameterDescription">{parameter.description}</p>
+                        <p className="parameterDescription">{parameter.description}</p> */}
+                        <input className="parameterTitle" value={parameter.name} onChange={(e) => { handleValueChange(e.target.value, "name") }} disabled={!editAllowed}></input>
+                        <p className="parameterId">ID: {parameter.id}</p>
+                        <input className="parameterDescription" value={parameter.description || ""} onChange={(e) => { handleValueChange(e.target.value, "description") }} disabled={!editAllowed}></input>
                 </div>
 
                     <div className="mainContainer">
                         <RigFamilies rigFamily={parameter.rigFamily}></RigFamilies>
                         <Units unit={parameter.unit}></Units>
                         <div className="genericDataRow numbers">
-                            <GenericData data={parameter.decimals} label="Decimals"></GenericData>
-                            <GenericData data={parameter.min} label="Min"></GenericData>
-                            <GenericData data={parameter.max} label="Max"></GenericData>
-                            <GenericData data={parameter.datatype} label="Datatype"></GenericData>
+                            <GenericData data={parameter.decimals} label="Decimals" editable></GenericData>
+                            <GenericData data={parameter.min} label="Min" editable></GenericData>
+                            <GenericData data={parameter.max} label="Max" editable></GenericData>
+                            <GenericData data={parameter.datatype} label="Datatype" editable></GenericData>
                         </div>
                         <div className="genericDataRow dates">
                             <GenericData data={parameter.created_by} label="Created by"></GenericData>
@@ -94,7 +99,7 @@ export default function ParameterPage() {
                             <GenericData data={parameter.modified_date} label="Modified"></GenericData>
                         </div>
                         <div className="genericDataRow comment">
-                            <GenericData data={parameter.comment} label="Comment"></GenericData>
+                            <GenericData data={parameter.comment} label="Comment" editable textArea></GenericData>
                         </div>
                     </div>
 
