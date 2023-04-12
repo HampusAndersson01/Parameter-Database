@@ -38,8 +38,8 @@ export default function ParameterPage() {
                         datatype: data[0].datatype,
                         created_by: data[0].created_by,
                         modified_by: data[0].modified_by,
-                        creation_date: data[0].creation_date,
-                        modified_date: data[0].modified_date,
+                        creation_date: stringToDate(data[0].creation_date),
+                        modified_date: stringToDate(data[0].modified_date),
                         comment: data[0].comment,
                         images: imagesToArray(data[0].image_urls, data[0].image_name, data[0].image_description),
                         possible_values: data[0].possible_values
@@ -54,11 +54,6 @@ export default function ParameterPage() {
 
 
     }, []);
-
-    useEffect(() => {
-        console.log("modified_date", parameter && parameter.modified_date !== null ? stringToDate(parameter.modified_date).toLocaleDateString : "");
-
-    }, [parameter]);
 
     const handleValueChange = (value: any, key: string) => {
         //TODO Implement this function 
@@ -95,8 +90,8 @@ export default function ParameterPage() {
                         <div className="genericDataRow dates">
                             <GenericData data={parameter.created_by} label="Created by"></GenericData>
                             <GenericData data={parameter.modified_by} label="Modified by"></GenericData>
-                            <GenericData data={parameter.creation_date !== null ? stringToDate(parameter.creation_date).toLocaleString : ""} label="Created"></GenericData>
-                            <GenericData data={parameter.modified_date !== null ? stringToDate(parameter.modified_date).toLocaleString : ""} label="Modified"></GenericData>
+                            <GenericData data={parameter.creation_date} label="Created"></GenericData>
+                            <GenericData data={parameter.modified_date} label="Modified"></GenericData>
                         </div>
                         <div className="genericDataRow comment">
                             <GenericData data={parameter.comment} label="Comment"></GenericData>

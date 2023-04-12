@@ -10,8 +10,8 @@ export interface TableRowProps {
   datatype: string | null;
   created_by: string | null;
   modified_by: string | null;
-  creation_date: string | null;
-  modified_date: string | null;
+  creation_date: Date | null;
+  modified_date: Date | null;
   active?: boolean;
   images?: Image[] | null;
   comment: string | null;

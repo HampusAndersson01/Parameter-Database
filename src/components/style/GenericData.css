@@ -8,3 +8,6 @@
     width: 100%;
     text-align: center;
 }
+.genericDataValue.isnull{
+    opacity: 0.5;
+}
