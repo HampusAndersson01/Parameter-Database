@@ -1,114 +1,108 @@
-.Images-Container {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  color: var(--foregroundPrimary);
+.imagesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
-.Images-Container img {
-  height: calc(100% - 2rem);
-  max-height: 100%;
-  width: 100%;
-  object-fit: contain;
-  transition: all ease-in-out 0.5s;
+.imagesContainer button {
+    border: none;
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--foregroundSecondary);
+    height: 70%;
+    border-radius: 0.5rem;
+    flex-grow: 1;
 }
-.Image.Active {
-  display: block;
+.imagesContainer button:hover {
+    color: var(--foregroundPrimary);
 }
-.Image-Nav {
-  position: absolute !important;
-  bottom: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 2rem;
-  position: relative;
-}
-.Image-Nav svg {
-  stroke-width: 0.5px;
-  height: 100%;
-  display: block;
-}
-.Image-Nav svg:hover {
-  cursor: pointer;
-  stroke: var(--ornamentalBorder);
-  border-radius: 2px;
-}
-.Image-Nav svg.Disabled {
-  display: none;
-}
-.Image-Nav p {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--foregroundPrimary);
-  margin-top: auto;
-  margin-bottom: 0;
-  font-size: 1.25rem;
-  line-height: 2rem;
+.imagesContainer button:disabled {
+    color: var(--ornamentalBorder);
+    cursor: default;
 }
 
-.next {
-  position: absolute;
-  right: 0;
-  border-radius: 0 2px 2px 0;
-}
-.prev {
-  position: absolute;
-  left: 0;
-  border-radius: 2px 0 0 2px;
+.imagesContainer img:not(.imagePreview) {
+    border: 1px solid var(--ornamentalBorder);
+    padding: 1rem;
+    max-width: 60%;
+    max-height: 80%;
 }
 
-/* Edit mode */
-.add {
-  position: absolute;
-  left: 2rem;
-  border-radius: 0 2px 2px 0;
+.imagesContainer h3 {
+    width: 100%;
+    margin: 0;
 }
-.delete {
-  position: absolute;
-  right: 2rem;
-  border-radius: 2px 0 0 2px;
+.imagesContainer .deleteButton,
+.imagesContainer .editButton {
+    margin: 0 1rem;
+    padding: 0;
+    border: none;
+    float: right;
+
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
-.add.disabled {
-  display: none;
+.imagesContainer .deleteButton {
+    color: var(--alerts);
 }
-.delete.disabled {
-  display: none;
+.imagesContainer .editButton {
+    color: var(--blueBrand);
+}
+.imagesContainer .deleteButton:active,
+.imagesContainer .editButton:active {
+    opacity: 0.75;
+}
+.noImages {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem;
+    color: var(--foregroundSecondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.imageForm.disabled {
-  display: none;
+.imageEditContainer {
+    position: relative;
+    padding: 1rem;
 }
-.imageForm {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: transparent;
-  z-index: 1;
-  opacity: 1;
+
+/* Image preview */
+.imagePreviewContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    display: none;
+    z-index: 90;
 }
-.imageForm label {
-  text-align: start;
-  font-size: 0.7rem;
+.imagePreview {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0.5rem;
 }
-.Images-Container.editMode img {
-  height: 40%;
-  transition: all ease-in-out 0.1s;
+.imagePreviewIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 100;
+    display: block;
 }
-.imageForm input {
-  border: 1px solid var(--ornamentalBorder);
-  background-color: transparent;
-}
-.imageForm input:focus-visible {
-  outline: var(--blueAccent) auto 1px;
-  border: 1px solid var(--blueAccent);
+
+.imagePreviewIcon:hover + .imagePreviewContainer {
+    display: flex;
 }

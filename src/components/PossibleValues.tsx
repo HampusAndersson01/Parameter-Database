@@ -1,184 +1,114 @@
-import { EditModeContext } from "../context/EditModeContext";
 import "./style/PossibleValues.css";
 import React, { useState, useEffect, useContext } from "react";
-import { TableRowProps } from "../models/Parameters";
+import { Possible_value, TableRowProps } from "../models/Parameters";
+import { allowEdit } from "../hooks/EditMode/EditMode";
 
-interface Possible_value {
-  value: string;
-  description: string | null;
-}
-
-function PossibleValues(props: { row: TableRowProps; onChange: any }) {
+function PossibleValues(props: { data: Possible_value[] | null; onChange: any }) {
   const [possibleValues, setPossibleValues] = useState<Possible_value[]>([]);
 
-  const { editMode } = useContext(EditModeContext);
+  const [editAccess, setEditAccess] = React.useState<boolean>(false); //TODO: implement edit mode based on user role
+
+  const [editAllowed, setEditAllowed] = React.useState<boolean>(
+    allowEdit(true, editAccess)
+  );
 
   useEffect(() => {
-    if (
-      props.row.possible_values !== undefined &&
-      props.row.possible_values !== null
-    ) {
-      console.log("possible_values: " + props.row.possible_values);
-    } else {
-      setPossibleValues([]);
+    if (props.data !== undefined && props.data !== null) {
+      setPossibleValues(props.data);
     }
-  }, []);
+  }, [props.data]);
 
-  const handleValueChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const newValue = event.target.value;
-    setPossibleValues((prevValues) => {
-      const newValues = [...prevValues];
-      newValues[index] = {
-        ...newValues[index],
-        value: newValue,
-      };
-      //if editing last row, add a new row
-      if (index === newValues.length - 1) {
-        handleAddRow(newValues);
-      } else if (newValue === "") {
-        console.log("remove row");
-        var remove = handleIfRemoveRow(newValues, index);
-        if (remove && index === newValues.length - 2) {
-          newValues.pop();
-        } else if (remove) {
-          newValues.splice(index, 1);
-        }
-      }
-      props.onChange(newValues);
-      return newValues;
-    });
+  const handleValueChange = (event: any, index: number, type: string) => {
+    const values = [...possibleValues];
+    if (type === "value") {
+      values[index].value = event.target.value;
+    } else if (type === "description") {
+      values[index].description = event.target.value;
+    }
+    setPossibleValues(values);
+    props.onChange(values);
   };
 
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const newDescription = event.target.value;
-    setPossibleValues((prevValues) => {
-      const newValues = [...prevValues];
-      newValues[index] = {
-        ...newValues[index],
-        description: newDescription,
-      };
-      props.onChange(newValues);
-      return newValues;
-    });
+  const handleDelete = (index: number) => {
+    const values = [...possibleValues];
+    values.splice(index, 1);
+    setPossibleValues(values);
+    props.onChange(values);
   };
 
-  const handleAddRow = (values: any) => {
-    // Add a new row to the table if values[values.length - 1].value or .description is not empty
-    if (
-      values[values.length - 1].value !== "" ||
-      values[values.length - 1].description !== ""
-    ) {
-      setPossibleValues((prevValues) => {
-        const newValues = [...prevValues];
-        newValues.push({
-          value: "",
-          description: "",
-        });
-        return newValues;
-      });
-    }
-  };
-  useEffect(() => {
-    handleEditToggle();
-  }, [editMode]);
-
-  const handleIfRemoveRow = (values: any, index: number) => {
-    // Remove a row from the table if values[values.length - 2].value and .description is empty
-    console.log(values);
-    if (
-      values[index].value === "" ||
-      (values[index].value === null && values[index].description === "") ||
-      values[index].description === null
-    ) {
-      return true;
-    }
-
-    return false;
-  };
-  const handleEditToggle = () => {
-    // When editmode is toggled, add a new row if the last row is not empty
-    if (editMode) {
-      setPossibleValues((prevValues) => {
-        const newValues = [...prevValues];
-        newValues.push({
-          value: "",
-          description: "",
-        });
-        return newValues;
-      });
-    } else {
-      // When editmode is toggled, remove the last row if it is empty
-      if (possibleValues.length > 0) {
-        if (
-          possibleValues[possibleValues.length - 1].value === "" &&
-          possibleValues[possibleValues.length - 1].description === ""
-        ) {
-          setPossibleValues((prevValues) => {
-            const newValues = [...prevValues];
-            newValues.pop();
-            return newValues;
-          });
-        }
-      }
-    }
+  const handleAddRow = () => {
+    const values = [...possibleValues];
+    values.push({ value: "", description: "" });
+    setPossibleValues(values);
+    props.onChange(values);
   };
 
   return (
-    <table className="possibleValues">
-      <thead>
-        <tr>
-          <th className="value">Value</th>
-          <th className="desc">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          possibleValues.length > 0
-            ? possibleValues.map((value: any, index) => {
-                return (
-                  <tr>
-                    {/* If editmode replace row with input */}
-                    <td className="value">
-                      {editMode ? (
+    <>
+      <div className="possibleValuesContainer">
+        <h3>Possible values</h3>
+        <table className="possibleValues">
+          <thead>
+            <tr>
+              <th className="value">Value</th>
+              <th className="desc">Description</th>
+              <th className="delete"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              possibleValues.length > 0
+                ? possibleValues.map((value: any, index) => {
+                  return (
+                    <tr>
+                      {/* If editmode replace row with input */}
+                      <td className="value">
                         <input
                           type="text"
                           value={value.value}
-                          onChange={(event) => handleValueChange(event, index)}
+                          onChange={(event) => handleValueChange(event, index, "value")}
+                          disabled={!editAllowed}
                         />
-                      ) : (
-                        value.value
-                      )}
-                    </td>
-                    <td className="desc">
-                      {editMode ? (
+                      </td>
+                      <td className="desc">
                         <input
                           type="text"
                           value={value.description}
                           onChange={(event) =>
-                            handleDescriptionChange(event, index)
+                            handleValueChange(event, index, "description")
                           }
+                          disabled={!editAllowed}
                         />
-                      ) : (
-                        value.description
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            : null
-          // <tr>
-          //     <td>{editMode ? <input type="text" onChange={(event) => handleValueChange(event, 0)}/> : <></>}</td>
-          //     <td>{editMode ? <input type="text" onChange={(event) => handleDescriptionChange(event, 0)}/> : <></>}</td>
-          // </tr>
-        }
-      </tbody>
-    </table>
+                      </td>
+                      <td className="delete">
+                        <button
+                          className="deleteButton"
+                          onClick={(index) => { handleDelete(index) }}
+                          disabled={!editAllowed}
+                        >
+                          X
+                        </button>
+                      </td>
+
+                    </tr>
+                  );
+                })
+                : null
+            }
+            {editAllowed ? (
+              <tr>
+                <td className="addNew"
+                  colSpan={3}>
+                  <button onClick={handleAddRow} className="addButton">
+                    Add new
+                  </button>
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
