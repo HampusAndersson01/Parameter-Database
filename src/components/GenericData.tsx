@@ -2,6 +2,13 @@ import React, { useEffect } from 'react';
 import "./style/GenericData.css";
 import { allowEdit } from "../hooks/EditMode/EditMode";
 
+/**
+ * A generic data component that can be used to display a label and a text input field.
+ * 
+ * @module GenericData
+ * @param props - A generic data object containing a label, data and an optional editable flag.
+ * @returns A div containing a label and a text input field.
+ */
 export default function GenericData(props: { data: any, label: string, editable?: boolean, textArea?: boolean }) {
     const [data, setData] = React.useState<any>(props.data);
     const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role

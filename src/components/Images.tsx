@@ -5,6 +5,12 @@ import { allowEdit } from "../hooks/EditMode/EditMode";
 import Tooltip from '@mui/material/Tooltip';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
+/**
+ * Component to display images
+ * 
+ * @module Images
+ * @param props Images to display
+ */
 export default function Images(props: { images: Image[] | null | undefined }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState<Image[]>([]);
