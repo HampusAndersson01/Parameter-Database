@@ -4,16 +4,25 @@ import { Image, RigFamily } from '../../models/Parameters'
 
 Converts a string of image URLs separated by semicolons into an array of Image objects.
 
-@param {string} url - A string of image URLs separated by semicolons.
+@param url - A string of image URLs separated by semicolons. 
 
-@param {string} name - A string of image names separated by semicolons. Optional.
+@param name - A string of image names separated by semicolons.
 
-@param {string} description - A string of image descriptions separated by semicolons. Optional.
+@param description - A string of image descriptions separated by semicolons.
 
 @returns {Image[]} An array of Image objects.
 */
-export function imagesToArray(url: string, name: string, description: string) {
+export function imagesToArray(url: string | null, name: string | null, description: string | null) {
     var images: Image[] = [];
+    if (url === null) {
+        return images;
+    }
+    if (name === null) {
+        name = "";
+    }
+    if (description === null) {
+        description = "";
+    }
     if (url.includes(";") === false) {
         const image: Image = {
             image_url: url,
