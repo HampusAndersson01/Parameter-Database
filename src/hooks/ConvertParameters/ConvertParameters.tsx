@@ -125,9 +125,9 @@ export function rigFamilyToArray(rigFamilyName: string, rigFamilyDescription: st
  * const date = stringToDate("");
  * console.log(date); // null
 */
-export function stringToDate(dateString: string) {
+export function stringToDate(dateString: string | null) {
     if (dateString === null) {
-        return null;
+        return "";
     }
     const date = new Date(dateString);
     return date;
