@@ -154,7 +154,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
      * 
      * @param event The event that triggered the function.
      */
-    const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newSelectedRigFamilies = [...selectedRigFamilies];
         newSelectedRigFamilies[currentIndex].description = event.target.value;
         setSelectedRigFamilies(newSelectedRigFamilies);
@@ -206,7 +206,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
                                 isDisabled={!editAllowed}
                             />
                             <div className="rigFamilyDescription">
-                                <textarea type="text" value={selectedRigFamilies[currentIndex] ? selectedRigFamilies[currentIndex].description : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></textarea>
+                                <textarea value={selectedRigFamilies[currentIndex] !== null ? selectedRigFamilies[currentIndex].description || "" : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></textarea>
                             </div>
                         </div>
                         {
