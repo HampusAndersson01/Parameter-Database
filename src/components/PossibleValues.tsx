@@ -83,7 +83,7 @@ function PossibleValues(props: { data: Possible_value[] | null; onChange: any })
                       <td className="delete">
                         <button
                           className="deleteButton"
-                          onClick={(index) => { handleDelete(index) }}
+                          onClick={() => { handleDelete(index) }}
                           disabled={!editAllowed}
                         >
                           X
