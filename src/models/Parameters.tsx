@@ -2,8 +2,8 @@ export interface TableRowProps {
   id: number;
   name: string;
   description: string | null;
-  unit: Unit | null;
-  rigFamily: RigFamily[] | null;
+  unit: Unit;
+  rigFamily: RigFamily[];
   decimals: number | null;
   min: number | null;
   max: number | null;
@@ -13,9 +13,9 @@ export interface TableRowProps {
   creation_date: Date | null;
   modified_date: Date | null;
   active?: boolean;
-  images?: Image[] | null;
+  images: Image[] | null;
   comment: string | null;
-  possible_values?: Possible_value[] | null;
+  possible_values: Possible_value[] | null;
 }
 
 export interface Image {
