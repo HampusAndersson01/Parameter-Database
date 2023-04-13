@@ -82,17 +82,16 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         header: "Datatype",
       },
       {
-        accessorFn: (row) => row.creation_date !== null ? new Date(row.creation_date) : "",
+        accessorKey: "creation_date",
         id: "creation_date",
         header: "Creation Date",
         filterFn: 'equals',
         sortingFn: 'datetime',
         //render string date in custom format
         Cell: ({ cell }) => {
-          var dateTmp = cell.getValue();
-          if (dateTmp === "" || dateTmp === undefined) return "";
-          const date = new Date(dateTmp);
-          return date.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+          var dateTmp = cell.getValue() as Date | null;
+          if (dateTmp === null || dateTmp === undefined) return "";
+          return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         //render date picker for filtering
         Filter: ({ column }) => (
@@ -116,17 +115,16 @@ function ParameterTable(props: { data: TableRowProps[] }) {
 
       },
       {
-        accessorFn: (row) => row.modified_date !== null ? new Date(row.modified_date) : "",
+        accessorKey: "modified_date",
         id: "modified_date",
         header: "Last Modified",
         filterFn: 'equals',
         sortingFn: 'datetime',
         //render string date in custom format
         Cell: ({ cell }) => {
-          var dateTmp = cell.getValue();
-          if (dateTmp === "" || dateTmp === undefined) return "";
-          const date = new Date(dateTmp);
-          return date.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+          var dateTmp = cell.getValue() as Date | null;
+          if (dateTmp === null || dateTmp === undefined) return "";
+          return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         //render date picker for filtering
         Filter: ({ column }) => (
