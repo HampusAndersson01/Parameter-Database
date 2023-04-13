@@ -27,6 +27,8 @@
     "mysql2": "^3.1.2",
     "mysql2-promise": "^0.1.4",
     "nodemon": "^2.0.20",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2",
     "ts-node": "^10.9.1",
     "vite": "^3.1.2"
   },
