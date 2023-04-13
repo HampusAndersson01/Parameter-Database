@@ -119,6 +119,13 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     setDataTypeOptions(tempDataTypes);
   }, [dataTypes]);
 
+
+  // Create group of options for react-select
+  const createGroupedOptions = (options: Option[]) => {
+    const selectOptions: readonly (string | GroupBase<string>)[] = options as unknown as readonly (string | GroupBase<string>)[];
+    return selectOptions;
+  };
+
   const onSubmit = (data: any) => {
     console.log(data);
     const filteredData = data.images.filter(
@@ -274,7 +281,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
                   rules={{ required: true }}
                   render={({ field: { onChange, value, ref } }) => (
                     <Creatable
-                      options={unitOptions}
+                      options={createGroupedOptions(unitOptions)}
                       isClearable
                       onCreateOption={handleCreateUnit}
                       onChange={onChange}
@@ -295,7 +302,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
                   rules={{ required: true }}
                   render={({ field: { onChange, value, ref } }) => (
                     <Creatable
-                      options={dataTypeOptions}
+                      options={createGroupedOptions(dataTypeOptions)}
                       isClearable
                       onCreateOption={handleCreateDataType}
                       onChange={onChange}
@@ -339,7 +346,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
                       closeMenuOnSelect={false}
                       isClearable
                       isMulti
-                      options={rigFamilyOptions}
+                      options={createGroupedOptions(rigFamilyOptions)}
                       onCreateOption={handleCreateRigFamily}
                       delimiter=";"
                       onChange={onChange}
