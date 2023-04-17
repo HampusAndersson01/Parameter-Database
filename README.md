@@ -13,7 +13,7 @@
 ## Architecture
 The architecture of the parameter database consists of two main components:
 - Frontend web application: implemented with React and TypeScript, using Material-UI for the user interface components and Axios for the REST API client.
-- Backend REST API: [Repository](https://github.com/HampusAndersson01/WebAPI-ParameterDBhttps://github.com/HampusAndersson01/WebAPI-ParameterDB)
+- Backend REST API: [Repository](https://github.com/HampusAndersson01/WebAPI-ParameterDB)
 
 ## Getting started
 To run the parameter database locally, you will need to follow these steps:
