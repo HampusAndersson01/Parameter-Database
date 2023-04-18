@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./style/Home.css";
 import ParameterTable from "../components/ParameterTable";
-import { TableRowProps, RigFamily } from "../models/Parameters";
+import { TableRowProps, RigFamily, Unit, Image, Possible_value } from "../models/Parameters";
 import Toolbar from "../components/Toolbar";
 import ParameterForm from "../components/ParameterForm";
 
@@ -13,6 +13,7 @@ import { CreatingParameterContext } from "../context/CreatingParameterContext";
 import { unitModel } from "../models/Unit";
 import { datatypeModel } from "../models/Datatype";
 import { PendingReloadContext } from "../context/PendingReloadContext";
+import { stringToDate } from "../hooks/ConvertParameters/ConvertParameters";
 
 type dataModel = {
   id: number;
@@ -91,10 +92,9 @@ function Home() {
 
   function updateRows(data: dataModel): TableRowProps[] {
     return data.map((row) => {
-      const imageArray = [];
-      const possibleValuesArray = [];
-      var rigfamily_name: string[] = [];
-      var rigfamily_description: string[] = [];
+      const imageArray: Image[] = [];
+      const possibleValuesArray: Possible_value[] = [];
+      const rigFamilyArray: RigFamily[] = [];
       // Split the image urls and names into an array of objects
       if (row.image_urls) {
         const urls = row.image_urls.split(";");
@@ -133,18 +133,37 @@ function Home() {
       }
 
       // Split the rig family names and descriptions into an array of objects
+      // Convert to RigFamily[]
       if (row.rigfamily_name) {
-        rigfamily_name = row.rigfamily_name.split(";");
-        rigfamily_description = row.rigfamily_description
-          ? row.rigfamily_description.split(";")
-          : Array(rigfamily_name.length).fill("");
+        const names = row.rigfamily_name.split(";");
+        const descriptions =
+          row.rigfamily_description !== undefined &&
+            row.rigfamily_description !== null
+            ? row.rigfamily_description.split(";")
+            : Array(names.length).fill(null);
+
+        for (let i = 0; i < names.length; i++) {
+          rigFamilyArray.push({
+            name: names[i],
+            description: descriptions[i],
+          });
+        }
       }
+
+      //Make unit object from unit_name and unit_description
+      const unit: Unit = {
+        name: row.unit_name ? row.unit_name : "",
+        description: row.unit_description,
+      };
+
       return {
         ...row,
-        rigfamily_name,
-        rigfamily_description,
+        unit: unit,
+        rigFamily: rigFamilyArray,
         images: imageArray,
         possible_values: possibleValuesArray,
+        modified_date: stringToDate(row.modified_date),
+        creation_date: stringToDate(row.creation_date),
       };
     });
   }
@@ -177,7 +196,7 @@ function Home() {
                     {/* Toolbar */}
                     <Toolbar></Toolbar>
                   </header>
-                  <ParameterTable rows={updateRows(data)} />
+                  <ParameterTable data={updateRows(data)} />
                   <ParameterForm
                     data={updateRows(data)}
                   ></ParameterForm>

@@ -30,12 +30,16 @@ export default function GenericData(props: { data: any, label: string, editable?
         setData(event.target.value);
     }
 
+    const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setData(event.target.value);
+    }
+
 
     return (
         <div className="genericData">
             <h3>{props.label}</h3>
             <div className={data ? "genericDataValue" : "genericDataValue"}>
-                {textArea ? <textarea value={data ? data : ""} onChange={handleChange} disabled={!editAllowed}></textarea> :
+                {textArea ? <textarea value={data ? data : ""} onChange={handleTextAreaChange} disabled={!editAllowed}></textarea> :
                     <input type="text" value={data ? data : ""} onChange={handleChange} disabled={!editAllowed}></input>}
             </div>
         </div>

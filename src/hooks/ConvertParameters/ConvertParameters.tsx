@@ -38,9 +38,15 @@ export function imagesToArray(url: string | null, name: string | null, descripti
             image_name: null,
             image_description: null
         };
+        if (name === null) {
+            name = "";
+        }
         const names = name.split(";");
         if (names.length > index) {
             image.image_name = names[index];
+        }
+        if (description === null) {
+            description = "";
         }
         const descriptions = description.split(";");
         if (descriptions.length > index) {
@@ -135,11 +141,11 @@ export function rigFamilyToArray(rigFamilyName: string, rigFamilyDescription: st
  * console.log(date); // null
 */
 export function stringToDate(dateString: string | null) {
-    if (dateString === null) {
-        return "";
+    if (dateString === null || dateString === "") {
+        return null;
     }
     const date = new Date(dateString);
-    return date;
+    return date as Date;
 }
 
 /**

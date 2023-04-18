@@ -1,9 +1,7 @@
 import React, {
-  useCallback,
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import "./style/ParameterTable.css";
@@ -17,25 +15,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import MaterialReactTable, { MRT_FullScreenToggleButton, MRT_Row, MRT_ShowHideColumnsButton, MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton } from "material-react-table";
+import MaterialReactTable, { } from "material-react-table";
 import type { MRT_ColumnDef } from "material-react-table";
 import {
   Box,
   Button,
-  Dialog,
-  DialogTitle,
   IconButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Tooltip,
 } from "@mui/material";
 import { APIContext } from "../context/APIContext";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { sortingFns } from "@tanstack/table-core";
 
-function ParameterTable(props: { rows: TableRowProps[] }) {
+function ParameterTable(props: { data: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);
   const [rowSelection, setRowSelection] = useState({});
@@ -63,11 +54,11 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         header: "Description",
       },
       {
-        accessorKey: "unit_name",
+        accessorKey: "unit.name",
         header: "Unit",
       },
       {
-        accessorKey: "rigfamily_name",
+        accessorFn: (originalRow) => originalRow.rigFamily.map((rigFamily) => rigFamily.name).join(", "),
         header: "Rig Family",
       },
       {
@@ -91,17 +82,16 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
         header: "Datatype",
       },
       {
-        accessorFn: (row) => row.creation_date !== null ? new Date(row.creation_date) : "",
+        accessorKey: "creation_date",
         id: "creation_date",
         header: "Creation Date",
         filterFn: 'equals',
         sortingFn: 'datetime',
         //render string date in custom format
         Cell: ({ cell }) => {
-          var dateTmp = cell.getValue();
-          if (dateTmp === "" || dateTmp === undefined) return "";
-          const date = new Date(dateTmp);
-          return date.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+          var dateTmp = cell.getValue() as Date | null;
+          if (dateTmp === null || dateTmp === undefined) return "";
+          return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         //render date picker for filtering
         Filter: ({ column }) => (
@@ -125,17 +115,16 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
 
       },
       {
-        accessorFn: (row) => row.modified_date !== null ? new Date(row.modified_date) : "",
+        accessorKey: "modified_date",
         id: "modified_date",
         header: "Last Modified",
         filterFn: 'equals',
         sortingFn: 'datetime',
         //render string date in custom format
         Cell: ({ cell }) => {
-          var dateTmp = cell.getValue();
-          if (dateTmp === "" || dateTmp === undefined) return "";
-          const date = new Date(dateTmp);
-          return date.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+          var dateTmp = cell.getValue() as Date | null;
+          if (dateTmp === null || dateTmp === undefined) return "";
+          return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         //render date picker for filtering
         Filter: ({ column }) => (
@@ -204,7 +193,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
 
     for (const [key, value] of Object.entries(rowSelection)) {
       if (value) {
-        var dbID = props.rows[parseInt(key)].id;
+        var dbID = props.data[parseInt(key)].id;
         deleteData(dbID);
       }
     }
@@ -216,13 +205,7 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
       <MaterialReactTable
         columns={columns}
         data={
-          // Iterate through props.rows and return all rows as usual except for the arrays that should be displayed as a string
-          props.rows.map((row) => {
-            return {
-              ...row,
-              rigfamily_name: row.rigfamily_name.join(", "),
-            };
-          })
+          props.data
         }
 
         enableRowSelection
@@ -248,15 +231,9 @@ function ParameterTable(props: { rows: TableRowProps[] }) {
             modified_by: false,
           },
         }}
-        defaultColumnFilter={{
-          openOnLoad: true,
-        }}
         onRowSelectionChange={setRowSelection}
         autoResetPageIndex={false}
-        autoResetSelectedRows={false}
-        autoResetSortBy={false}
         autoResetExpanded={false}
-        autoResetFilters={false}
         enableMultiRemove={true}
         //If rowSelection is empty, hide the delete button
         renderTopToolbarCustomActions={() => (
