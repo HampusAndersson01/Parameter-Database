@@ -19,8 +19,8 @@ The architecture of the parameter database consists of two main components:
 To run the parameter database locally, you will need to follow these steps:
 1. Clone the repository from GitHub and install the dependencies:
 ```
-git clone https://github.com/yourusername/parameter-database.git
-cd parameter-database
+git clone https://github.com/HampusAndersson01/parameter_db.git
+cd parameter_db
 npm install
 ```
 
