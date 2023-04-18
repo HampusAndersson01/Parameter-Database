@@ -21,6 +21,8 @@ import {
   Box,
   Button,
   IconButton,
+  Modal,
+  Typography,
 } from "@mui/material";
 import { APIContext } from "../context/APIContext";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -30,6 +32,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);
   const [rowSelection, setRowSelection] = useState({});
+  const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
+  const [deleteRows, setDeleteRows] = useState<TableRowProps[]>([]);
   const { hostname } = useContext(APIContext);
   const navigate = useNavigate();
 
@@ -186,31 +190,51 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     }
   };
 
-  const handleDeleteRows = () => {
-    if (Object.keys(rowSelection).length === 0) {
+  const handleDeleteRows = (rows: any) => {
+    console.log("Deleting rows: ", rows);
+    if (rows.length === 0) {
       alert("No rows selected");
       return;
     }
-    if (
-      !confirm(
-        "Are you sure you want to delete selected row(s)? This cannot be undone."
-      )
-    ) {
-      return;
-    }
-    console.log("Deleting rows: ", rowSelection);
+    setDeleteRows(rows);
+    setOpenDeleteConfirm(true);
+  };
 
-    for (const [key, value] of Object.entries(rowSelection)) {
+  const handleDeleteConfirm = (rows: any) => {
+    console.log("Deleting rows: ", rows);
+
+    for (const [key, value] of Object.entries(rows)) {
       if (value) {
         var dbID = props.data[parseInt(key)].id;
         deleteData(dbID);
       }
     }
+    setOpenDeleteConfirm(false);
+    setRowSelection({});
   };
+
 
 
   return (
     <div className="Table-Container">
+      <Modal
+        className="deleteConfirmModal"
+        open={openDeleteConfirm}
+        onClose={() => setOpenDeleteConfirm(false)}
+        aria-labelledby="deleteConfirmModal"
+        aria-describedby="deleteConfirmModal"
+      >
+        <Box>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Delete {Object.keys(deleteRows).length} rows?
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure you want to delete {Object.keys(deleteRows).length} rows?
+          </Typography>
+          <Button onClick={() => handleDeleteConfirm(deleteRows)}>Delete</Button>
+          <Button onClick={() => setOpenDeleteConfirm(false)}>Cancel</Button>
+        </Box>
+      </Modal>
       <MaterialReactTable
         columns={columns}
         data={
@@ -250,7 +274,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
           <Button
             color="primary"
             onClick={() => {
-              handleDeleteRows();
+              handleDeleteRows(rowSelection);
             }}
             variant="outlined"
           >
@@ -277,9 +301,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
             </Link>
 
             <IconButton className="deleteIcon" key="delete" onClick={() => {
-              if (confirm("Are you sure you want to delete this row? This cannot be undone.")) {
-                deleteData(row.original.id)
-              }
+              handleDeleteRows({ [row.index]: true });
             }}>
               <DeleteIcon />
             </IconButton >
