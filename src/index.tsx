@@ -4,14 +4,14 @@ import Home from "./routes/Home";
 import ParameterPage from "./routes/ParameterPage";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter, Link } from "react-router-dom";
 
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Home />,
@@ -20,6 +20,17 @@ const router = createBrowserRouter([
     path: "/parameter/:id",
     element: <ParameterPage />,
   },
+  {
+    path: "*", // 404
+    element: <>
+      <div className="errorContainer">
+        <h1>404</h1>
+        <h2>Page not found</h2>
+        <Link to="/">Go back to start</Link>
+      </div>
+    </>,
+
+  }
 ]);
 
 
