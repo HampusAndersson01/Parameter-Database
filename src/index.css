@@ -84,3 +84,37 @@ body,
     --ornamentalBorder: rgb(31, 31, 31);
     --ornamentalDivider: rgb(41, 41, 41);
 }
+
+/* 404 */
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--backgroundPrimary);
+}
+.errorContainer h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--alerts);
+}
+.errorContainer h2 {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--foregroundSecondary);
+}
+.errorContainer a {
+    text-decoration: none;
+    color: white;
+    background-color: var(--blueBrand);
+    padding: 1rem;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-top: 1rem;
+}
+.errorContainer a:hover {
+    background-color: var(--bluePrimary);
+}
