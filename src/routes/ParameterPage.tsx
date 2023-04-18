@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { TableRowProps, Image } from "../models/Parameters";
+import { TableRowProps } from "../models/Parameters";
 import { imagesToArray, rigFamilyToArray, stringToDate } from "../hooks/ConvertParameters/ConvertParameters";
 import Toolbar from "../components/Toolbar";
 import { useParams } from "react-router-dom";
@@ -18,9 +18,9 @@ export default function ParameterPage() {
     const { hostname } = useContext(APIContext);
     const [parameter, setParameter] = React.useState<TableRowProps>();
 
-    const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
+    const [editAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
 
-    const [editAllowed, setEditAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
+    const [editAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
 
     // Fetch parameter data from API
     useEffect(() => {
