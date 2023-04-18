@@ -37,6 +37,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
 
   const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
 
+  const root = document.documentElement;
+
   const columns = useMemo<MRT_ColumnDef<TableRowProps>[]>(
     () => [
       {
@@ -159,8 +161,15 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     []
   );
 
+
+
   useEffect(() => {
-    console.log("Selected rows: ", rowSelection);
+    if (Object.keys(rowSelection).length !== 0) {
+      root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px - 55px)");
+
+    } else {
+      root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px)");
+    }
   }, [rowSelection]);
 
   // Docs: Function to delete a row from the database using the id

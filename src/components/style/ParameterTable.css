@@ -4,6 +4,10 @@
   height: calc(100vh - var(--Toolbar-Height));
 }
 
+:root{
+  --tableHeight: calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px);
+}
+
 /* MUI Table */
 .MuiTableRow-root{
   background-color: var(--backgroundSecondary) !important;
@@ -19,7 +23,8 @@
   max-height: calc(100vh - var(--Toolbar-Height)) !important;
 }
 .MuiTableContainer-root{
-  max-height: calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px) !important;
+  max-height: var(--tableHeight) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .MuiTableContainer-root tr{
   background-color: var(--backgroundSecondary) !important;

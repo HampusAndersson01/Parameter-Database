@@ -39,7 +39,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "docs": "npx typedoc --out docs src/index.tsx"
+    "docs": "npx typedoc --out docs src/*.tsx src/**/*.tsx "
   },
   "eslintConfig": {
     "extends": [
