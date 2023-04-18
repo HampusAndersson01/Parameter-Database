@@ -4,6 +4,7 @@ import './style/Units.css'
 import CreatableSelect from 'react-select/creatable';
 import { APIContext } from '../context/APIContext';
 import { allowEdit } from "../hooks/EditMode/EditMode";
+import { GroupBase } from 'react-select';
 
 interface Option {
     readonly label: string;
@@ -124,6 +125,12 @@ export default function Units(props: { unit: Unit | null | undefined }) {
         }
     };
 
+    // Create group of options for react-select
+    const createGroupedOptions = (options: Option[]) => {
+        const selectOptions: readonly (string | GroupBase<string>)[] = options as unknown as readonly (string | GroupBase<string>)[];
+        return selectOptions;
+    };
+
 
 
     return (<>
@@ -132,14 +139,14 @@ export default function Units(props: { unit: Unit | null | undefined }) {
             <div className="unitData">
                 <CreatableSelect
                     options={unitOptions.map((unit) => {
-                        return { valude: unit.name, label: unit.name }
+                        return { value: unit.name, label: unit.name }
                     })}
                     onCreateOption={handleCreate}
                     value={value}
-                    onChange={(newValue: Option) => handleValueChange(newValue)}
+                    onChange={(newValue) => handleValueChange(newValue)}
                     isDisabled={!editAllowed}
                 />
-                <input type="text" value={unit ? unit.description : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></input>
+                <input type="text" value={unit ? unit.description || "" : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></input>
             </div>
         </div>
     </>)
