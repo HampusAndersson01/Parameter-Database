@@ -10,3 +10,15 @@ export const CreatingParameterContext =
     creatingParameter: false,
     setCreatingParameter: () => {},
   });
+
+interface ImportingParametersContextType {
+  importingParameters: boolean;
+  setImportingParameters: Dispatch<SetStateAction<boolean>>;
+}
+
+export const ImportingParametersContext =
+  React.createContext<ImportingParametersContextType>({
+    importingParameters: false,
+    setImportingParameters: () => { },
+  });
+
