@@ -5,6 +5,7 @@
   },
   "source": {
     "include": ["src"],
+    "exclude": ["**/*.css"],
     "includePattern": "\\.(jsx|js|ts|tsx)$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
