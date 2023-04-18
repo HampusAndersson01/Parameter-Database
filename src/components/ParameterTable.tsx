@@ -226,10 +226,10 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       >
         <Box>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Delete {Object.keys(deleteRows).length} rows?
+            Delete {Object.keys(deleteRows).length} row(s)?
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Are you sure you want to delete {Object.keys(deleteRows).length} rows?
+            Are you sure you want to delete {Object.keys(deleteRows).length} row(s)?
           </Typography>
           <Button onClick={() => handleDeleteConfirm(deleteRows)}>Delete</Button>
           <Button onClick={() => setOpenDeleteConfirm(false)}>Cancel</Button>

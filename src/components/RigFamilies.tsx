@@ -206,7 +206,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
                                 isDisabled={!editAllowed}
                             />
                             <div className="rigFamilyDescription">
-                                <textarea value={selectedRigFamilies[currentIndex] !== null ? selectedRigFamilies[currentIndex].description || "" : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></textarea>
+                                <textarea value={selectedRigFamilies[currentIndex] !== null ? selectedRigFamilies[currentIndex]?.description || "" : ""} onChange={handleDescriptionChange} disabled={!editAllowed}></textarea>
                             </div>
                         </div>
                         {
