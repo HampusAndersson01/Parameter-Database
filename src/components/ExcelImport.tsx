@@ -40,9 +40,10 @@ export default function ExcelImport() {
         //Close the dialog
         handleClose();
 
-        //Reload data from server
-        setPendingReload(true);
-
+        //Reload data from server after 200ms
+        setTimeout(() => {
+            setPendingReload(true);
+        }, 200);
 
     }
 
