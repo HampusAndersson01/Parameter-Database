@@ -104,9 +104,9 @@ function Toolbar(props: {
           {currentMenu === "addParameter" ? <AddParameter /> : null}
 
         </div>
-        <div className="toolbarTheme" onClick={handleThemeChange}>
+        {/* <div className="toolbarTheme" onClick={handleThemeChange}>
           {theme === "light" ? (<DarkMode></DarkMode>) : (<LightMode></LightMode>)}
-        </div>
+        </div> */}
         <div className="toolbarAccount">
           <AccountCircle></AccountCircle>
         </div>
