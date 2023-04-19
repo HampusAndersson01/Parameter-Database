@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { TableRowProps } from "../models/Parameters";
-import { imagesToArray, rigFamilyToArray, stringToDate } from "../hooks/ConvertParameters/ConvertParameters";
+import { imagesToArray, rigFamilyToArray, stringToDate, possibleValuesToArray } from "../hooks/ConvertParameters/ConvertParameters";
 import Toolbar from "../components/Toolbar";
 import { useParams } from "react-router-dom";
 import { APIContext } from "../context/APIContext";
@@ -46,7 +46,7 @@ export default function ParameterPage() {
                         modified_date: stringToDate(data[0].modified_date),
                         comment: data[0].comment,
                         images: data[0].image_urls !== null ? imagesToArray(data[0].image_urls, data[0].image_name, data[0].image_description) : [],
-                        possible_values: data[0].possible_values
+                        possible_values: possibleValuesToArray(data[0].possible_values, data[0].possible_values_description)
                     }
 
 

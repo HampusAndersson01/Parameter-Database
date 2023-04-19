@@ -12,33 +12,7 @@ import Creatable from "react-select/creatable";
 import CreatableSelect from "react-select/creatable";
 import { GroupBase } from "react-select";
 import { PendingReloadContext } from "../context/PendingReloadContext";
-
-interface NewParameter {
-  name: string;
-  description?: string | null;
-  unit?: {
-    name: string;
-    description?: string;
-  } | null;
-  rigfamily?: {
-    name: string;
-    description?: string;
-  } | null;
-  datatype?: string | null;
-  decimals?: number | null;
-  min?: number | null;
-  max?: number | null;
-  comment?: string | null;
-  images?: {
-    name?: string;
-    description?: string;
-    url: string;
-  } | null;
-  created_by?: string | null;
-  modified_by?: string | null;
-  creation_date?: string | null;
-  modified_date?: string | null;
-}
+import { NewParameter } from "../models/Parameters";
 
 interface Option {
   readonly label: string;
