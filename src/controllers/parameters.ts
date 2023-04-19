@@ -37,17 +37,47 @@ export const getParameter = async (
 ) => {
   try {
     const [rows, fields] = await pool.query(
-      `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
-      u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
-      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
-      GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
-      FROM parameters p 
-      LEFT JOIN units u ON p.unit_id = u.id 
-      LEFT JOIN images img ON p.id = img.parameter_id 
-      LEFT JOIN possible_values pv ON p.id = pv.parameter_id
-      LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
-      LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
-      WHERE p.id = ?;
+      `
+      SELECT 
+        p.id, 
+        p.name, 
+        p.description, 
+        p.datatype, 
+        p.decimals, 
+        p.min, 
+        p.max, 
+        p.creation_date, 
+        p.modified_date, 
+        p.created_by, 
+        p.modified_by, 
+        p.comment, 
+        u.name AS unit_name, 
+        u.description AS unit_description, 
+        GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_name,  
+        GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
+        GROUP_CONCAT(img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, 
+        GROUP_CONCAT(img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, 
+        GROUP_CONCAT(img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
+        GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, 
+        GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
+      FROM 
+        parameters p 
+        JOIN units u ON p.unit_id = u.id 
+        JOIN (
+          SELECT 
+          parameter_id,
+          GROUP_CONCAT(name ORDER BY id ASC SEPARATOR ';') AS name,
+          GROUP_CONCAT(description ORDER BY id ASC SEPARATOR ';') AS description,
+          GROUP_CONCAT(url ORDER BY id ASC SEPARATOR ';') AS url,
+          GROUP_CONCAT(id ORDER BY id ASC SEPARATOR ';') AS id
+          FROM images 
+          GROUP BY parameter_id
+        ) img ON p.id = img.parameter_id 
+        JOIN possible_values pv ON p.id = pv.parameter_id
+        JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
+        JOIN rigfamily rf ON rf.id = pr.rigfamily_id
+      WHERE 
+        p.id = ?;
       `,
       [req.params.id]
     );
