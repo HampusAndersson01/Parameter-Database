@@ -4,6 +4,9 @@ import { ImportingParametersContext } from "../context/CreatingParameterContext"
 import "./style/ExcelImport.css";
 import { NewParameter } from "../models/Parameters";
 import { APIContext } from "../context/APIContext";
+import CloseIcon from "@mui/icons-material/Close";
+import { DownloadButton } from "./subComponents/DownloadButton/DownloadButton";
+import { UploadButton } from "./subComponents/UploadButton/DownloadButton/UploadButton";
 
 export default function ExcelImport() {
     const { importingParameters, setImportingParameters } = useContext(ImportingParametersContext);
@@ -54,6 +57,13 @@ export default function ExcelImport() {
 
     }
 
+    function handleKeyPress(event: KeyboardEvent) {
+        if (event.key === "Escape") {
+            handleClose();
+        }
+    }
+    document.addEventListener("keydown", handleKeyPress);
+
     const handleClose = () => {
         setImportingParameters(false);
         console.log("Close");
@@ -71,14 +81,18 @@ export default function ExcelImport() {
 
 
     return (
-        <div className={importingParameters ? "importExcelOverlay active" : "importExcelOverlay"} onClick={handleClose}>
+        <div className={importingParameters ? "importExcelOverlay active" : "importExcelOverlay"} >
             <div className="importExcelContainer">
-                <button className="closeButton" onClick={handleClose}>X</button>
-
+                <CloseIcon
+                    onClick={handleClose}
+                    className="closeButton"
+                >
+                    X
+                </CloseIcon>
                 <h1>Excel Import</h1>
-                <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileUpload} />
-
-                <a href="%PUBLIC_URL%/Template.xlsx" download>Download Excel Import Template</a>
+                {/* <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileUpload} /> */}
+                <UploadButton text="Upload Excel file" className="uploadButton" onChange={handleFileUpload} />
+                <DownloadButton text="Download Template" className="downloadButton" file="Template.xlsx" />
             </div>
         </div>
     );
