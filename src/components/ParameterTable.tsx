@@ -15,7 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import MaterialReactTable, { } from "material-react-table";
+import MaterialReactTable from "material-react-table";
 import type { MRT_ColumnDef } from "material-react-table";
 import {
   Box,
@@ -249,6 +249,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
           <Button onClick={() => setOpenDeleteConfirm(false)}>Cancel</Button>
         </Box>
       </Modal>
+      {/* https://www.material-react-table.com/ */}
       <MaterialReactTable
         columns={columns}
         data={

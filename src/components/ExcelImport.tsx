@@ -7,6 +7,7 @@ import { APIContext } from "../context/APIContext";
 import CloseIcon from "@mui/icons-material/Close";
 import { DownloadButton } from "./subComponents/DownloadButton/DownloadButton";
 import { UploadButton } from "./subComponents/UploadButton/DownloadButton/UploadButton";
+import { PendingReloadContext } from "../context/PendingReloadContext";
 
 export default function ExcelImport() {
     const { importingParameters, setImportingParameters } = useContext(ImportingParametersContext);
@@ -14,6 +15,7 @@ export default function ExcelImport() {
     const { jsonData, convertToJson } = excelData;
     const [parameters, setParameters] = React.useState<NewParameter[]>([]);
     const { hostname } = useContext(APIContext);
+    const { setPendingReload } = useContext(PendingReloadContext);
 
     const handleFileUpload = (event: any) => {
         //Loop through all the selected files
@@ -34,6 +36,12 @@ export default function ExcelImport() {
 
         //Reset File upload control
         event.target.value = null;
+
+        //Close the dialog
+        handleClose();
+
+        //Reload data from server
+        setPendingReload(true);
 
 
     }
