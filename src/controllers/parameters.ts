@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { pool } from "..";
 import { OkPacket, RowDataPacket } from "mysql2";
-import {Parameters} from "../models/parameters";
-
-
+import { Parameters } from "../models/parameters";
 
 // Get all parameters
 export const getParameters = async (
@@ -61,8 +59,6 @@ export const getParameter = async (
     next(err);
   }
 };
-
-
 
 export const createParameters = async (req: Request, res: Response) => {
   const conn = await pool.getConnection();
@@ -151,18 +147,29 @@ export const createParameters = async (req: Request, res: Response) => {
       }
 
       // Insert new images if any
-      if (newParameter.images) {
-        const urls = newParameter.images.url
-          .split(";")
-          .map((url) => url.trim());
-        const names = newParameter.images.name
-          ? newParameter.images.name.split(";").map((name) => name.trim())
-          : Array(urls.length).fill(null);
-        const descriptions = newParameter.images.description
-          ? newParameter.images.description
-              .split(";")
-              .map((desc) => desc.trim())
-          : Array(urls.length).fill(null);
+      if (
+        newParameter.images &&
+        newParameter.images.url !== null &&
+        newParameter.images.url !== ""
+      ) {
+        let urls = [];
+        let names = [];
+        let descriptions = [];
+        if (newParameter.images.url.includes(";")) {
+          urls = newParameter.images.url.split(";").map((url) => url.trim());
+          names = newParameter.images.name
+            ? newParameter.images.name.split(";").map((name) => name.trim())
+            : Array(urls.length).fill(null);
+          descriptions = newParameter.images.description
+            ? newParameter.images.description
+                .split(";")
+                .map((desc) => desc.trim())
+            : Array(urls.length).fill(null);
+        } else {
+          urls = [newParameter.images.url];
+          names = [newParameter.images.name || null];
+          descriptions = [newParameter.images.description || null];
+        }
 
         const images = urls.map((url, index) => ({
           url,
@@ -183,15 +190,28 @@ export const createParameters = async (req: Request, res: Response) => {
       }
 
       // Insert new possible values if any
-      if (newParameter.possible_values) {
-        const values = newParameter.possible_values.value
-          .split(";")
-          .map((value) => value.trim());
-        const descriptions = newParameter.possible_values.description
-          ? newParameter.possible_values.description
-              .split(";")
-              .map((desc) => desc.trim())
-          : Array(values.length).fill(null);
+      if (
+        newParameter.possible_values &&
+        newParameter.possible_values.value !== null &&
+        newParameter.possible_values.value !== ""
+      ) {
+        console.log(newParameter.possible_values);
+        let values = [];
+        let descriptions = [];
+        if (newParameter.possible_values.value.includes(";")) {
+          values = newParameter.possible_values.value
+            .split(";")
+            .map((value) => value.trim());
+          descriptions = newParameter.possible_values.description
+            ? newParameter.possible_values.description
+                .split(";")
+                .map((desc) => desc.trim())
+            : Array(values.length).fill(null);
+        } else {
+          values = [newParameter.possible_values.value];
+          descriptions = [newParameter.possible_values.description] || null;
+        }
+        console.log(values);
 
         const possibleValues = values.map((name, index) => ({
           value: name,
@@ -199,8 +219,9 @@ export const createParameters = async (req: Request, res: Response) => {
         }));
         const possibleValuesNames = possibleValues.map(
           (possibleValue) =>
-            `(${parameterId}, '${possibleValue.value}', '${possibleValue.description ||
-              ""}')`
+            `(${parameterId}, '${possibleValue.value}', '${
+              possibleValue.description || ""
+            }')`
         );
         await conn.query(
           `INSERT INTO possible_values (parameter_id, value, description) VALUES ${possibleValuesNames.join(
@@ -366,7 +387,11 @@ export const updateParameter = async (
       for (let i = 0; i < possible_values.length; i++) {
         await pool.query(
           `INSERT INTO possible_values (parameter_id, value, description) VALUES (?, ?, ?)`,
-          [req.params.id, possible_values[i].value, possible_values[i].description]
+          [
+            req.params.id,
+            possible_values[i].value,
+            possible_values[i].description,
+          ]
         );
       }
     }
@@ -416,7 +441,7 @@ export const deleteParameter = async (
 ) => {
   try {
     //FIXME: Cannot delete or update a parent row: a foreign key constraint fails (`parameter db`.`images`, CONSTRAINT `fk_images_parameters` FOREIGN KEY (`parameter_id`) REFERENCES `parameters` (`id`))
-    
+
     // Delete images
     await pool.query(`DELETE FROM images WHERE parameter_id = ?`, [
       req.params.id,
@@ -430,10 +455,9 @@ export const deleteParameter = async (
       req.params.id,
     ]);
     // Delete parameter from parameter_rigfamily
-    await pool.query(
-      "DELETE FROM parameter_rigfamily WHERE parameter_id = ?",
-      [req.params.id]
-    );
+    await pool.query("DELETE FROM parameter_rigfamily WHERE parameter_id = ?", [
+      req.params.id,
+    ]);
     // Delete rigfamily if no parameter is associated with it
     await pool.query(
       "DELETE FROM rigfamily WHERE id NOT IN (SELECT rigfamily_id FROM parameter_rigfamily)"
@@ -444,7 +468,7 @@ export const deleteParameter = async (
       "DELETE FROM parameters WHERE id = ?",
       [req.params.id]
     );
-    
+
     res.json(rows);
   } catch (err) {
     next(err);
