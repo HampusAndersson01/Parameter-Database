@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { read, readFile, utils } from 'xlsx';
-import { NewParameter } from "../../models/Parameters";
+import { read, readFile, utils, writeFile } from 'xlsx';
+import { NewParameter, RigFamily, TableRowProps } from "../../models/Parameters";
 
 export const useExcelToJson = () => {
     const [jsonData, setJsonData] = useState<any>();
@@ -83,4 +83,53 @@ export const JsonToParameters = (jsonData: any) => {
         }
     });
     return parameters;
+}
+
+export const idsToExcel = (ids: number[], parameters: TableRowProps[]) => {
+    // Convert the ids to json data
+    const data = [];
+    data.push([
+        "name",
+        "description",
+        "datatype",
+        "decimals",
+        "min",
+        "max",
+        "comment",
+        "unit_name",
+        "rigfamily_name",
+        "image_name",
+        "image_description",
+        "image_urls",
+        "possible_values",
+        "possible_values_description"
+    ]);
+    ids.forEach((id: number) => {
+        //Find parameter with matching id
+        const parameter = parameters.find((parameter: TableRowProps) => parameter.id === id);
+        if (parameter === undefined) {
+            return;
+        }
+        data.push([
+            parameter.name,
+            parameter.description,
+            parameter.datatype,
+            parameter.decimals,
+            parameter.min,
+            parameter.max,
+            parameter.comment,
+            parameter.unit.name,
+            parameter.rigFamily.map((rigfamily: RigFamily) => rigfamily.name).join(";"),
+            parameter.images?.map((image: any) => image.name).join(";"),
+            parameter.images?.map((image: any) => image.description).join(";"),
+            parameter.images?.map((image: any) => image.url).join(";"),
+            parameter.possible_values?.map((possible_value: any) => possible_value.value).join(";"),
+            parameter.possible_values?.map((possible_value: any) => possible_value.description).join(";"),
+        ]);
+    });
+    console.log("Excel data: ", data);
+    const wb = utils.book_new();
+    const ws = utils.json_to_sheet(data);
+    utils.book_append_sheet(wb, ws, 'Parameters');
+    writeFile(wb, 'Exported Parameters.xlsx');
 }

@@ -27,6 +27,7 @@ import {
 import { APIContext } from "../context/APIContext";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { idsToExcel } from "../hooks/Excel/Excel";
 
 function ParameterTable(props: { data: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
@@ -173,7 +174,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
 
     } else {
       root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px)");
-    }
+    }    
   }, [rowSelection]);
 
   // Docs: Function to delete a row from the database using the id
@@ -213,7 +214,20 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     setRowSelection({});
   };
 
-
+  const handleExport = (rows: any) => {
+    console.log("Exporting rows: ", rows);
+    if (rows.length === 0) {
+      alert("No rows selected");
+      return;
+    }
+    let ids = [];
+    for (const [key, value] of Object.entries(rowSelection)) {
+      if (value === true) {
+        ids.push(props.data[Number(key)].id);
+      }
+    }
+    idsToExcel(ids, props.data);
+  };
 
   return (
     <div className="Table-Container">
@@ -271,16 +285,28 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         //If rowSelection is empty, hide the delete button
         renderTopToolbarCustomActions={() => (
           Object.keys(rowSelection).length === 0 ? null :
-          <Button
-            color="primary"
-            onClick={() => {
-              handleDeleteRows(rowSelection);
-            }}
-            variant="outlined"
-          >
-            Delete Selected
-            </Button> 
-
+            <div>
+              <Button
+                color="primary"
+                onClick={() => {
+                  handleDeleteRows(rowSelection);
+                }}
+                variant="outlined"
+                className="selectedButtons"
+              >
+                Delete Selected
+              </Button>
+              <Button
+                color="primary"
+                onClick={() => {
+                  handleExport(rowSelection);
+                }}
+                variant="outlined"
+                className="selectedButtons"
+              >
+                Export Selected to Excel
+              </Button>
+            </div>
         )}
         enableRowActions
         displayColumnDefOptions={{
