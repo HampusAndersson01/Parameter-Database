@@ -164,6 +164,9 @@ export function dateToString(date: Date) {
 
 export function possibleValuesToArray(value: string, description: string | null) {
     var values: any[] = [];
+    if (value === null) {
+        return values;
+    }
     if (value.includes(";") === false) {
         const valueItem: any = {
             value: value,
