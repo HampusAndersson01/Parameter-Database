@@ -32,6 +32,9 @@ export default function ExcelImport() {
             convertToJson(file);
         }
 
+        //Reset File upload control
+        event.target.value = null;
+
 
     }
 
@@ -90,7 +93,6 @@ export default function ExcelImport() {
                     X
                 </CloseIcon>
                 <h1>Excel Import</h1>
-                {/* <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileUpload} /> */}
                 <UploadButton text="Upload Excel file" className="uploadButton" onChange={handleFileUpload} />
                 <DownloadButton text="Download Template" className="downloadButton" file="Template.xlsx" />
             </div>
