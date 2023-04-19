@@ -161,3 +161,31 @@ export function dateToString(date: Date) {
     const dateString = date.toISOString();
     return dateString;
 }
+
+export function possibleValuesToArray(value: string, description: string | null) {
+    var values: any[] = [];
+    if (value.includes(";") === false) {
+        const valueItem: any = {
+            value: value,
+            description: description
+        };
+        values.push(valueItem);
+        console.log("values: ", values);
+        return values;
+    }
+    value.split(";").map((value, index) => {
+        const valueItem: any = {
+            value: value,
+            description: null
+        };
+        if (description !== null) {
+            const descriptions = description.split(";");
+            if (descriptions.length > index) {
+                valueItem.description = descriptions[index];
+            }
+        }
+        values.push(valueItem);
+    });
+    console.log("values: ", values);
+    return values;
+}

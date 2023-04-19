@@ -9,11 +9,12 @@ import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { DataContext } from "../context/DataContext";
 import { APIContext } from "../context/APIContext";
-import { CreatingParameterContext } from "../context/CreatingParameterContext";
+import { CreatingParameterContext, ImportingParametersContext } from "../context/CreatingParameterContext";
 import { unitModel } from "../models/Unit";
 import { datatypeModel } from "../models/Datatype";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { stringToDate } from "../hooks/ConvertParameters/ConvertParameters";
+import ExcelImport from "../components/ExcelImport";
 
 type dataModel = {
   id: number;
@@ -48,6 +49,7 @@ function Home() {
   const [dataTypes, setDataTypes] = useState<datatypeModel>([]);
   const { hostname } = useContext(APIContext);
   const [creatingParameter, setCreatingParameter] = useState<boolean>(false);
+  const [importingParameters, setImportingParameters] = useState<boolean>(false);
 
   const [clearAll, setClearAll] = useState<boolean>(false);
 
@@ -191,16 +193,21 @@ function Home() {
               <CreatingParameterContext.Provider
                 value={{ creatingParameter, setCreatingParameter }}
               >
-                <div className="App">
-                  <header className="App-header">
-                    {/* Toolbar */}
-                    <Toolbar></Toolbar>
-                  </header>
-                  <ParameterTable data={updateRows(data)} />
-                  <ParameterForm
-                    data={updateRows(data)}
-                  ></ParameterForm>
-                </div>
+                <ImportingParametersContext.Provider
+                  value={{ importingParameters, setImportingParameters }}
+                >
+                  <div className="App">
+                    <header className="App-header">
+                      {/* Toolbar */}
+                      <Toolbar></Toolbar>
+                    </header>
+                    <ParameterTable data={updateRows(data)} />
+                    <ParameterForm
+                      data={updateRows(data)}
+                    ></ParameterForm>
+                    <ExcelImport></ExcelImport>
+                  </div>
+                </ImportingParametersContext.Provider>
               </CreatingParameterContext.Provider>
             </APIContext.Provider>
           </DataContext.Provider>

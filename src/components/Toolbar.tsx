@@ -3,7 +3,7 @@ import "./style/Toolbar.css";
 import { AccountCircle, LightMode, DarkMode } from "@mui/icons-material";
 import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
-import { CreatingParameterContext } from "../context/CreatingParameterContext";
+import { CreatingParameterContext, ImportingParametersContext } from "../context/CreatingParameterContext";
 import { Squeeze as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,9 @@ function Toolbar(props: {
   const [isMobile, setIsMobile] = useState(false);
   const { creatingParameter, setCreatingParameter } = useContext(
     CreatingParameterContext
+  );
+  const { importingParameters, setImportingParameters } = useContext(
+    ImportingParametersContext
   );
   const { editMode, setEditMode } = useContext(EditModeContext);
   const { debugMode, setDebugMode } = useContext(DebugContext);
@@ -70,7 +73,7 @@ function Toolbar(props: {
     return (
       <ul>
         <li className="toolbarButton" onClick={() => setCreatingParameter(true)}>Create new</li>
-        <li className="toolbarButton">
+        <li className="toolbarButton" onClick={() => setImportingParameters(true)}>
           Import from Excel
         </li>
         <li className="toolbarButton" onClick={() => setCurrentMenu("main")}>Back</li>
@@ -107,7 +110,7 @@ function Toolbar(props: {
         <div className="toolbarAccount">
           <AccountCircle></AccountCircle>
         </div>
-        
+
       </nav>
       <div className="toolbarMenu">
         <Hamburger

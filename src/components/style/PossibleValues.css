@@ -88,3 +88,7 @@
     color: var(--alerts);
     height: 100%;
 }
+.deleteButton:disabled {
+    cursor: default;
+    color: var(--ornamentalBorder);
+}
