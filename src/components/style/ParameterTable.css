@@ -224,7 +224,7 @@ body {
     }
 }
 
-.MuiCollapse-root{
+.MuiToolbar-root > .MuiCollapse-root{
   display: none;
 }
 
