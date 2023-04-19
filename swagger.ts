@@ -135,11 +135,6 @@ const options = {
               type: "string",
               description: "The data type of the parameter.",
             },
-            modified_date: {
-              type: "string",
-              format: "date",
-              description: "The date when the parameter was last modified.",
-            },
             comment: {
               type: "string",
               description: "A comment about the parameter.",
@@ -164,6 +159,11 @@ const options = {
                   description:
                     "The name of the unit of measurement for the parameter.",
                 },
+                description: {
+                  type: "string",
+                  description:
+                    "A description of the unit of measurement for the parameter.",
+                },
               },
             },
             rigfamily: {
@@ -172,6 +172,11 @@ const options = {
                 name: {
                   type: "string",
                   description: "The name of the rig family for the parameter.",
+                },
+                description: {
+                  type: "string",
+                  description:
+                    "A description of the rig family for the parameter.",
                 },
               },
             },
