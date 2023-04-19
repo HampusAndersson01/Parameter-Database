@@ -64,11 +64,24 @@ export const createParameters = async (req: Request, res: Response) => {
   const conn = await pool.getConnection();
   const newParameters: Parameters[] = req.body;
   console.log(newParameters);
+  
+  const duplicateParameters: string[] = [];
 
   try {
     await conn.beginTransaction();
 
     for (const newParameter of newParameters) {
+      // If parameter name already exists, return error
+      const [rows, fields] = await pool.query(
+        `SELECT id FROM parameters WHERE name = ? LIMIT 1`,
+        [newParameter.name]
+      );
+      if (Array.isArray(rows) && rows.length > 0) {
+        console.log("Parameter already exists");
+        duplicateParameters.push(newParameter.name);
+        continue;
+      }
+
       // Insert new unit if not exists
       let unitId = null;
       if (newParameter.unit) {
@@ -232,11 +245,18 @@ export const createParameters = async (req: Request, res: Response) => {
     }
 
     await conn.commit();
-    res.status(200).json({ message: "Parameters created successfully" });
+    if (duplicateParameters.length === 0) {
+      res.status(201).json({ message: "Parameters created successfully" });
+    } else {
+      res.status(201).json({
+        message: "Some parameters already existed",
+        duplicates: duplicateParameters,
+      });
+    }
   } catch (err) {
     await conn.rollback();
     console.error(err);
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(501).json({ message: "Something went wrong" });
   } finally {
     conn.release();
   }
