@@ -27,6 +27,7 @@ import {
 import { APIContext } from "../context/APIContext";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CachedIcon from '@mui/icons-material/Cached';
 import { idsToExcel } from "../hooks/Excel/Excel";
 
 function ParameterTable(props: { data: TableRowProps[] }) {
@@ -285,29 +286,42 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         enableMultiRemove={true}
         //If rowSelection is empty, hide the delete button
         renderTopToolbarCustomActions={() => (
-          Object.keys(rowSelection).length === 0 ? null :
-            <div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  handleDeleteRows(rowSelection);
-                }}
-                variant="outlined"
-                className="selectedButtons"
-              >
-                Delete Selected
-              </Button>
-              <Button
-                color="primary"
-                onClick={() => {
-                  handleExport(rowSelection);
-                }}
-                variant="outlined"
-                className="selectedButtons"
-              >
-                Export Selected to Excel
-              </Button>
-            </div>
+          <div className="reloadSelectButtons">
+            <Button
+              color="primary"
+              onClick={() => {
+                setPendingReload(true);
+              }}
+              variant="text"
+              className="reloadButtons"
+            >
+              <CachedIcon sx={{ transform: `rotate(${pendingReload ? 360 : 0}deg)` }}></CachedIcon>
+            </Button>
+            {Object.keys(rowSelection).length === 0 ? null :
+              <>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    handleDeleteRows(rowSelection);
+                  }}
+                  variant="outlined"
+                  className="selectedButtons"
+                >
+                  Delete Selected
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    handleExport(rowSelection);
+                  }}
+                  variant="outlined"
+                  className="selectedButtons"
+                >
+                  Export Selected to Excel
+                </Button>
+              </>
+            }
+          </div>
         )}
         enableRowActions
         displayColumnDefOptions={{
