@@ -223,3 +223,14 @@ body {
         transform: rotate(-360deg);
     }
 }
+
+.MuiCollapse-root{
+  display: none;
+}
+
+.selectedRowsLabel{
+  color: var(--foregroundPrimary) !important;
+  display: flex;
+  align-items: center;
+  font-weight: bolder;
+}

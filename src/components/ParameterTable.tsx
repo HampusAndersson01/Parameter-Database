@@ -167,16 +167,14 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     []
   );
 
+  // useEffect(() => {
+  //   if (Object.keys(rowSelection).length !== 0) {
+  //     root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px - 55px)");
 
-
-  useEffect(() => {
-    if (Object.keys(rowSelection).length !== 0) {
-      root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px - 55px)");
-
-    } else {
-      root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px)");
-    }    
-  }, [rowSelection]);
+  //   } else {
+  //     root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px)");
+  //   }    
+  // }, [rowSelection]);
 
   // Docs: Function to delete a row from the database using the id
   const deleteData = async (id: number) => {
@@ -299,6 +297,10 @@ function ParameterTable(props: { data: TableRowProps[] }) {
             </Button>
             {Object.keys(rowSelection).length === 0 ? null :
               <>
+                {/* 2 of 3227 row(s) selected */}
+                <div className="selectedRowsLabel">
+                  {Object.keys(rowSelection).length} of {props.data.length} row(s) selected
+                </div>
                 <Button
                   color="primary"
                   onClick={() => {
