@@ -1,7 +1,7 @@
 {
-  "name": "express-api",
+  "name": "RestAPI for ParameterDB",
   "version": "1.0.0",
-  "description": "I den här laborationen ska du individuellt skapa ett enklare REST-API i NodeJS med\r express och typescript. Då API:et skall har funktionalitet för CRUD skall det finnas 4 st\r endpoints inkluderat GET, DELETE, PUT och POST för en resurs. Varje endpoint skall\r utföra vad dess anropsmetod ämnar att utföra, dvs. POST för att lägga till, PUT för att\r uppdatera, GET för att hämta osv. GET anropet skall hämta alla objekt. Vad API:et\r hanterar för typ av resurs väljer du själva, det viktiga är att det finns minst 4 st egenskaper\r för ett objekt varav en egenskap är id. Projektet skall inte ha någon databas utan istället ha\r all data sparad lokalt i serverfilen (exempelvis en array med produkter). För att testa ert\r API rekommenderas du att använda VS Code tilläget REST Client.",
+  "description": "RestAPI for ParameterDB using mysql database",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HampusAndersson01/Express-API.git"
+    "url": "git+https://github.com/HampusAndersson01/WebAPI-ParameterDB"
   },
-  "author": "",
+  "author": "Hampus Andersson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HampusAndersson01/Express-API/issues"
+    "url": "https://github.com/HampusAndersson01/WebAPI-ParameterDB/issues"
   },
-  "homepage": "https://github.com/HampusAndersson01/Express-API#readme",
+  "homepage": "https://github.com/HampusAndersson01/WebAPI-ParameterDB#readme",
   "dependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^18.7.9",
