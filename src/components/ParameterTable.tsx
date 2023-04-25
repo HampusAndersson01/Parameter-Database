@@ -15,8 +15,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import MaterialReactTable from "material-react-table";
-import type { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from "material-react-table";
+import MaterialReactTable, { MRT_DefinedColumnDef } from "material-react-table";
+import type { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState, MRT_VisibilityState } from "material-react-table";
 import {
   Box,
   Button,
@@ -55,6 +55,19 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     pageIndex: 0,
     pageSize: 50,
   });
+
+  const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(
+    {
+      comment: false,
+      datatype: false,
+      id: false,
+      creation_date: false,
+      modified_date: false,
+      created_by: false,
+      modified_by: false,
+    }
+  );
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Set table state from search params on initial render
@@ -64,13 +77,18 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     });
     // console.log("searchParams", searchParams);
     searchParams.forEach((value, key) => {
-      if (key !== "page" && key !== "pageSize") {
+      if (key !== "page" && key !== "pageSize" && !key.includes("Shown")) {
         console.log(key, value);
         setColumnFilters((prev) => [
           ...prev,
           { id: key, value: value },
         ]);
 
+      } else if (key.includes("Shown")) {
+        setColumnVisibility((prev) => ({
+          ...prev,
+          [key.replace("Shown", "")]: true,
+        }));
       }
     });
     console.log("columnFilters", columnFilters);
@@ -79,6 +97,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       pageSize: parseInt(searchParams.get("pageSize") || "50"),
     });
     setTempPage(parseInt(searchParams.get("page") || "0"));
+
+
 
   }, []);
 
@@ -110,6 +130,16 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       if (pagination.pageIndex !== 0) params.set('page', pagination.pageIndex.toString());
       if (pagination.pageSize !== 50) params.set('pageSize', pagination.pageSize.toString());
     }
+    console.log(columnVisibility);
+
+    //Loop through column visibility and add to params if visible
+    Object.keys(columnVisibility).forEach((key) => {
+      if (columnVisibility[key as keyof MRT_VisibilityState]) {
+        params.set("Show_" + key, "true");
+      }
+    });
+
+
     setSearchParams(params);
     // searchParams.set('sorting', JSON.stringify(sorting ?? []));
     // searchParams.set('page', pagination.pageIndex.toString());
@@ -325,7 +355,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         enableColumnResizing
         enablePinning
         enableHiding
-        state={{ isLoading: pendingReload, rowSelection, columnFilters, pagination }}
+        state={{ isLoading: pendingReload, rowSelection, columnFilters, pagination, columnVisibility }}
         initialState={{
           density: "compact",
           pagination: { pageSize: 50, pageIndex: 0 },
@@ -346,6 +376,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         }}
         onColumnFiltersChange={setColumnFilters}
         onPaginationChange={setPagination}
+        onColumnVisibilityChange={setColumnVisibility}
         autoResetPageIndex={false}
         autoResetExpanded={false}
         enableMultiRemove={true}
