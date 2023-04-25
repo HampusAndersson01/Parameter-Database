@@ -56,16 +56,26 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     pageSize: 50,
   });
 
+  const defaultColumnVisibility: MRT_VisibilityState = {
+    comment: false,
+    datatype: false,
+    id: false,
+    creation_date: false,
+    modified_date: false,
+    created_by: false,
+    modified_by: false,
+    name: true,
+    description: true,
+    "unit.name": true,
+    min: true,
+    max: true,
+    "rig family": true,
+    decimals: true,
+  }
+
+
   const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(
-    {
-      comment: false,
-      datatype: false,
-      id: false,
-      creation_date: false,
-      modified_date: false,
-      created_by: false,
-      modified_by: false,
-    }
+    defaultColumnVisibility,
   );
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -87,7 +97,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       } else if (key.includes("Show_")) {
         setColumnVisibility((prev) => ({
           ...prev,
-          [key.replace("Show_", "")]: true,
+          [key.replace("Show_", "")]: value === "true" ? true : false,
         }));
       }
     });
@@ -134,8 +144,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
 
     //Loop through column visibility and add to params if visible
     Object.keys(columnVisibility).forEach((key) => {
-      if (columnVisibility[key as keyof MRT_VisibilityState]) {
-        params.set("Show_" + key, "true");
+      if (columnVisibility[key as keyof MRT_VisibilityState] !== defaultColumnVisibility[key as keyof MRT_VisibilityState]) {
+        params.set("Show_" + key, columnVisibility[key as keyof MRT_VisibilityState].toString());
       }
     });
 
@@ -144,7 +154,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     // searchParams.set('sorting', JSON.stringify(sorting ?? []));
     // searchParams.set('page', pagination.pageIndex.toString());
     // searchParams.set('pageSize', pagination.pageSize.toString());
-  }, [columnFilters, pagination]);
+  }, [columnFilters, pagination, columnVisibility]);
 
   const columns = useMemo<MRT_ColumnDef<TableRowProps>[]>(
     () => [
