@@ -11,17 +11,51 @@ export const getParameters = async (
 ) => {
   try {
     const [rows, fields] = await pool.query(
-      `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
-      u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
-      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
-      GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
+      `SELECT 
+      p.id,
+      p.name,
+      p.description,
+      p.datatype,
+      p.decimals,
+      p.min,
+      p.max,
+      p.creation_date,
+      p.modified_date,
+      p.created_by,
+      p.modified_by,
+      p.comment,
+      u.name AS unit_name,
+      u.description AS unit_description,
+      GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,
+      GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description,
+      img.name AS image_name,
+      img.description AS image_description,
+      img.url AS image_urls,
+      pv.value AS possible_values,
+      pv.description AS possible_values_description
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
-      LEFT JOIN images img ON p.id = img.parameter_id 
-      LEFT JOIN possible_values pv ON p.id = pv.parameter_id
+      LEFT JOIN (
+        SELECT 
+        GROUP_CONCAT(name ORDER BY id ASC SEPARATOR ';') AS name,
+        GROUP_CONCAT(description ORDER BY id ASC SEPARATOR ';') AS description,
+        GROUP_CONCAT(url ORDER BY id ASC SEPARATOR ';') AS url,
+        parameter_id
+        FROM images
+        GROUP BY parameter_id
+      ) img ON p.id = img.parameter_id 
+      LEFT JOIN (
+        SELECT
+        GROUP_CONCAT(value ORDER BY id ASC SEPARATOR ';') AS value,
+        GROUP_CONCAT(description ORDER BY id ASC SEPARATOR ';') AS description,
+        parameter_id
+        FROM possible_values
+        GROUP BY parameter_id
+      ) pv ON p.id = pv.parameter_id
       LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
       LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
-      GROUP BY p.id`
+      GROUP BY p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, u.name, u.description, img.name, img.description, img.url, pv.value, pv.description;
+      `
     );
     res.json(rows);
   } catch (err) {
@@ -37,22 +71,59 @@ export const getParameter = async (
 ) => {
   try {
     const [rows, fields] = await pool.query(
-      `SELECT p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, 
-      u.name AS unit_name, u.description AS unit_description,  GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,  GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description, 
-      GROUP_CONCAT(DISTINCT img.name ORDER BY img.id ASC SEPARATOR ';') AS image_name, GROUP_CONCAT(DISTINCT img.description ORDER BY img.id ASC SEPARATOR ';') AS image_description, GROUP_CONCAT(DISTINCT img.url ORDER BY img.id ASC SEPARATOR ';') AS image_urls,
-      GROUP_CONCAT(DISTINCT pv.value ORDER BY pv.id ASC SEPARATOR ';') AS possible_values, GROUP_CONCAT(DISTINCT pv.description ORDER BY pv.id ASC SEPARATOR ';') AS possible_values_description
+      `
+      SELECT 
+      p.id,
+      p.name,
+      p.description,
+      p.datatype,
+      p.decimals,
+      p.min,
+      p.max,
+      p.creation_date,
+      p.modified_date,
+      p.created_by,
+      p.modified_by,
+      p.comment,
+      u.name AS unit_name,
+      u.description AS unit_description,
+      GROUP_CONCAT(DISTINCT rf.name ORDER BY rf.id ASC SEPARATOR ';')  AS rigfamily_name,
+      GROUP_CONCAT(DISTINCT rf.description ORDER BY rf.id ASC SEPARATOR ';') AS rigfamily_description,
+      img.name AS image_name,
+      img.description AS image_description,
+      img.url AS image_urls,
+      pv.value AS possible_values,
+      pv.description AS possible_values_description
       FROM parameters p 
       LEFT JOIN units u ON p.unit_id = u.id 
-      LEFT JOIN images img ON p.id = img.parameter_id 
-      LEFT JOIN possible_values pv ON p.id = pv.parameter_id
+      LEFT JOIN (
+        SELECT 
+        GROUP_CONCAT(name ORDER BY id ASC SEPARATOR ';') AS name,
+        GROUP_CONCAT(description ORDER BY id ASC SEPARATOR ';') AS description,
+        GROUP_CONCAT(url ORDER BY id ASC SEPARATOR ';') AS url,
+        parameter_id
+        FROM images
+        GROUP BY parameter_id
+      ) img ON p.id = img.parameter_id 
+      LEFT JOIN (
+        SELECT
+        GROUP_CONCAT(value ORDER BY id ASC SEPARATOR ';') AS value,
+        GROUP_CONCAT(description ORDER BY id ASC SEPARATOR ';') AS description,
+        parameter_id
+        FROM possible_values
+        GROUP BY parameter_id
+      ) pv ON p.id = pv.parameter_id
       LEFT JOIN parameter_rigfamily pr ON pr.parameter_id = p.id 
       LEFT JOIN rigfamily rf ON rf.id = pr.rigfamily_id
-      WHERE p.id = ?;
+      WHERE p.id =  ?
+      GROUP BY p.id, p.name, p.description, p.datatype, p.decimals, p.min, p.max, p.creation_date, p.modified_date, p.created_by, p.modified_by, p.comment, u.name, u.description, img.name, img.description, img.url, pv.value, pv.description;
       `,
       [req.params.id]
     );
     if (rows[0].id === null) {
-      return res.status(404).json({ msg: "Parameter not found" });
+      return res.status(404).json({
+        msg: "Parameter not found",
+      });
     }
     res.json(rows);
   } catch (err) {
@@ -64,7 +135,7 @@ export const createParameters = async (req: Request, res: Response) => {
   const conn = await pool.getConnection();
   const newParameters: Parameters[] = req.body;
   console.log(newParameters);
-  
+
   const duplicateParameters: string[] = [];
 
   try {
