@@ -77,17 +77,17 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     });
     // console.log("searchParams", searchParams);
     searchParams.forEach((value, key) => {
-      if (key !== "page" && key !== "pageSize" && !key.includes("Shown")) {
+      if (key !== "page" && key !== "pageSize" && !key.includes("Show")) {
         console.log(key, value);
         setColumnFilters((prev) => [
           ...prev,
           { id: key, value: value },
         ]);
 
-      } else if (key.includes("Shown")) {
+      } else if (key.includes("Show_")) {
         setColumnVisibility((prev) => ({
           ...prev,
-          [key.replace("Shown", "")]: true,
+          [key.replace("Show_", "")]: true,
         }));
       }
     });
