@@ -266,7 +266,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         state={{ isLoading: pendingReload, rowSelection }}
         initialState={{
           density: "compact",
-          pagination: { pageSize: 25, pageIndex: 0 },
+          pagination: { pageSize: 50, pageIndex: 0 },
           showColumnFilters: true,
           columnVisibility: {
             comment: false,
@@ -279,6 +279,9 @@ function ParameterTable(props: { data: TableRowProps[] }) {
           },
         }}
         onRowSelectionChange={setRowSelection}
+        muiTablePaginationProps={{
+          rowsPerPageOptions: [10, 25, 50, 100, 250],
+        }}
         autoResetPageIndex={false}
         autoResetExpanded={false}
         enableMultiRemove={true}
