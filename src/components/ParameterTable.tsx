@@ -9,14 +9,14 @@ import { DebugContext } from "../context/DebugContext";
 import { EditModeContext } from "../context/EditModeContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { TableRowProps } from "../models/Parameters";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import MaterialReactTable from "material-react-table";
-import type { MRT_ColumnDef } from "material-react-table";
+import type { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from "material-react-table";
 import {
   Box,
   Button,
@@ -38,12 +38,83 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   const [deleteRows, setDeleteRows] = useState<TableRowProps[]>([]);
   const { hostname } = useContext(APIContext);
   const navigate = useNavigate();
-
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [firstRender, setFirstRender] = useState(true);
 
   const { pendingReload, setPendingReload } = useContext(PendingReloadContext);
 
   const root = document.documentElement;
+
+  //table state
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+    [],
+  );
+
+  const [tempPage, setTempPage] = useState(0);
+
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 50,
+  });
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Set table state from search params on initial render
+  useEffect(() => {
+    searchParams.forEach((value, key) => {
+      console.log(key, value);
+    });
+    // console.log("searchParams", searchParams);
+    searchParams.forEach((value, key) => {
+      if (key !== "page" && key !== "pageSize") {
+        console.log(key, value);
+        setColumnFilters((prev) => [
+          ...prev,
+          { id: key, value: value },
+        ]);
+
+      }
+    });
+    console.log("columnFilters", columnFilters);
+    setPagination({
+      pageIndex: 0,
+      pageSize: parseInt(searchParams.get("pageSize") || "50"),
+    });
+    setTempPage(parseInt(searchParams.get("page") || "0"));
+
+  }, []);
+
+  useEffect(() => {
+    if (props.data.length === 0) {
+      return;
+    }
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: tempPage,
+    }));
+  }, [props.data]);
+
+
+  // Set search params when table state changes
+  useEffect(() => {
+    if (firstRender) {
+      setFirstRender(false);
+      return;
+    }
+    const params = new URLSearchParams();
+    //Loop through column filters and add to params
+    columnFilters.forEach((filter) => {
+      if (filter.value !== "") {
+        params.set(filter.id, filter.value as string);
+      }
+    });
+    if (!pendingReload) {
+      if (pagination.pageIndex !== 0) params.set('page', pagination.pageIndex.toString());
+      if (pagination.pageSize !== 50) params.set('pageSize', pagination.pageSize.toString());
+    }
+    setSearchParams(params);
+    // searchParams.set('sorting', JSON.stringify(sorting ?? []));
+    // searchParams.set('page', pagination.pageIndex.toString());
+    // searchParams.set('pageSize', pagination.pageSize.toString());
+  }, [columnFilters, pagination]);
 
   const columns = useMemo<MRT_ColumnDef<TableRowProps>[]>(
     () => [
@@ -167,15 +238,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     []
   );
 
-  // useEffect(() => {
-  //   if (Object.keys(rowSelection).length !== 0) {
-  //     root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px - 55px)");
-
-  //   } else {
-  //     root.style.setProperty("--tableHeight", "calc(100vh - var(--Toolbar-Height) - (56px * 2) - 15px)");
-  //   }    
-  // }, [rowSelection]);
-
   // Docs: Function to delete a row from the database using the id
   const deleteData = async (id: number) => {
     try {
@@ -263,7 +325,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         enableColumnResizing
         enablePinning
         enableHiding
-        state={{ isLoading: pendingReload, rowSelection }}
+        state={{ isLoading: pendingReload, rowSelection, columnFilters, pagination }}
         initialState={{
           density: "compact",
           pagination: { pageSize: 50, pageIndex: 0 },
@@ -282,6 +344,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         muiTablePaginationProps={{
           rowsPerPageOptions: [10, 25, 50, 100, 250],
         }}
+        onColumnFiltersChange={setColumnFilters}
+        onPaginationChange={setPagination}
         autoResetPageIndex={false}
         autoResetExpanded={false}
         enableMultiRemove={true}
