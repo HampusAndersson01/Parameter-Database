@@ -201,11 +201,14 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         header: "Datatype",
       },
       {
-        accessorKey: "creation_date",
+        // accessorKey: "creation_date",
+        accessorFn: (originalRow) => new Date(originalRow.creation_date || ""),
         id: "creation_date",
         header: "Creation Date",
-        filterFn: 'equals',
+        // filterFn: 'equals',
+        // filterFn: "lessThanOrEqualTo",
         sortingFn: 'datetime',
+        enableColumnFilter: false,
         //render string date in custom format
         Cell: ({ cell }) => {
           var dateTmp = cell.getValue() as Date | null;
@@ -213,57 +216,62 @@ function ParameterTable(props: { data: TableRowProps[] }) {
           return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
         //render date picker for filtering
-        Filter: ({ column }) => (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              format="YYYY-MM-DD"
-              onChange={(newValue) => {
-                column.setFilterValue(newValue);
-              }}
-              slotProps={{
-                textField: {
-                  helperText: 'Filter Mode: Equals',
-                  sx: { minWidth: '120px' },
-                  variant: 'standard',
-                },
-              }}
-              value={column.getFilterValue()}
-            />
-          </LocalizationProvider>
-        ),
+        // Filter: ({ column }) => (
+        //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+        //     <DatePicker
+        //       format="YYYY-MM-DD"
+        //       onChange={(newValue) => {
+        //         column.setFilterValue(newValue);
+        //       }}
+        //       slotProps={{
+        //         textField: {
+        //           helperText: 'Filter Mode: Equals',
+        //           sx: { minWidth: '120px' },
+        //           variant: 'standard',
+        //         },
+        //       }}
+        //       value={column.getFilterValue()}
+        //     />
+        //   </LocalizationProvider>
+        // ),
 
       },
       {
-        accessorKey: "modified_date",
+        // accessorKey: "modified_date",
+        accessorFn: (originalRow) => new Date(originalRow.modified_date || ""),
         id: "modified_date",
         header: "Last Modified",
-        filterFn: 'equals',
-        sortingFn: 'datetime',
+        // filterFn: 'lessThanOrEqualTo',
+        // filterFn: 'equals',
+        enableColumnFilter: false,
+        sortingFn: 'string',
         //render string date in custom format
-        Cell: ({ cell }) => {
-          var dateTmp = cell.getValue() as Date | null;
-          if (dateTmp === null || dateTmp === undefined) return "";
-          return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        },
+        // Cell: ({ cell }) => {
+        //   var dateTmp = cell.getValue() as Date | null;
+        //   if (dateTmp === null || dateTmp === undefined) return "";
+        //   return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        // },
+        Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+        Header: ({ column }) => <em>{column.columnDef.header}</em>,
         //render date picker for filtering
-        Filter: ({ column }) => (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              format="YYYY-MM-DD"
-              onChange={(newValue) => {
-                column.setFilterValue(newValue);
-              }}
-              slotProps={{
-                textField: {
-                  helperText: 'Filter Mode: Equals',
-                  sx: { minWidth: '120px' },
-                  variant: 'standard',
-                },
-              }}
-              value={column.getFilterValue()}
-            />
-          </LocalizationProvider>
-        ),
+        // Filter: ({ column }) => (
+        //   <LocalizationProvider dateAdapter={AdapterDayjs}>
+        //     <DatePicker
+        //       format="YYYY-MM-DD"
+        //       onChange={(newValue) => {
+        //         column.setFilterValue(newValue);
+        //       }}
+        //       slotProps={{
+        //         textField: {
+        //           helperText: 'Filter Mode: Equals',
+        //           sx: { minWidth: '120px' },
+        //           variant: 'standard',
+        //         },
+        //       }}
+        //       value={column.getFilterValue()}
+        //     />
+        //   </LocalizationProvider>
+        // ),
 
       },
       {
