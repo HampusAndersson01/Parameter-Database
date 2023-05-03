@@ -11,7 +11,7 @@ const app = express();
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("../swagger.ts");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Database connection pool
 export const pool = mysql.createPool({
   host: "localhost",
