@@ -1,0 +1,94 @@
+.possibleValuesContainer {
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.possibleValues {
+    overflow-y: auto;
+    max-height: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    position: relative;
+}
+.possibleValues th {
+    background-color: transparent;
+    color: var(--foregroundPrimary);
+    font-size: 0.9rem;
+    text-align: start;
+}
+.possibleValues td {
+    text-align: start;
+    font-size: 0.8rem;
+    color: var(--foregroundPrimary);
+}
+.possibleValues tr {
+    height: 2rem;
+    border-top: 1px solid var(--ornamentalBorder);
+}
+.possibleValues tr:nth-child(even) {
+    background-color: var(--backgroundSecondary);
+}
+.possibleValues tr:nth-child(odd) {
+    background-color: var(--backgroundPrimary);
+}
+.possibleValues tr:last-child {
+    background: none;
+}
+.possibleValues td:not(:last-child) {
+    border-right: 1px solid var(--foregroundSecondary);
+}
+.possibleValues input {
+    border: none !important;
+    background-color: transparent;
+    font-size: 0.8rem;
+    text-align: start;
+    height: 100%;
+    padding-left: 0.1rem !important;
+    padding-right: 0.1rem !important;
+    color: var(--foregroundPrimary);
+}
+.possibleValues input:focus-visible {
+    outline: none !important;
+}
+.possibleValues .value {
+    width: 30%;
+}
+.possibleValues .description {
+    width: 70%;
+}
+
+.possibleValues .addNew {
+    width: 100%;
+    height: 100%;
+    border: none !important;
+    background: none !important;
+}
+.possibleValues .addButton {
+    height: 100%;
+    width: 100%;
+    background-color: var(--bluePrimary);
+    cursor: pointer;
+    color: var(--foregroundPrimary);
+    font-size: 1rem;
+    border: none;
+    /* border-radius: 0.5rem; */
+    padding: 0.3rem 0;
+}
+
+.delete {
+    width: 25px;
+    background-color: var(--ornamentalBorder);
+}
+.deleteButton {
+    border: none;
+    background: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--alerts);
+    height: 100%;
+}
+.deleteButton:disabled {
+    cursor: default;
+    color: var(--ornamentalBorder);
+}

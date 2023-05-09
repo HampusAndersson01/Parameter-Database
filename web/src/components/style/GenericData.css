@@ -1,0 +1,23 @@
+.genericData h3 {
+    color: var(--foregroundPrimary);
+    width: 100%;
+    border-bottom: 1px solid var(--ornamentalBorder);
+    margin-bottom: 0.5rem;
+}
+.genericDataValue {
+    color: var(--foregroundSecondary);
+    width: 100%;
+    text-align: center;
+}
+
+.genericDataValue > input,
+.genericDataValue > textarea {
+    color: var(--foregroundPrimary);
+    width: 100%;
+    text-align: center;
+    border: none !important;
+    background: none;
+    outline: none;
+    font-size: 1.2rem;
+    font-family: inherit;
+}

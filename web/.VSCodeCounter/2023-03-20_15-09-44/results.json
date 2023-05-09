@@ -1,0 +1,158 @@
+{
+  "file:///c%3A/ExArbete/parameter_db/src/reportWebVitals.ts": {
+    "language": "TypeScript",
+    "code": 13,
+    "comment": 0,
+    "blank": 3
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/react-app-env.d.ts": {
+    "language": "TypeScript",
+    "code": 0,
+    "comment": 1,
+    "blank": 1
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/index.tsx": {
+    "language": "TypeScript JSX",
+    "code": 14,
+    "comment": 3,
+    "blank": 6
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/index.css": {
+    "language": "CSS",
+    "code": 33,
+    "comment": 1,
+    "blank": 10
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/App.css": {
+    "language": "CSS",
+    "code": 69,
+    "comment": 0,
+    "blank": 7
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/App.tsx": {
+    "language": "TypeScript JSX",
+    "code": 218,
+    "comment": 5,
+    "blank": 29
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/context/ApiContext.tsx": {
+    "language": "TypeScript JSX",
+    "code": 7,
+    "comment": 0,
+    "blank": 3
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/models/RigFamily.tsx": {
+    "language": "TypeScript JSX",
+    "code": 5,
+    "comment": 0,
+    "blank": 0
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/ExpandedData.tsx": {
+    "language": "TypeScript JSX",
+    "code": 409,
+    "comment": 12,
+    "blank": 29
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/models/Datatype.tsx": {
+    "language": "TypeScript JSX",
+    "code": 1,
+    "comment": 0,
+    "blank": 0
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/Toolbar.tsx": {
+    "language": "TypeScript JSX",
+    "code": 192,
+    "comment": 2,
+    "blank": 9
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/context/EditModeContext.tsx": {
+    "language": "TypeScript JSX",
+    "code": 9,
+    "comment": 0,
+    "blank": 3
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/StyledBoxWLabel.tsx": {
+    "language": "TypeScript JSX",
+    "code": 213,
+    "comment": 10,
+    "blank": 21
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/context/DebugContext.tsx": {
+    "language": "TypeScript JSX",
+    "code": 9,
+    "comment": 0,
+    "blank": 3
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/context/DataContext.tsx": {
+    "language": "TypeScript JSX",
+    "code": 20,
+    "comment": 0,
+    "blank": 5
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/context/CreatingParameterContext.tsx": {
+    "language": "TypeScript JSX",
+    "code": 9,
+    "comment": 0,
+    "blank": 2
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/SearchField.tsx": {
+    "language": "TypeScript JSX",
+    "code": 140,
+    "comment": 0,
+    "blank": 13
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/ParameterTable.tsx": {
+    "language": "TypeScript JSX",
+    "code": 121,
+    "comment": 2,
+    "blank": 11
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/models/Unit.tsx": {
+    "language": "TypeScript JSX",
+    "code": 5,
+    "comment": 0,
+    "blank": 1
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/Toolbar.css": {
+    "language": "CSS",
+    "code": 178,
+    "comment": 0,
+    "blank": 4
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/ParameterForm.tsx": {
+    "language": "TypeScript JSX",
+    "code": 174,
+    "comment": 4,
+    "blank": 36
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/StyledBoxWLabel.css": {
+    "language": "CSS",
+    "code": 78,
+    "comment": 0,
+    "blank": 2
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/SearchField.css": {
+    "language": "CSS",
+    "code": 114,
+    "comment": 0,
+    "blank": 5
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/ExpandedData.css": {
+    "language": "CSS",
+    "code": 0,
+    "comment": 0,
+    "blank": 1
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/ParameterTable.css": {
+    "language": "CSS",
+    "code": 260,
+    "comment": 1,
+    "blank": 13
+  },
+  "file:///c%3A/ExArbete/parameter_db/src/components/style/ParameterForm.css": {
+    "language": "CSS",
+    "code": 134,
+    "comment": 5,
+    "blank": 20
+  }
+}
