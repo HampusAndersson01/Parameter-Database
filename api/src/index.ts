@@ -3,10 +3,14 @@ import mysql from "mysql2/promise";
 import parameterRoutes from "./routes/parameters";
 import rigfamiliesRoutes from "./routes/rigfamilies";
 import unitsRoutes from "./routes/units";
+import dotenv from "dotenv";
+import path from "path";
 
 const bodyParser = require("body-parser");
 
 const app = express();
+
+dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("../swagger.ts");
@@ -14,10 +18,10 @@ const swaggerSpec = require("../swagger.ts");
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Database connection pool
 export const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "password",
-  database: "parameter db",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 app.use((req, res, next) => {
