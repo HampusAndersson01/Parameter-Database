@@ -137,14 +137,8 @@ ALTER TABLE `parameter db`.possible_values ADD CONSTRAINT fk_possible_values_par
 
 ```
 
-## Docs
+## Docs for the API and Web
 
 [API](api/README.md)
 
 [Web](web/README.md)
-
-'
-
-```
-
-```
