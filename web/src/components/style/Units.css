@@ -1,0 +1,28 @@
+.unitData {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.unitData > input {
+    width: 100%;
+    height: 100%;
+    border: none !important;
+    background-color: transparent;
+    color: var(--foregroundPrimary);
+    outline: none;
+    text-align: center;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+.unitData > div {
+    width: fit-content;
+    min-width: 50%;
+}
+.unitContainer h3 {
+    width: 100%;
+    border-bottom: 1px solid var(--ornamentalBorder);
+}
+.unitData div{
+    color: var(--foregroundPrimary);
+}
