@@ -47,7 +47,6 @@ npm start
 
 The API will be running on port 3000 and the web on port 3001.
 
-## Prerequisites
 
 ### Database setup
 
