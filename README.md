@@ -18,7 +18,7 @@ Install dependencies for the API:
 cd api && npm install
 ```
 
-Create a .env file in the parent root folder and add the following:
+Create a .env file in the api root folder and add the following:
 
 ```
 HOST={ip address/localhost}
