@@ -101,7 +101,6 @@ function ParameterForm(props: { data: TableRowProps[] }) {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
     const filteredData = data.images.filter(
       (item: { url: String }) => item.url !== ""
     );
@@ -163,7 +162,6 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
         setCreatingParameter(false);
         setPendingReload(true);
       })

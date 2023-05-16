@@ -48,7 +48,6 @@ export default function ExcelImport() {
     }
 
     const postParameters = () => {
-        console.log("Post parameters", parameters);
         fetch(hostname + "parameters", {
             method: "POST",
             headers: {
@@ -58,7 +57,6 @@ export default function ExcelImport() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("Success:", data);
                 setParameters([]);
             }
             )
@@ -78,7 +76,6 @@ export default function ExcelImport() {
 
     const handleClose = () => {
         setImportingParameters(false);
-        console.log("Close");
     }
 
     useEffect(() => {

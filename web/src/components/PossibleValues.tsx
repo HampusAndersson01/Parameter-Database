@@ -13,8 +13,6 @@ function PossibleValues(props: { data: Possible_value[] | null; onChange: any })
   );
 
   useEffect(() => {
-
-    console.log("props.data", props.data);
     if (props.data !== null && props.data !== undefined) {
       setPossibleValues(props.data);
     }

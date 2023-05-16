@@ -51,7 +51,7 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
                 }));
             }
             )
-            .catch((error) => console.log(error))
+            .catch((error) => console.error(error))
             .finally(() => console.log("Loaded rig families"));
     }, []);
 
@@ -177,7 +177,6 @@ export default function RigFamilies(props: { rigFamily: RigFamily[] | null | und
             } else {
                 var newIndex = currentIndex;
             }
-            console.log("newIndex: " + newIndex)
             setValue({ value: newSelectedRigFamilies[newIndex].name, label: newSelectedRigFamilies[newIndex].name });
         } else {
             //Replace rig family with empty

@@ -134,7 +134,6 @@ export const getParameter = async (
 export const createParameters = async (req: Request, res: Response) => {
   const conn = await pool.getConnection();
   const newParameters: Parameters[] = req.body;
-  console.log(newParameters);
 
   const duplicateParameters: string[] = [];
 
@@ -148,7 +147,6 @@ export const createParameters = async (req: Request, res: Response) => {
         [newParameter.name]
       );
       if (Array.isArray(rows) && rows.length > 0) {
-        console.log("Parameter already exists");
         duplicateParameters.push(newParameter.name);
         continue;
       }
@@ -217,7 +215,6 @@ export const createParameters = async (req: Request, res: Response) => {
           new Date(newParameter.modified_date) || null,
         ]
       );
-      console.log((parameterResult as OkPacket).insertId);
       const parameterId = (parameterResult as OkPacket).insertId;
 
       // Insert parameter into rigfamily
@@ -279,7 +276,6 @@ export const createParameters = async (req: Request, res: Response) => {
         newParameter.possible_values.value !== null &&
         newParameter.possible_values.value !== ""
       ) {
-        console.log(newParameter.possible_values);
         let values = [];
         let descriptions = [];
         if (newParameter.possible_values.value.includes(";")) {
@@ -295,7 +291,6 @@ export const createParameters = async (req: Request, res: Response) => {
           values = [newParameter.possible_values.value];
           descriptions = [newParameter.possible_values.description] || null;
         }
-        console.log(values);
 
         const possibleValues = values.map((name, index) => ({
           value: name,
@@ -341,7 +336,6 @@ export const updateParameter = async (
 ) => {
   try {
     const parameter: Parameters = req.body;
-    console.log(parameter);
 
     // Update unit if exists else insert new unit
     let unitId = null;
@@ -360,7 +354,6 @@ export const updateParameter = async (
         unitId = (unitResult as OkPacket).insertId;
       }
     }
-    console.log("unitID:", unitId);
 
     // Update rigfamily if exists else insert new rigfamily
     // Split rigfamily name and description into arrays using ; as separator and loop through them
@@ -400,7 +393,6 @@ export const updateParameter = async (
         }
       }
     }
-    console.log("rigfamilyID:", rigfamilyId);
 
     // Update Images if any else insert new images
     if (parameter.images) {
@@ -427,7 +419,6 @@ export const updateParameter = async (
         name: values[index],
         description: descriptions[index],
       }));
-      console.log("images:", images);
       //Delete existing images for the parameter and insert new images
       await pool.query(`DELETE FROM images WHERE parameter_id = ?`, [
         req.params.id,
@@ -469,11 +460,12 @@ export const updateParameter = async (
         value,
         description: descriptions[index],
       }));
-      console.log("possible_values:", possible_values);
+
       //Delete existing possible_values for the parameter and insert new possible_values
       await pool.query(`DELETE FROM possible_values WHERE parameter_id = ?`, [
         req.params.id,
       ]);
+      
       // Loop through possible_values array and insert into possible_values table
       for (let i = 0; i < possible_values.length; i++) {
         await pool.query(
