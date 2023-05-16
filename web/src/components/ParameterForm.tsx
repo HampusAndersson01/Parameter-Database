@@ -199,12 +199,6 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     setValue("unit", newOption.label);
   };
 
-  const handleCreateRigFamily = (inputValue: string) => {
-    const newOption = createOption(inputValue.toLocaleUpperCase());
-    setRigFamilyOptions([...rigFamilyOptions, newOption]);
-    setValue("rigfamily", newOption.label);
-  };
-
   const handleCreateDataType = (inputValue: string) => {
     const newOption = createOption(inputValue);
     setDataTypeOptions([...dataTypeOptions, newOption]);
@@ -319,7 +313,6 @@ function ParameterForm(props: { data: TableRowProps[] }) {
                       isClearable
                       isMulti
                       options={createGroupedOptions(rigFamilyOptions)}
-                      onCreateOption={handleCreateRigFamily}
                       delimiter=";"
                       onChange={onChange}
                       value={value}
