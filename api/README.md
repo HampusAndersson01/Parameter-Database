@@ -15,6 +15,10 @@ router.post('/', controller.createParameters);
 router.put('/:id', controller.updateParameter);
 router.delete('/:id', controller.deleteParameter); -->
 
+## Docs
+
+### /docs/ - GET - get swagger docs
+
 ## Parameters
 
 ### /parameters/ - GET - get all parameters
