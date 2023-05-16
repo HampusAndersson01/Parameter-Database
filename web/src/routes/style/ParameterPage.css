@@ -105,6 +105,21 @@ hr {
 .mainContainer .dates {
     grid-area: dates;
 }
+.notFoundMsg{
+    text-align: center;
+    font-size: 2rem;
+    color: var(--foregroundSecondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+
+}
 
 @media screen and (max-width: 1000px) {
     main {
