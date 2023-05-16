@@ -18,6 +18,8 @@ export default function ParameterPage() {
     const { hostname } = useContext(APIContext);
     const [parameter, setParameter] = React.useState<TableRowProps>();
 
+    const [isLoading, setIsLoading] = React.useState<boolean>(true);
+
     const [editAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
 
     const [editAllowed] = React.useState<boolean>(allowEdit(true, editAccess));
@@ -25,7 +27,13 @@ export default function ParameterPage() {
     // Fetch parameter data from API
     useEffect(() => {
         fetch(hostname + "parameters/" + id)
-            .then((response) => response.json())
+            .then((response) => {
+                if (response.status === 500) {
+                    setIsLoading(false); // Set isLoading to false
+                    throw new Error("Server error");
+                }
+                return response.json();
+            })
             .then((data) => {
                 console.log("data", data);
                 setParameter(
@@ -48,15 +56,14 @@ export default function ParameterPage() {
                         images: data[0].image_urls !== null ? imagesToArray(data[0].image_urls, data[0].image_name, data[0].image_description) : [],
                         possible_values: possibleValuesToArray(data[0].possible_values, data[0].possible_values_description)
                     }
-
-
                 );
             })
-            .catch((error) => console.log(error))
-            .finally(() => console.log("Loaded parameter data"));
-
-
-
+            .catch((error) => console.error(error))
+            .finally(
+                () => {
+                    console.log("Fetching parameter data finished");
+                }
+            );
     }, []);
 
     const handleValueChange = (value: any, key: string) => {
@@ -74,14 +81,14 @@ export default function ParameterPage() {
             </header>
             <main>
                 {parameter ? (<>
-                <div className="topContainer">
+                    <div className="topContainer">
                         {/* <h1 className="parameterTitle">{parameter.name}</h1>
                         <p className="parameterId">ID: {parameter.id}</p>
                         <p className="parameterDescription">{parameter.description}</p> */}
                         <input className="parameterTitle" value={parameter.name} onChange={(e) => { handleValueChange(e.target.value, "name") }} disabled={!editAllowed}></input>
                         <p className="parameterId">ID: {parameter.id}</p>
                         <input className="parameterDescription" value={parameter.description || ""} onChange={(e) => { handleValueChange(e.target.value, "description") }} disabled={!editAllowed}></input>
-                </div>
+                    </div>
 
                     <div className="mainContainer">
                         <RigFamilies rigFamily={parameter.rigFamily}></RigFamilies>
@@ -103,12 +110,16 @@ export default function ParameterPage() {
                         </div>
                     </div>
 
-                <div className="rightContainer">
+                    <div className="rightContainer">
                         <Images images={parameter.images}></Images>
                         <PossibleValues data={parameter.possible_values} onChange={(value: any) => {
-                        handleValueChange(value, "possible_values");
-                    }}></PossibleValues>
-                    </div></>) : <p>Loading...</p>}
+                            handleValueChange(value, "possible_values");
+                        }}></PossibleValues>
+                    </div></>) :
+                    isLoading ? (<h2 className="notFoundMsg"> Loading...</h2>) : (<h2 className="notFoundMsg">Parameter not found</h2>)
+
+
+                }
             </main>
 
         </div>
