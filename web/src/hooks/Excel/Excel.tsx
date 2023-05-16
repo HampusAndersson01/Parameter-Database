@@ -127,7 +127,6 @@ export const idsToExcel = (ids: number[], parameters: TableRowProps[]) => {
             parameter.possible_values?.map((possible_value: any) => possible_value.description).join(";"),
         ]);
     });
-    console.log("Excel data: ", data);
     const wb = utils.book_new();
     const ws = utils.json_to_sheet(data);
     utils.book_append_sheet(wb, ws, 'Parameters');

@@ -62,19 +62,19 @@ function Home() {
       fetch(hostname + "parameters")
         .then((response) => response.json())
         .then((data) => setData(data))
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
         .finally(() => console.log("parameters loaded", data.length));
 
       fetch(hostname + "rigfamilies")
         .then((response) => response.json())
         .then((data) => setRigFamilies(data))
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
         .finally(() => console.log("rigfamilies loaded"));
 
       fetch(hostname + "units")
         .then((response) => response.json())
         .then((data) => setUnits(data))
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
         .finally(() => console.log("units loaded"));
     }
   }, [pendingReload]);
@@ -126,7 +126,6 @@ function Home() {
             : Array(values.length).fill(null);
 
         for (let i = 0; i < values.length; i++) {
-          // console.log(values[i], descriptions[i]);
           possibleValuesArray.push({
             value: values[i],
             description: descriptions[i],

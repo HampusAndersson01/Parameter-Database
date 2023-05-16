@@ -23,16 +23,6 @@ export const pool = mysql.createPool({
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
 });
-// Log env variables
-console.log("HOST: " + process.env.HOST);
-console.log("USER: " + process.env.USER);
-console.log("PASSWORD: " + process.env.PASSWORD);
-console.log("DATABASE: " + process.env.DATABASE);
-
-pool.getConnection().then((conn) => {
-  console.log("Connected to database");
-  conn.release();
-});
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

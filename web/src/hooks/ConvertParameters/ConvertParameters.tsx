@@ -173,7 +173,6 @@ export function possibleValuesToArray(value: string, description: string | null)
             description: description
         };
         values.push(valueItem);
-        console.log("values: ", values);
         return values;
     }
     value.split(";").map((value, index) => {
@@ -189,6 +188,5 @@ export function possibleValuesToArray(value: string, description: string | null)
         }
         values.push(valueItem);
     });
-    console.log("values: ", values);
     return values;
 }

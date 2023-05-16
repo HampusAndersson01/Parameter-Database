@@ -35,7 +35,6 @@ export default function ParameterPage() {
                 return response.json();
             })
             .then((data) => {
-                console.log("data", data);
                 setParameter(
                     {
                         id: data[0].id,

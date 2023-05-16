@@ -83,12 +83,9 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   // Set table state from search params on initial render
   useEffect(() => {
     searchParams.forEach((value, key) => {
-      console.log(key, value);
     });
-    // console.log("searchParams", searchParams);
     searchParams.forEach((value, key) => {
       if (key !== "page" && key !== "pageSize") {
-        console.log(key, value);
         // Set default column visibility key to true if present in search params
         setColumnVisibility((prev) => ({
           ...prev,
@@ -100,7 +97,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         ]);
       }
     });
-    console.log("columnFilters", columnFilters);
     setPagination({
       pageIndex: 0,
       pageSize: parseInt(searchParams.get("pageSize") || "50"),
@@ -225,7 +221,7 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       await fetch(hostname + `parameters/${id}`, {
         method: "DELETE",
       })
-        .catch((error) => console.log(error))
+        .catch((error) => console.error(error))
         .finally(() => console.log(id + " Deleted"));
       setPendingReload(true);
     } catch (error) {
@@ -234,7 +230,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   };
 
   const handleDeleteRows = (rows: any) => {
-    console.log("Deleting rows: ", rows);
     if (rows.length === 0) {
       alert("No rows selected");
       return;
@@ -244,8 +239,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   };
 
   const handleDeleteConfirm = (rows: any) => {
-    console.log("Deleting rows: ", rows);
-
     for (const [key, value] of Object.entries(rows)) {
       if (value) {
         var dbID = props.data[parseInt(key)].id;
@@ -257,7 +250,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
   };
 
   const handleExport = (rows: any) => {
-    console.log("Exporting rows: ", rows);
     if (rows.length === 0) {
       alert("No rows selected");
       return;
