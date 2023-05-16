@@ -87,18 +87,17 @@ function ParameterTable(props: { data: TableRowProps[] }) {
     });
     // console.log("searchParams", searchParams);
     searchParams.forEach((value, key) => {
-      if (key !== "page" && key !== "pageSize" && !key.includes("Show")) {
+      if (key !== "page" && key !== "pageSize") {
         console.log(key, value);
+        // Set default column visibility key to true if present in search params
+        setColumnVisibility((prev) => ({
+          ...prev,
+          [key]: true,
+        }));
         setColumnFilters((prev) => [
           ...prev,
           { id: key, value: value },
         ]);
-
-      } else if (key.includes("Show_")) {
-        setColumnVisibility((prev) => ({
-          ...prev,
-          [key.replace("Show_", "")]: value === "true" ? true : false,
-        }));
       }
     });
     console.log("columnFilters", columnFilters);
@@ -107,9 +106,6 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       pageSize: parseInt(searchParams.get("pageSize") || "50"),
     });
     setTempPage(parseInt(searchParams.get("page") || "0"));
-
-
-
   }, []);
 
   useEffect(() => {
@@ -140,20 +136,8 @@ function ParameterTable(props: { data: TableRowProps[] }) {
       if (pagination.pageIndex !== 0) params.set('page', pagination.pageIndex.toString());
       if (pagination.pageSize !== 50) params.set('pageSize', pagination.pageSize.toString());
     }
-    console.log(columnVisibility);
-
-    //Loop through column visibility and add to params if visible
-    Object.keys(columnVisibility).forEach((key) => {
-      if (columnVisibility[key as keyof MRT_VisibilityState] !== defaultColumnVisibility[key as keyof MRT_VisibilityState]) {
-        params.set("Show_" + key, columnVisibility[key as keyof MRT_VisibilityState].toString());
-      }
-    });
-
 
     setSearchParams(params);
-    // searchParams.set('sorting', JSON.stringify(sorting ?? []));
-    // searchParams.set('page', pagination.pageIndex.toString());
-    // searchParams.set('pageSize', pagination.pageSize.toString());
   }, [columnFilters, pagination, columnVisibility]);
 
   const columns = useMemo<MRT_ColumnDef<TableRowProps>[]>(
@@ -201,12 +185,9 @@ function ParameterTable(props: { data: TableRowProps[] }) {
         header: "Datatype",
       },
       {
-        // accessorKey: "creation_date",
         accessorFn: (originalRow) => new Date(originalRow.creation_date || ""),
         id: "creation_date",
         header: "Creation Date",
-        // filterFn: 'equals',
-        // filterFn: "lessThanOrEqualTo",
         sortingFn: 'datetime',
         enableColumnFilter: false,
         //render string date in custom format
@@ -215,64 +196,16 @@ function ParameterTable(props: { data: TableRowProps[] }) {
           if (dateTmp === null || dateTmp === undefined) return "";
           return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
         },
-        //render date picker for filtering
-        // Filter: ({ column }) => (
-        //   <LocalizationProvider dateAdapter={AdapterDayjs}>
-        //     <DatePicker
-        //       format="YYYY-MM-DD"
-        //       onChange={(newValue) => {
-        //         column.setFilterValue(newValue);
-        //       }}
-        //       slotProps={{
-        //         textField: {
-        //           helperText: 'Filter Mode: Equals',
-        //           sx: { minWidth: '120px' },
-        //           variant: 'standard',
-        //         },
-        //       }}
-        //       value={column.getFilterValue()}
-        //     />
-        //   </LocalizationProvider>
-        // ),
-
       },
       {
-        // accessorKey: "modified_date",
         accessorFn: (originalRow) => new Date(originalRow.modified_date || ""),
         id: "modified_date",
         header: "Last Modified",
-        // filterFn: 'lessThanOrEqualTo',
-        // filterFn: 'equals',
         enableColumnFilter: false,
         sortingFn: 'string',
         //render string date in custom format
-        // Cell: ({ cell }) => {
-        //   var dateTmp = cell.getValue() as Date | null;
-        //   if (dateTmp === null || dateTmp === undefined) return "";
-        //   return dateTmp.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' });
-        // },
         Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit' }),
         Header: ({ column }) => <em>{column.columnDef.header}</em>,
-        //render date picker for filtering
-        // Filter: ({ column }) => (
-        //   <LocalizationProvider dateAdapter={AdapterDayjs}>
-        //     <DatePicker
-        //       format="YYYY-MM-DD"
-        //       onChange={(newValue) => {
-        //         column.setFilterValue(newValue);
-        //       }}
-        //       slotProps={{
-        //         textField: {
-        //           helperText: 'Filter Mode: Equals',
-        //           sx: { minWidth: '120px' },
-        //           variant: 'standard',
-        //         },
-        //       }}
-        //       value={column.getFilterValue()}
-        //     />
-        //   </LocalizationProvider>
-        // ),
-
       },
       {
         accessorKey: "created_by",
