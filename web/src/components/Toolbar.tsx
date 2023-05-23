@@ -38,6 +38,7 @@ function Toolbar(props: {
     ImportingParametersContext
   );
   const { editMode, setEditMode } = useContext(EditModeContext);
+  const [editAccess, setEditAccess] = React.useState<boolean>(false);//TODO: implement edit mode based on user role
   const { debugMode, setDebugMode } = useContext(DebugContext);
   const [theme, setTheme] = useState("light");
 
@@ -76,9 +77,11 @@ function Toolbar(props: {
   const Main = () => {
     return (
       <ul>
-        <li className="toolbarButton" onClick={() => setCurrentMenu("addParameter")}>
-          Add parameter(s)
-        </li>
+        {
+          editAccess ? (<li className="toolbarButton" onClick={() => setCurrentMenu("addParameter")}>
+            Add parameter(s)
+          </li>) : null
+        }
         {isMobile ? <li className="toolbarButton">My Account</li> : null}
       </ul>
     )
