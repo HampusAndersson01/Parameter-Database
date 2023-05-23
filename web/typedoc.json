@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["src"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "plugin": ["typedoc-plugin-rename-defaults"],
+  "tsconfig": "./tsconfig.json",
+  "name": "Parameter Database"
+}

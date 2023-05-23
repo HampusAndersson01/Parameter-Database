@@ -1,3 +1,15 @@
+/**
+ * @file Units.tsx
+ * 
+ * @module Components/Units
+ * 
+ * @description
+ * A component that allows the user to select a unit from a dropdown menu.
+ * 
+ * @example Default
+ * <Units unit={unit} />
+ * 
+ */
 import React, { useContext, useEffect, useState } from 'react'
 import { Unit } from '../models/Parameters'
 import './style/Units.css'
@@ -11,6 +23,13 @@ interface Option {
     readonly value: string;
 }
 
+/**
+ * @typedef {Object} UnitsProps
+ *  
+ * @property {Unit | null | undefined} unit - The unit to display
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 export default function Units(props: { unit: Unit | null | undefined }) {
     const [unitOptions, setUnitOptions] = useState<Unit[]>([]);
     const [unit, setUnit] = useState<Unit | null | undefined>(props.unit);

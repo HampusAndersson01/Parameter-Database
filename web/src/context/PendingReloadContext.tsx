@@ -1,3 +1,14 @@
+/**
+ * @file PendingReloadContext.tsx
+ * 
+ * @module Contexts/PendingReloadContext
+ * 
+ * @description
+ * Provides the pending reload state.
+ * 
+ * @example
+ * <PendingReloadContext.Provider value={{ pendingReload: pendingReload, setPendingReload: setPendingReload }}>
+ */
 import React, { Dispatch, SetStateAction } from "react";
 
 interface PendingReloadContextType {

@@ -1,3 +1,10 @@
+/**
+ * @module Index
+ * 
+ * @fileoverview This file is the entry point of the application.
+ * 
+ * @version 1.0.0
+ */
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./routes/Home";
@@ -11,6 +18,16 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+/**
+ * @constant {Router} router
+ * 
+ * @description
+ * The router for the application.
+ * 
+ * @see {@link https://reactrouter.com/docs/en/v6/getting-started/overview|React Router}
+ * 
+ * @see {@link https://reactrouter.com/docs/en/v6/api#createhashrouter|createHashRouter}
+ */
 const router = createHashRouter([
   {
     path: "/",

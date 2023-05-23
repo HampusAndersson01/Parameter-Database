@@ -1,3 +1,14 @@
+/**
+ * @file ParameterTable.tsx
+ * @module Components/ParameterTable
+ * 
+ * @description
+ * A component that allows the user to display a table of parameters.
+ * 
+ * @example Default
+ * <ParameterTable data={data} />
+ * 
+ */
 import React, {
   useContext,
   useEffect,
@@ -10,10 +21,6 @@ import { EditModeContext } from "../context/EditModeContext";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { TableRowProps } from "../models/Parameters";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import MaterialReactTable, { MRT_DefinedColumnDef } from "material-react-table";
 import type { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState, MRT_VisibilityState } from "material-react-table";
@@ -30,6 +37,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CachedIcon from '@mui/icons-material/Cached';
 import { idsToExcel } from "../hooks/Excel/Excel";
 
+/**
+ * @typedef {Object} ParameterTableProps
+ * 
+ * @property {TableRowProps[]} data - The data to display in the table
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 function ParameterTable(props: { data: TableRowProps[] }) {
   const { debugMode } = useContext(DebugContext);
   const { editMode } = useContext(EditModeContext);

@@ -1,3 +1,18 @@
+/**
+ * @file Images.tsx
+ * @module Components/Images
+ * 
+ * @description
+ * A component that allows the user to display images.
+ * 
+ * @example Default
+ * <Images images={images} />
+
+ * 
+ * @example Editable with edit access
+ * <Images images={images} editable={true} editAccess={true} />
+ * 
+ */
 import React, { useState } from 'react'
 import { Image } from '../models/Parameters'
 import './style/Images.css'
@@ -6,10 +21,23 @@ import Tooltip from '@mui/material/Tooltip';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 /**
- * Component to display images
+ * @typedef {Object} ImagesProps
+ * @property {Image[] | null | undefined} images - The images to display
+ * @property {boolean} [editable] - Whether the images are editable
+ * @property {boolean} [editAccess] - Whether the user has edit access
  * 
- * @module Images
- * @param props Images to display
+ * @property {() => void} [handleNewClick] - Function to handle new image button click
+ * @property {() => void} [handleDeleteClick] - Function to handle delete image button click
+ * @property {() => void} [handlePrevClick] - Function to handle previous image button click
+ * @property {() => void} [handleNextClick] - Function to handle next image button click
+ * @property {() => void} [handleEditClick] - Function to handle edit image button click
+ * 
+ * @param {ImagesProps} props - The props object with the following properties:
+ * @param {Image[] | null | undefined} props.images - The images to display 
+ * 
+ * @property {string} image_url - The url of the image
+ * @property {string} image_name - The name of the image
+ * @property {string} image_description - The description of the image
  */
 export default function Images(props: { images: Image[] | null | undefined }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -29,13 +57,14 @@ export default function Images(props: { images: Image[] | null | undefined }) {
   }, [props.images]);
 
 
-
+  //If prev button is clicked, set current image to previous image if it exists
   const handlePrevClick = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? prevIndex : prevIndex - 1
     );
   };
 
+  //If next button is clicked, set current image to next image if it exists
   const handleNextClick = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? prevIndex : prevIndex + 1
@@ -79,6 +108,7 @@ export default function Images(props: { images: Image[] | null | undefined }) {
     );
   };
 
+  // Function to handle edit image button click
   const handleEditClick = () => {
     //TODO implement edit image functionality
     setEditActive(!editActive);

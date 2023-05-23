@@ -13,22 +13,21 @@
 ## Architecture
 The architecture of the parameter database consists of two main components:
 - Frontend web application: implemented with React and TypeScript, using Material-UI for the user interface components and Axios for the REST API client.
-- Backend REST API: [Repository](https://github.com/HampusAndersson01/WebAPI-ParameterDB)
+- Backend REST API: [README](../api/README.md)
 
 ## Getting started
 To run the parameter database locally, you will need to follow these steps:
 1. Clone the repository from GitHub and install the dependencies:
 ```
-git clone https://github.com/HampusAndersson01/parameter_db.git
-cd parameter_db
+git clone https://github.com/HampusAndersson01/Parameter-Database.git
+cd Parameter-Database\web
 npm install
 ```
 
 2. Start the frontend web application:
 ```
-cd client
 npm start
 ```
-3. Open your web browser and go to `http://localhost:3000` to access the parameter database.
+3. Open your web browser and go to `http://localhost:3001` to access the parameter database.
 
 

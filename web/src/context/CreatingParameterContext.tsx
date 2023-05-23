@@ -1,3 +1,9 @@
+/**
+ * @file CreatingParameterContext.tsx
+ * 
+ * @description
+ * CreatingParameterContext.tsx is a React Context API component file that provides the CreatingParameterContext and ImportingParametersContext contexts.
+ */
 import React, { Dispatch, SetStateAction } from "react";
 
 interface CreatingParameterContextType {

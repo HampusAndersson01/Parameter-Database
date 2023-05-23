@@ -1,3 +1,14 @@
+/**
+ * @file Toolbar.tsx
+ * 
+ * @module Components/Toolbar
+ * 
+ * @description
+ * A component that allows the user to display a label and a text input field.
+ * 
+ * @example Default
+ * <Toolbar />
+ */
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./style/Toolbar.css";
 import { AccountCircle, LightMode, DarkMode } from "@mui/icons-material";
@@ -8,7 +19,12 @@ import { Squeeze as Hamburger } from "hamburger-react";
 import { Link } from "react-router-dom";
 
 
-
+/**
+ * @typedef {Object} ToolbarProps
+ * @property {boolean} singleParameter - Whether the toolbar is displayed in the single parameter view
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 function Toolbar(props: {
   singleParameter: boolean;
 }) {

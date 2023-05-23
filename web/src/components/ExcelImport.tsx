@@ -1,3 +1,13 @@
+/**
+ * @file ExcelImport.tsx
+ * @module Components/ExcelImport
+ * 
+ * @description
+ * A component that allows the user to import parameters from an excel file.
+ * 
+ * @example
+ * <ExcelImport />
+ */
 import React, { useContext, useEffect } from "react";
 import { useExcelToJson, JsonToParameters } from "../hooks/Excel/Excel";
 import { ImportingParametersContext } from "../context/CreatingParameterContext";
@@ -9,6 +19,11 @@ import { DownloadButton } from "./subComponents/DownloadButton/DownloadButton";
 import { UploadButton } from "./subComponents/UploadButton/DownloadButton/UploadButton";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 
+/**
+ * @typedef {Object} ExcelImportProps
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 export default function ExcelImport() {
     const { importingParameters, setImportingParameters } = useContext(ImportingParametersContext);
     const excelData = useExcelToJson();
@@ -17,6 +32,7 @@ export default function ExcelImport() {
     const { hostname } = useContext(APIContext);
     const { setPendingReload } = useContext(PendingReloadContext);
 
+    // Handle file upload event
     const handleFileUpload = (event: any) => {
         //Loop through all the selected files
 
@@ -47,6 +63,7 @@ export default function ExcelImport() {
 
     }
 
+    // Post parameters to API
     const postParameters = () => {
         fetch(hostname + "parameters", {
             method: "POST",
@@ -67,6 +84,7 @@ export default function ExcelImport() {
 
     }
 
+    // Handle escape key press
     function handleKeyPress(event: KeyboardEvent) {
         if (event.key === "Escape") {
             handleClose();
@@ -74,6 +92,7 @@ export default function ExcelImport() {
     }
     document.addEventListener("keydown", handleKeyPress);
 
+    // Handle close button click
     const handleClose = () => {
         setImportingParameters(false);
     }

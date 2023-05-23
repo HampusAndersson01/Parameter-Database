@@ -1,8 +1,26 @@
+/**
+ * @file PossibleValues.tsx
+ * 
+ * @module Components/PossibleValues
+ * 
+ * @description
+ * A component that allows the user to display a label and a text input field.
+ * 
+ * @example Default 
+ * <PossibleValues data={data} onChange={onChange} />
+ */
 import "./style/PossibleValues.css";
 import React, { useState, useEffect, useContext } from "react";
 import { Possible_value, TableRowProps } from "../models/Parameters";
 import { allowEdit } from "../hooks/EditMode/EditMode";
 
+/**
+ * @typedef {Object} PossibleValuesProps
+ * @property {Possible_value[] | null} data - The data to display
+ * @property {function} onChange - The function to call when the data changes
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 function PossibleValues(props: { data: Possible_value[] | null; onChange: any }) {
   const [possibleValues, setPossibleValues] = useState<Possible_value[]>([]);
 

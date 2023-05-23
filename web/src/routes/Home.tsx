@@ -1,3 +1,11 @@
+/** 
+ * @file Home.tsx
+ * 
+ * @module Routes/Home
+ * 
+ * @description
+ * Provides the home page.
+*/
 import React, { useEffect, useState, useContext } from "react";
 import "./style/Home.css";
 import ParameterTable from "../components/ParameterTable";
@@ -40,6 +48,14 @@ type dataModel = {
   possible_values_description: string | null;
 }[];
 
+/**
+ * @function Home
+ * 
+ * @description
+ * Provides the home page.
+ * 
+ * @returns {JSX.Element} The home page.
+ */
 function Home() {
   const [data, setData] = useState<dataModel>([]);
   const [debugMode, setDebugMode] = useState<boolean>(false);
@@ -92,6 +108,16 @@ function Home() {
   }, [data]);
 
 
+  /**
+   * @function updateRows
+   * 
+   * @description
+   * Updates the rows of the table with the data from the database.
+   * 
+   * @param {dataModel} data The data from the database.
+   * 
+   * @returns {TableRowProps[]} The rows of the table.
+   */
   function updateRows(data: dataModel): TableRowProps[] {
     return data.map((row) => {
       const imageArray: Image[] = [];

@@ -1,3 +1,12 @@
+/**
+ * @file ParameterPage.tsx
+ * 
+ * @module Routes/ParameterPage
+ * 
+ * @description
+ * Provides the parameter page.
+ * 
+ */
 import React, { useContext, useEffect } from "react";
 import { TableRowProps } from "../models/Parameters";
 import { imagesToArray, rigFamilyToArray, stringToDate, possibleValuesToArray } from "../hooks/ConvertParameters/ConvertParameters";
@@ -12,6 +21,14 @@ import Units from "../components/Units";
 import GenericData from "../components/GenericData";
 import { allowEdit } from "../hooks/EditMode/EditMode";
 
+/**
+ * @function ParameterPage
+ * 
+ * @description
+ * Provides the parameter page.
+ * 
+ * @returns {JSX.Element} The parameter page.
+ */
 export default function ParameterPage() {
     //Get parameter id from url
     const { id } = useParams();
@@ -65,6 +82,7 @@ export default function ParameterPage() {
             );
     }, []);
 
+    // Handle value change
     const handleValueChange = (value: any, key: string) => {
         //TODO Implement this function 
         if (parameter) {

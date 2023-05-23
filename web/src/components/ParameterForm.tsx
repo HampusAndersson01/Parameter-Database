@@ -1,3 +1,15 @@
+/**
+ * @file ParameterForm.tsx
+ * 
+ * @module Components/ParameterForm
+ * 
+ * @description
+ * A component that allows the user to create a new parameter.
+ * 
+ * @example Default
+ * <ParameterForm data={data} />
+ * 
+ */
 import React, { useContext, useEffect, useState } from "react";
 import "./style/ParameterForm.css";
 import { CreatingParameterContext } from "../context/CreatingParameterContext";
@@ -14,11 +26,22 @@ import { GroupBase } from "react-select";
 import { PendingReloadContext } from "../context/PendingReloadContext";
 import { NewParameter } from "../models/Parameters";
 
+/**
+ * @typedef {Object} Option
+ * @property {string} label - The label of the option
+ * @property {string} value - The value of the option
+ */
 interface Option {
   readonly label: string;
   readonly value: string;
 }
 
+/**
+ * @typedef {Object} ParameterFormProps
+ * @property {TableRowProps[]} data - The data to be displayed in the form
+ * 
+ * @returns {JSX.Element} - The resulting JSX element
+ */
 function ParameterForm(props: { data: TableRowProps[] }) {
   const { creatingParameter, setCreatingParameter } = useContext(
     CreatingParameterContext
@@ -71,6 +94,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     setUnitOptions(tempUnits);
   }, [units]);
 
+  // Create group of options for react-select
   useEffect(() => {
     let tempRigFamilies: Option[] = [];
     rigFamilies.forEach((rigFamily) => {
@@ -81,6 +105,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     setRigFamilyOptions(tempRigFamilies);
   }, [rigFamilies]);
 
+  // Create group of options for react-select
   useEffect(() => {
     let tempDataTypes: Option[] = [];
     dataTypes.forEach((dataType) => {
@@ -125,6 +150,7 @@ function ParameterForm(props: { data: TableRowProps[] }) {
       .map((item: { value: any }) => item.value)
       .join(";");
 
+    // Create new parameter
     let newParameter: NewParameter[] = [
       {
         name: data.name,
@@ -193,12 +219,14 @@ function ParameterForm(props: { data: TableRowProps[] }) {
     remove(index);
   };
 
+  // Create new option for react-select 
   const handleCreateUnit = (inputValue: string) => {
     const newOption = createOption(inputValue);
     setUnitOptions([...unitOptions, newOption]);
     setValue("unit", newOption.label);
   };
 
+  // Create new option for react-select 
   const handleCreateDataType = (inputValue: string) => {
     const newOption = createOption(inputValue);
     setDataTypeOptions([...dataTypeOptions, newOption]);

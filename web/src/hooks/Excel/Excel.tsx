@@ -1,7 +1,23 @@
+/**
+ * @file Excel.tsx
+ * 
+ * @module Hooks/Excel
+ * 
+ * @description
+ * Provides the excel to json conversion.
+ */
 import React, { useState } from "react";
 import { read, readFile, utils, writeFile } from 'xlsx';
 import { NewParameter, RigFamily, TableRowProps } from "../../models/Parameters";
 
+/**
+ * @function useExcelToJson
+ * 
+ * @description
+ * Provides the excel to json conversion.
+ * 
+ * @returns {object} jsonData - The json data from the excel file.
+ */
 export const useExcelToJson = () => {
     const [jsonData, setJsonData] = useState<any>();
 
@@ -21,6 +37,16 @@ export const useExcelToJson = () => {
     return { jsonData, convertToJson };
 };
 
+/**
+ * @function JsonToParameters
+ * 
+ * @description
+ * Converts the json data to TableRowProps.
+ * 
+ * @param {object} jsonData - The json data from the excel file.
+ * 
+ * @returns {object} parameters - The TableRowProps.
+ */
 export const JsonToParameters = (jsonData: any) => {
     // Convert the json data to TableRowProps
     const parameters: NewParameter[] = [];
@@ -32,24 +58,6 @@ export const JsonToParameters = (jsonData: any) => {
             // Skip the header
             return;
         } else {
-            // [
-            //     [
-            //         "name",
-            //         "description",
-            //         "datatype",
-            //         "decimals",
-            //         "min",
-            //         "max",
-            //         "comment",
-            //         "unit_name",
-            //         "rigfamily_name",
-            //         "image_name",
-            //         "image_description",
-            //         "image_urls",
-            //         "possible_values",
-            //         "possible_values_description"
-            //     ],
-            // ]
             const parameter: NewParameter = {
                 name: row[0],
                 description: row[1],
@@ -85,6 +93,17 @@ export const JsonToParameters = (jsonData: any) => {
     return parameters;
 }
 
+/**
+ * @function idsToExcel
+ * 
+ * @description
+ * Converts the ids to excel file.
+ * 
+ * @param {number[]} ids - The ids of the parameters.
+ * @param {object[]} parameters - The TableRowProps.
+ * 
+ * @returns {object} excel file - The excel file.
+ */
 export const idsToExcel = (ids: number[], parameters: TableRowProps[]) => {
     // Convert the ids to json data
     const data = [];

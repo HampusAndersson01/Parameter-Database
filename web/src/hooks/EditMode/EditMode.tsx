@@ -1,4 +1,13 @@
 /**
+ * @file EditMode.tsx
+ * 
+ * @module Hooks/EditMode
+ * 
+ * @description
+ * Provides the edit mode state. 
+ * 
+ */
+/**
  * function to check if the field is editable or not
  * based on the editable and editAccess props
  *  

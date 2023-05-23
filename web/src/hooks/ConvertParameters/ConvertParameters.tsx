@@ -1,3 +1,11 @@
+/**
+ * @file ConvertParameters.tsx
+ * 
+ * @module Hooks/ConvertParameters
+ * 
+ * @description
+ * Provides functions to convert parameters to and from strings.
+ */
 import { Image, RigFamily } from '../../models/Parameters'
 
 /**

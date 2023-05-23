@@ -1,8 +1,18 @@
+/**
+ * @file RigFamilies.tsx
+ * 
+ * @module Components/RigFamilies
+ * 
+ * @description
+ * A component that allows the user to display a label and a text input field.
+ * 
+ * @example Default
+ * <RigFamilies rigFamily={rigFamily} />
+ */
 import React, { useContext, useEffect, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { RigFamily } from '../models/Parameters';
 import './style/RigFamilies.css';
-import { DataContext } from '../context/DataContext';
 import { APIContext } from '../context/APIContext';
 import { allowEdit } from "../hooks/EditMode/EditMode";
 
@@ -12,6 +22,12 @@ interface Option {
     readonly value: string;
 }
 
+/**
+ * @typedef {Object} RigFamiliesProps
+ * @property {RigFamily[] | null | undefined} rigFamily - The rig families to display
+ * 
+ * @returns {JSX.Element} - The resulting JSX element 
+ */
 export default function RigFamilies(props: { rigFamily: RigFamily[] | null | undefined }) {
 
     const { hostname } = useContext(APIContext);
