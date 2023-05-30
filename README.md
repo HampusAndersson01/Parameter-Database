@@ -1,6 +1,6 @@
 # Parameter Database
 
-Thesis work for Volvo Trucks
+Thesis work for Volvo Trucks Technology
 
 ## Getting started
 
