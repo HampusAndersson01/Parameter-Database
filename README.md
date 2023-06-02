@@ -2,6 +2,8 @@
 
 Thesis work for Volvo Trucks Technology
 
+[Thesis Paper](Thesis_Paper.md)
+
 ## Getting started
 
 To run the parameter database locally, you will need to follow these steps:
