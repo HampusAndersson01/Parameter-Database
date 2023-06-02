@@ -2,7 +2,7 @@
 
 Thesis work for Volvo Trucks Technology
 
-[Thesis Paper](Thesis_Paper.md) [(PDF)](Thesis_Paper.pdf)
+[Paper](Thesis_Paper.md) [(PDF)](Thesis_Paper.pdf)
 
 ## Getting started
 
